@@ -1,0 +1,39 @@
+Video Scheduling Table Draft Specification
+__________________________________________
+
+This document describes the format to be used with all Video Scheduling Tables (VST).
+
+All entries in a VST shall be of this format:
+
+(hours)(minutes) (seconds) (video file) (flags)
+|  |-----|        |          |           |
+|  |  |-----------|          |           |
+|  |  |    |-----------------|           |
+|  |  |    |               |-------------|
+12 13 26 /home/foo/bar.mp4 none
+
+In other words:
+
+A VST entry shall consist of the hour desired (in 24 hour time format), separated by a space, followed by the desired minute, separated by another space, followed by the seconds, followed by a space, followed by the path to the video file desired to be played.
+
+Here are a few sample entries:
+
+8 35 00 /home/bar/flag.mp4 none <--- plays "flag.mp4" at 8:35:00 AM.
+
+15 02 55 /home/john/random.mov none <--- plays "random.mov" 5 seconds before last bell rings at Harvest Park (or 3:02:55 PM).
+
+If a video has no specified time to be played and is desired to be played manually, use -1 as the value for all time values.
+
+For example, to load "leadership.avi" but play it manually, you would enter:
+
+-1 -1 -1 /home/jane/leadership.avi none
+
+To specify a video flag, such as looping a video, enter it in an entry like so:
+
+8 31 00 /home/foo/intro.wmv loop
+
+In order to load a text file containing VST entries, use Python:
+
+python3
+import libvidsched
+schedload("path/to/text/file.txt")
