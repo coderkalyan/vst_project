@@ -1,4 +1,6 @@
 import sys
+from threading import Thread
+
 import qdarkstyle
 
 from PyQt5 import uic, QtWidgets
@@ -19,13 +21,33 @@ class Window(QtWidgets.QMainWindow):
 
         self.button_load_new_video.clicked.connect(self.load_new_video_clicked)
 
+        self.threads = []
+
     def setup_columns(self):
         self.table_videos.setColumnWidth(0, 500)
         self.table_videos.setColumnWidth(1, 130)
         self.table_videos.setColumnWidth(2, 130)
 
     def load_new_video_clicked(self):
-        print(self.dialog_load_new_video.get_video())
+        name, time = self.dialog_load_new_video.get_video()
+        time_split = time.split(":")
+        time_split = [int(x) for x in time_split]
+        print(time_split)
+        # TODO - manual start, loop
+
+        def wrapper():
+            self.schedule_on_thread(time_split, name)
+
+        thread = Thread(name=name, target=wrapper)
+        thread.start()
+        self.threads.append(thread)
+        # video = Video(time_split[0], time_split[1], time_split[2], name, ["--fullscreen"])
+        # video.start_clock()
+
+    @staticmethod
+    def schedule_on_thread(time_split, name):
+        video = Video(time_split[0], time_split[1], time_split[2], name, ["--fullscreen"])
+        video.start_clock()
 
 
 class LoadVideoDialog(QtWidgets.QDialog):

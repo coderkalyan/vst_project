@@ -69,7 +69,7 @@
    <item row="5" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Start Time:</string>
+      <string>Start Time(HH:MM:SS):</string>
      </property>
     </widget>
    </item>
@@ -89,7 +89,7 @@
       <string>Loop</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -122,7 +122,7 @@
       <string>Play Manually</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="tristate">
       <bool>false</bool>
