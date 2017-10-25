@@ -70,7 +70,7 @@ class Window(QtWidgets.QMainWindow):
         # video.start_clock()
 
     def schedule_on_thread(self, time_split, name):
-        video = Video(time_split[0], time_split[1], time_split[2], name, [])  # ["--fullscreen"]
+        video = Video(*time_split, name, [])  # ["--fullscreen"]
         self.videos.append(video)
         self.videos.sort(key=lambda x: (x.hour, x.minute, x.second))
         self.refresh_rows()
