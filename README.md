@@ -5,7 +5,7 @@ This README would normally document whatever steps are necessary to get your app
 ### What is this repository for? ###
 
 * Quick summary
-* Version 1.0 - Apple
+* Version 1.1 - Acidic Apple
 
 ### How do I get set up? ###
 

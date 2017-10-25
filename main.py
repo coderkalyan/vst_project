@@ -17,7 +17,6 @@ from PyQt5 import uic, QtWidgets
 import player_api
 from video import Video
 
-
 class Window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
