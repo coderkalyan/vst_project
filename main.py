@@ -5,8 +5,6 @@ import qdarkstyle
 
 from PyQt5 import uic, QtWidgets
 
-from video import Video
-
 
 class Window(QtWidgets.QMainWindow):
     def __init__(self):
