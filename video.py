@@ -34,5 +34,5 @@ class Video:
             time.sleep(0.05)
         self.play()
 
-    def play(self, player=player_api.PLAYER_VLC):
+    def play(self, player=player_api.PLAYER_CVLC):
         player_api.play(player, self.filename, self.flags)

@@ -23,6 +23,13 @@ def play(player, file, args):
         os.system(PATH_CVLC + " " + " ".join(args) + " " + file)
 
 
+def stop():
+    """
+    Crude stop method - just runs killall vlc
+    """
+    os.system("killall " + PATH_VLC)
+
+
 def main():
     play(PLAYER_CVLC, "video_1.mp4", ["--fullscreen"])
 
