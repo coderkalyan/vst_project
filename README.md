@@ -1,28 +1,26 @@
+# README #
 
+This README would normally document whatever steps are necessary to get your application up and running.
 
-This is the Video Scheduling Table (VST) Project.
+### What is this repository for? ###
 
-Here are guidelines to contribute:
+* New Repo for VST(Video Scheduling Table) Project
+* Version 1.1.1 Acidic Apple
 
-Create a new branch with a codename and version number.
+### How do I get set up? ###
 
-Codenames are as follows:
+* Clone this repo
+* Create your own branch for edits, named (your name)-edits
+* This requires python 3.5 and pyqt5 installed
+* This folder is a PyCharm project. If you use PyCharm, open this folder. Otherwise,
+* just open the files in your editor of choice and start editing!
 
-For each major release/change (such as major overhauls to libvst or dramatic UI changes), name it after a different fruit and change major version number:
+### Contribution guidelines ###
 
-Example: 1.0 Pomegranate > 2.0 Pear
+* Make your edits, then commit and push them
+* Create a pull request from your branch to master, and somebody will look at your code and merge it.
+* All commit should be made on your branch only
 
-For each minor release/change (such as optimizations and minor renamings in UI), add/change an adjective to the fruit and change minor version number:
+### Who do I talk to? ###
 
-Example: 1.0 Pomegranate > 1.1 Zesty Pomegranate
-
-Adjectives should go from A-Z.
-
-Major releases should not have an adjective.
-
-For info on the VST specification, see the VST draft specification.
-
-Please commit regularly and give descriptive commit messages (not just "Bug Fixes" - "Fixed a memory leak" or "Patched security issue" would be much better).
-
-Thank You :)
-
+* Kalyan, Vincent, Kai
