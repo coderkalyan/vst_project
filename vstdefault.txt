@@ -1,0 +1,5 @@
+0 0 0 hi.mp4 none
+29 4 45 foo.avi none
+50 -1 39 bar.wmv loop
+-1 -1 -1 /home/bbworld/vidsched_dist/media-playback-pause.svg none
+-1 -1 -1 /home/bbworld/vidsched_dist/edit-delete.svg none

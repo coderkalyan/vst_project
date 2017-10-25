@@ -1,0 +1,8 @@
+This is Version 1.0 (Pomegranate) of the Table Based Video Scheduler.
+
+It was already merged.
+
+Therefore this branch is only there because arrays start at 1.
+
+Trololololol :)
+
