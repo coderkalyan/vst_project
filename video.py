@@ -6,12 +6,13 @@ import player_api
 
 class Video:
     def __init__(self, hour: int, minute: int, second: int, name: str, flags: list):
-        self.thread = threading.Thread(name=self.filename, target=self.play_at_time())
         self.hour = hour
         self.minute = minute
         self.second = second
         self.filename = name
-        self.flags = flags
+        self.flags = flags        
+        self.thread = threading.Thread(name=self.filename, target=self.play_at_time())
+        
 
     def set_play_time(self, hour: int, minute: int, second: int):
         self.hour = hour
@@ -28,7 +29,7 @@ class Video:
         self.thread.start()
 
     def play_at_time(self):
-        while datetime.datetime.now().time() < datetime.time(self.hour, self.minute, self.second):
+        while datetime.datetime.now().time() == datetime.time(self.hour, self.minute, self.second):
             time.sleep(0.05)
         self.play()
 
