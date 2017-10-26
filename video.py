@@ -6,13 +6,21 @@ import player_api
 
 class Video:
     def __init__(self, hour: int, minute: int, second: int, name: str, flags: list):
+<<<<<<< HEAD
+        self.thread = threading.Thread(name=self.filename, target=self.play_at_time())
+=======
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
         self.hour = hour
         self.minute = minute
         self.second = second
         self.filename = name
+<<<<<<< HEAD
+        self.flags = flags
+=======
         self.flags = flags        
         self.thread = threading.Thread(name=self.filename, target=self.play_at_time())
         
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
 
     def set_play_time(self, hour: int, minute: int, second: int):
         self.hour = hour

@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 import sys
+<<<<<<< HEAD
+=======
 import scheduler
 from video import Video
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QWidget, QFileDialog, QLabel
 from PyQt5.QtCore import *
 from PyQt5 import QtWidgets, QtGui, QtCore
@@ -26,7 +29,10 @@ def vidNamer(video):
             except IndexError:
                 break
             ui.label.setText("Playing: " + dev)
+<<<<<<< HEAD
+=======
             return dev
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
 
 #---------------------------------------------------------------------
             
@@ -69,18 +75,24 @@ def tableDump():
             times.append(j[0]+":"+j[1]+":"+j[2])
             videos.append(j[3])
             flags.append(j[4])
+<<<<<<< HEAD
+=======
             print(j[0])
             if j[0] != "-1":
                 scheduler.enqueue(Video(int(j[0]), int(j[1]), int(j[2]), j[3], ["--fullscreen"]))
             else:
                 print ("ooh ya")
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
         except IndexError:
             continue
     
     c=0
+<<<<<<< HEAD
+=======
     #------
     #Dump the vst's contents into the actual QTable
     print("I am running")
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
     for k in times:
         
         if k != "-1:-1:-1":
@@ -109,7 +121,11 @@ def newEntry():
     if video[0]!="":
         vstfile = open(location, "a")
         #print (video[0])
+<<<<<<< HEAD
+        vstfile.write("-1 -1 -1 " + video[0] + " none\n")
+=======
         vstfile.write("20 6 0 " + video[0] + " none\n")
+>>>>>>> d9bf78e821626ea86d8b719b1e7be7804db44060
         vstfile.close()
         editvst()
         tableDump()
