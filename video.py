@@ -29,7 +29,7 @@ class Video:
         self.thread.start()
 
     def play_at_time(self):
-        while datetime.datetime.now().time() < datetime.time(self.hour, self.minute, self.second):
+        while datetime.datetime.now().time() == datetime.time(self.hour, self.minute, self.second):
             time.sleep(0.05)
         self.play()
 
