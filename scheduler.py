@@ -33,6 +33,7 @@ def enqueue(video: Video) -> None:
     :param video: Video object to play.
     """
     queue.append(video)
+    print(queue)
 
 
 def start_queue(start_time: datetime.datetime = datetime.datetime.now()
@@ -70,7 +71,7 @@ def start_queue(start_time: datetime.datetime = datetime.datetime.now()
 
 
 if __name__ == '__main__':
-    enqueue(Video(16, 10, 0, "video_1.mp4", ["--fullscreen"]))
+    enqueue(Video(19, 37, 0, "video_1.mp4", ["--fullscreen"]))
     t = threading.Thread(target=start_queue)
     t.start()
     override()
