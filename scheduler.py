@@ -48,8 +48,6 @@ def start_queue(start_time: datetime.datetime = datetime.datetime.now()
     # we want to wait to load video until current time is start_time,
     # but we want to be able to override that
     while not isOverride and datetime.datetime.now().time() != start_time.time():
-        print(datetime.datetime.now().time())
-        print(start_time.time())
         time.sleep(0.05)
 
     isOverride = False

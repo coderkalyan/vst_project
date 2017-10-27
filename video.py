@@ -31,7 +31,9 @@ class Video:
         print(datetime.datetime.now().time())
         print(datetime.time(self.hour, self.minute, self.second))
         
+        #Changed to round to seconds
         while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute, int(datetime.datetime.now().second)) != datetime.time(self.hour, self.minute, self.second):
+            #Debug statements - please leave in for convenience!
             print(datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute, int(datetime.datetime.now().second)))
             print(datetime.time(self.hour, self.minute, self.second))
             time.sleep(0.05)
