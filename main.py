@@ -17,6 +17,7 @@ from PyQt5 import uic, QtWidgets
 import player_api
 from video import Video
 
+
 class Window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -63,7 +64,7 @@ class Window(QtWidgets.QMainWindow):
         def wrapper():
             self.schedule_on_thread(time_split, name)
 
-        thread = Process(name=name,target=wrapper)#Thread(name=name, target=wrapper)
+        thread = Process(name=name, target=wrapper)#Thread(name=name, target=wrapper)
         thread.start()
         self.threads.append(thread)
         # video = Video(time_split[0], time_split[1], time_split[2], name, ["--fullscreen"])

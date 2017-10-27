@@ -29,9 +29,13 @@ class Video:
         self.thread.start()
 
     def play_at_time(self):
-        while datetime.datetime.now().time() == datetime.time(self.hour, self.minute, self.second):
+        print(self.hour, self.minute, self.second)
+        if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
+            return
+
+        while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute, self.second):
             time.sleep(0.05)
         self.play()
 
-    def play(self, player=player_api.PLAYER_CVLC):
+    def play(self, player=player_api.PLAYER_VLC):
         player_api.play(player, self.filename, self.flags)
