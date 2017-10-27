@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 import scheduler
+import threading
 from video import Video
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QWidget, QFileDialog, QLabel
 from PyQt5.QtCore import *
@@ -69,7 +70,12 @@ def tableDump():
             videos.append(j[3])
             flags.append(j[4])
             if j[0] != "-1":
-                scheduler.enqueue(Video(int(j[0]), int(j[1]), int(j[2]), j[3], ["--fullscreen"]))
+                HOUR = int(j[0])
+                MINUTE = int(j[1])
+                SECOND = int(j[2])
+                print(HOUR, MINUTE, SECOND)
+                t = threading.Thread(target=lambda:scheduler.enqueue(Video(HOUR, MINUTE, SECOND, j[3], ["--fullscreen"])))
+                t.start()
             else:
                 print ("ooh ya")
         except IndexError:
@@ -107,7 +113,7 @@ def newEntry():
     if video[0]!="":
         vstfile = open(location, "a")
         #print (video[0])
-        vstfile.write("20 6 0 " + video[0] + " none\n")
+        vstfile.write("18 41 0 " + video[0] + " none\n")
         vstfile.close()
         editvst()
         tableDump()

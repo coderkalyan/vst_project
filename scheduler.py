@@ -57,5 +57,5 @@ def start_queue(start_time: datetime.datetime = datetime.datetime.now()
 if __name__ == '__main__':
     enqueue(Video(17, 39, 0, "video_1.mp4", ["--fullscreen"]))
     t = threading.Thread(target=start_queue)
-    t.start()
+    t.start()    
     override()
