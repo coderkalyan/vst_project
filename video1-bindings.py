@@ -4,8 +4,6 @@ import scheduler
 import threading
 from video import Video
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QWidget, QFileDialog, QLabel
-from PyQt5.QtCore import *
-from PyQt5 import QtWidgets, QtGui, QtCore
 from video1 import Ui_MainWindow as videosched
 from load_video_dialog import Ui_Dialog as videodialog
 from nothing_to_inspect import Ui_Dialog as nothing_to_inspect
@@ -15,95 +13,58 @@ from nothing_to_inspect import Ui_Dialog as nothing_to_inspect
 def bind():
     ui.loadnew.clicked.connect(newEntry)
 
-def vidNamer(video):
-    dev = ""
-    for i in range(len(video)):
-        dev = video
-        for i2 in range(len(dev)):
-            try:
-                if dev[i2] == '/':
-                    dev = dev[i2+1:len(dev)]
-                    print(dev)
-            except IndexError:
-                break
-            ui.label.setText("Playing: " + dev)
-
 #---------------------------------------------------------------------
-            
-def openvst():
-    #opens a text file for reading and writing video entries
-    
-    try:
-        vst = open("pointer.txt", "r")
-        global location
-        location = vst.read()
-        vst.close()
-        editvst()
-    except FileNotFoundError:
-        vst2 = open("pointer.txt", "w+")
-        vst2.writelines("\nvstdefault.txt")
-        vst2.close()
-        openvst()            
 
-def editvst():
-    vst3 = open(location, "r")
-    
-    global table
-    table = vst3.read()
-   
-    tableDump()
-    vst3.close()
-        
-#---------------------------------
-#Dump all entries into a QTable for editing in the GUI
-def tableDump():
-    splittable = table.splitlines()
-    ui.schedtable.setRowCount(len(splittable))
-    print(len(splittable))
+def open_vst():
+    # opens a text file for reading and writing video entries
+    global location
+
+    with open("pointer.txt","w+") as pointer:
+        location = pointer.read()
+        # if we read from empty file(just created), fill it with path to default table
+        if location == "":
+            location = "vstdefault.txt"
+            pointer.write(location) 
+    table_dump()
+            
+
+# Dump all entries into a QTable for editing in the GUI
+def table_dump():
+    with open(location) as f:
+        table = f.read().splitlines()
+    # Change rows to amount of "queued" videos
+    ui.table_videos.setRowCount(len(table))
+    print(len(table))
     times = []
     videos = []
     flags = []
-    for i in splittable:
+    
+    for row in table:
         try:
-            j = i.split()
-            times.append(j[0]+":"+j[1]+":"+j[2])
-            videos.append(j[3])
-            flags.append(j[4])
-            if j[0] != "-1":
-                HOUR = int(j[0])
-                MINUTE = int(j[1])
-                SECOND = int(j[2])
-                print(HOUR, MINUTE, SECOND)
-                t = threading.Thread(target=lambda:scheduler.enqueue(Video(HOUR, MINUTE, SECOND, j[3], ["--fullscreen"])))
+            h, m, s, name, args = row.split(' ') # to be safe(and readable), always put the ' '
+            h, m, s = map(int,(h, m, s)) # convert these to int
+            times.append(":".join([str(h), str(m), str(s)]))
+            videos.append(name)
+            flags.append(args)
+
+            # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
+            print(h)
+            if h != -1:
+                t = threading.Thread(target=lambda: scheduler.enqueue(Video(h, m, s, name, ["--fullscreen"])))
                 t.start()
-            else:
-                print ("ooh ya")
+                # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
         except IndexError:
             continue
-    
-    c=0
-    #------
-    #Dump the vst's contents into the actual QTable
-    print("I am running")
-    for k in times:
-        
-        if k != "-1:-1:-1":
-            vidlabel = QLabel()
-            vidlabel.setText(k)
-            ui.schedtable.setCellWidget(c, 1, vidlabel)
-        c=c+1
-    c=0
-    for m in videos:
-        
-        vidlabel2 = QLabel()
-        vidlabel2.setText(m)
-        ui.schedtable.setCellWidget(c, 0, vidlabel2)
-        c=c+1
-        
-#---------------------------------------------------        
-    
 
-
+        # loop through both lists at same time - videos -> video, times -> time, and keep the index -> i 
+    for i, (video, time) in enumerate(zip(videos, times)):
+        label = QLabel()
+        label.setText(video)
+        ui.table_videos.setCellWidget(i, 0, label)
+        label = QLabel()
+        # basically set the time if it isn't -1, else set to 'manual'
+        label.setText(time if time != "-1:-1:-1" else "Manual Play")
+        ui.table_videos.setCellWidget(i, 1, label)
 
 #creates new video entry to be played in table
 
@@ -113,47 +74,47 @@ def newEntry():
     if video[0]!="":
         vstfile = open(location, "a")
         #print (video[0])
-        vstfile.write("18 41 0 " + video[0] + " none\n")
+        #its currently hard coded to 8:06 PM, will add UI support
+        vstfile.write("-1 -1 -1 " + video[0] + " none\n")
         vstfile.close()
-        editvst()
-        tableDump()
-        vidNamer(video[0])
-     
-    
+        table_dump()
+
+        # set the text to 
+        ui.label_now_playing.setText(video[0].split('/')[-1])
+
+
 #opens gui window
 
-    
-def start():
+# Initialize the GUI interface (put widgets and windows on the actual screen where humans can see them)    
+def main():
     app = QApplication(sys.argv)
-    
+
     global window2
     global window3
-    
+
     window = QMainWindow()
     window2 = QDialog()
     window3 = QDialog()
-    
+
     global ui
     global ui2
     global ui3
-    
+
     ui = videosched()
     ui.setupUi(window)
-    
+
     ui2 = videodialog()
     ui2.setupUi(window2)
-    
+
     ui3 = nothing_to_inspect()
     ui3.setupUi(window3)
-    
+
     bind()
-    ui.schedtable.setRowCount(0)
+    ui.table_videos.setRowCount(0)
     window.setWindowTitle("Video Scheduling Utility by KVK")
     window.show()    
-    openvst()    
+    open_vst()    
     sys.exit(app.exec_())
-    
-#executes start
-    
+
 if __name__ == "__main__":
-    start()
+    main()
