@@ -29,7 +29,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QPushButton" name="loadnew">
+         <widget class="QPushButton" name="button_load_new_video">
           <property name="font">
            <font>
             <pointsize>14</pointsize>
@@ -171,7 +171,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QTableWidget" name="schedtable">
+       <widget class="QTableWidget" name="table_videos">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>1</horstretch>

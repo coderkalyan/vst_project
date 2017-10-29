@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 # this is a file to provide functionality to play a video file
 # should work with all media formats as long as the player being used
@@ -18,7 +19,8 @@ PATH_CVLC = "cvlc"
 
 def play(player, file, args):
     if player == PLAYER_VLC:
-        os.system(PATH_VLC + " " + " ".join(args) + " " + file)
+        # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
+        p = subprocess.Popen([PATH_VLC, " ".join(args), file])
     if player == PLAYER_CVLC:
         os.system(PATH_CVLC + " " + " ".join(args) + " " + file)
 
