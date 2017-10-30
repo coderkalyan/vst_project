@@ -8,25 +8,33 @@ from video1 import Ui_MainWindow as videosched
 from load_video_dialog import Ui_Dialog as videodialog
 from nothing_to_inspect import Ui_Dialog as nothing_to_inspect
 
-#binds all buttons to functions
+
+# binds all buttons to functions
+
 
 def bind():
-    ui.loadnew.clicked.connect(newEntry)
+    # Connect Main UI Load New button to Load New function
+    #Inspector OK button bindings moved to inspector due to design limitations and human idiotness (is that a word?)
+    ui.inspector.clicked.connect(lambda: inspect(False))
+    ui.loadnew.clicked.connect(lambda: inspect(True))
+    ui2.button_choose_video.clicked.connect(selectvid)
 
-#---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
 
 def open_vst():
     # opens a text file for reading and writing video entries
     global location
 
-    with open("pointer.txt","w+") as pointer:
+    with open("pointer.txt", "w+") as pointer:
         location = pointer.read()
         # if we read from empty file(just created), fill it with path to default table
         if location == "":
             location = "vstdefault.txt"
-            pointer.write(location) 
+            pointer.write(location)
     table_dump()
-            
+
 
 # Dump all entries into a QTable for editing in the GUI
 def table_dump():
@@ -38,11 +46,11 @@ def table_dump():
     times = []
     videos = []
     flags = []
-    
+
     for row in table:
         try:
-            h, m, s, name, args = row.split(' ') # to be safe(and readable), always put the ' '
-            h, m, s = map(int,(h, m, s)) # convert these to int
+            h, m, s, name, args = row.split(' ')  # to be safe(and readable), always put the ' '
+            h, m, s = map(int, (h, m, s))  # convert these to int
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
@@ -56,7 +64,7 @@ def table_dump():
         except IndexError:
             continue
 
-        # loop through both lists at same time - videos -> video, times -> time, and keep the index -> i 
+            # loop through both lists at same time - videos -> video, times -> time, and keep the index -> i
     for i, (video, time) in enumerate(zip(videos, times)):
         label = QLabel()
         label.setText(video)
@@ -66,16 +74,30 @@ def table_dump():
         label.setText(time if time != "-1:-1:-1" else "Manual Play")
         ui.table_videos.setCellWidget(i, 1, label)
 
-#creates new video entry to be played in table
 
-def newEntry():
+# creates new video entry to be played in table
+
+def selectvid():
+    global video
     video = QFileDialog.getOpenFileName()
     print(video)
-    if video[0]!="":
+    ui2.label_load_video_name.setText(video[0].split('/')[-1])
+    
+def inspect(new: bool):
+    window2.show()
+    global video
+    ui2.buttonBox.accepted.connect(lambda: entry(new))
+    
+
+def entry(new: bool):
+    if new:
+        print("i'm new!")
+    if video[0] != "":
         vstfile = open(location, "a")
-        #print (video[0])
-        #its currently hard coded to 8:06 PM, will add UI support
-        vstfile.write("-1 -1 -1 " + video[0] + " none\n")
+        # print (video[0])
+        # its currently hard coded to 8:06 PM, will add UI support
+        print(ui2.hours.value())
+        vstfile.write(" ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[0] + " none\n")
         vstfile.close()
         table_dump()
 
@@ -83,7 +105,7 @@ def newEntry():
         ui.label_now_playing.setText(video[0].split('/')[-1])
 
 
-#opens gui window
+# opens gui window
 
 # Initialize the GUI interface (put widgets and windows on the actual screen where humans can see them)    
 def main():
@@ -112,9 +134,10 @@ def main():
     bind()
     ui.table_videos.setRowCount(0)
     window.setWindowTitle("Video Scheduling Utility by KVK")
-    window.show()    
-    open_vst()    
+    window.show()
+    open_vst()
     sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
     main()
