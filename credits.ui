@@ -32,7 +32,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>By Vincent Wang, Kai Gottschalk, and Kalyan Siriam</string>
+      <string>By Vincent Wang, Kai Gottschalk, and Kalyan Sriram</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
