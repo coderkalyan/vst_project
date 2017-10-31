@@ -136,17 +136,6 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QToolButton" name="start">
-        <property name="text">
-         <string>Play</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>media-playback-start.svg</normaloff>media-playback-start.svg</iconset>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
@@ -179,9 +168,22 @@
      <string>Video Queuer</string>
     </property>
     <addaction name="actionHelp"/>
-    <addaction name="actionAbout"/>
-    <addaction name="actionQuit"/>
+    <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionQuit_2"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuVideo_Queuer"/>
   </widget>
   <action name="actionHelp">
@@ -195,6 +197,16 @@
    </property>
   </action>
   <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionQuit_2">
    <property name="text">
     <string>Quit</string>
    </property>
