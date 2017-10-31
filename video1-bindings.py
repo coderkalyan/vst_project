@@ -2,17 +2,16 @@
 import sys
 import threading
 
-from PyQt5.QtCore import QAbstractTableModel, Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QLabel, QCheckBox, QAbstractItemView, \
-    QHeaderView
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, \
+    QHeaderView, QMenu
+from ui.video1 import Ui_MainWindow as MainUI
 
 import scheduler
+from credits import Ui_Form as CreditsDialog
 from load_video_dialog import Ui_Dialog as LoadVideoDialog
 from nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
 from video import Video
-from video1 import Ui_MainWindow as MainUI
-from credits import Ui_Form as CreditsDialog
-
 # binds all buttons to functions
 from video_table_model import VideoTableModel
 
@@ -47,7 +46,6 @@ def table_dump():
         table = f.read().splitlines()
     # Change rows to amount of "queued" videos
     video_list = []
-    print(len(table))
     times = []
     videos = []
     flags = []
@@ -61,7 +59,6 @@ def table_dump():
             flags.append(args)
             video_list.append(Video(h, m, s, name, args))
             # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
-            print(h)
             if h != -1:
                 t = threading.Thread(target=lambda: scheduler.enqueue(Video(h, m, s, name, ["--fullscreen"])))
                 t.start()
@@ -72,12 +69,11 @@ def table_dump():
     model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
     ui.table_videos.setModel(model)
 
-# creates new video entry to be played in table
 
+# creates new video entry to be played in table
 def select_video():
     global video
     video = QFileDialog.getOpenFileName()
-    print(video)
     ui2.label_load_video_name.setText(video[0].split('/')[-1])
 
 
@@ -102,7 +98,16 @@ def entry(new: bool):
         # set the text to 
         ui.label_now_playing.setText(video[0].split('/')[-1])
 
+
+def table_clicked(position):
+    index = ui.table_videos.selectedIndexes()[0]
+    menu = QMenu()
+    actionInspect = menu.addAction("Inspect")
+    actionDelete = menu.addAction("Delete")
+    # actionDelete.setEnabled(False)
+    menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
 # opens gui window
+
 
 # Initialize the GUI interface (put widgets and windows on the actual screen where humans can see them)    
 def main():
@@ -131,7 +136,9 @@ def main():
     ui.table_videos.setSelectionBehavior(QAbstractItemView.SelectRows)
     ui.table_videos.setModel(model)
     ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-
+    # ui.table_videos.clicked.connect(table_clicked)
+    ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
+    ui.table_videos.customContextMenuRequested.connect(table_clicked)
     ui2 = LoadVideoDialog()
     ui2.setupUi(window2)
 
