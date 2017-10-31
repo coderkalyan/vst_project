@@ -12,6 +12,7 @@ class Video:
         self.filename = name
         self.flags = flags        
         self.thread = threading.Thread(name=self.filename, target=self.play_at_time())
+        
 
     def set_play_time(self, hour: int, minute: int, second: int):
         self.hour = hour
