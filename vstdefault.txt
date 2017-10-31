@@ -1,15 +1,1 @@
--1 6 0 /home/bbworld/git/vst_project/video_1.mp4 none
--1 6 0 /home/bbworld/git/vst_project/video_1.mp4 none
--1 -1 -1 /home/bbworld/git/vst_project/video_1.mp4 none
--1 -1 -1 /home/bbworld/git/vst_project/video_1.mp4 none
-0 0 0 /home/bbworld/git/vst_project/video_1.mp4 none
--1 -1 -1 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
-0 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
+

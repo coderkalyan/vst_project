@@ -3,10 +3,8 @@ import sys
 import threading
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, \
-    QHeaderView, QMenu
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
 from ui.video1 import Ui_MainWindow as MainUI
-
 import scheduler
 from load_video_dialog import Ui_Dialog as LoadVideoDialog
 from nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
@@ -79,7 +77,11 @@ def select_video():
 def inspect(new: bool):
     window2.show()
     global video
+    ui2.buttonBox.disconnect()
+    ui2.buttonBox.accepted.connect(window2.accept)
+    ui2.buttonBox.rejected.connect(window2.reject)    
     ui2.buttonBox.accepted.connect(lambda: entry(new))
+    print("run")
     
 
 def entry(new: bool):
