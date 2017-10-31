@@ -6,7 +6,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
 from ui.video1 import Ui_MainWindow as MainUI
 import scheduler
-from credits import Ui_Form as CreditsDialog
 from load_video_dialog import Ui_Dialog as LoadVideoDialog
 from nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
 from video import Video
@@ -21,7 +20,7 @@ def bind():
     ui.loadnew.clicked.connect(lambda: inspect(True))
     ui2.button_choose_video.clicked.connect(select_video)
     ui.actionQuit.triggered.connect(app.quit)
-    ui.actionAbout.triggered.connect(credits_window.exec_)
+    # ui.actionAbout.triggered.connect(credits_window.exec_)
     # TODO - help action
 
 
@@ -146,9 +145,6 @@ def main():
 
     ui3 = NothingToInspectDialog()
     ui3.setupUi(window3)
-
-    credits_ui = CreditsDialog()
-    credits_ui.setupUi(credits_window)
 
     bind()
     # ui.table_videos.setRowCount(0)
