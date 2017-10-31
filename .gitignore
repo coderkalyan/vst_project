@@ -2,7 +2,8 @@
 *.mp4
 *.mov
 *.mp3
-__pychache__/
+*.wpr
+__pycache__/
 *.orig
 *_BACKUP_*
 *_BASE_*
