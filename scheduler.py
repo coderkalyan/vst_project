@@ -33,7 +33,6 @@ def enqueue(video: Video) -> None:
     :param video: Video object to play.
     """
     queue.append(video)
-    print(queue)
 
 
 def start_queue(start_time: datetime.datetime = datetime.datetime.now()
@@ -48,30 +47,15 @@ def start_queue(start_time: datetime.datetime = datetime.datetime.now()
 
     # we want to wait to load video until current time is start_time,
     # but we want to be able to override that
-    while not isOverride and datetime.datetime.now().time() == start_time.time():
+    while not isOverride and datetime.datetime.now().time() != start_time.time():
         time.sleep(0.05)
 
     isOverride = False
     # load_first()
 
 
-"""def load_first() -> None:
-    """
-# loads first video from queue
-"""
-    video = queue.pop(0)
-    print("load_first() called")
-    #print("Waiting {} seconds".format(video.))
-    time.sleep(video[1])
-    print("Loading {}".format(video[0]))
-    # player is a blocking script since it uses os.system
-    # player_api.play(player_api.PLAYER_CVLC, video[0], ["--fullscreen"])
-    if len(queue) > 0:
-        load_first()"""
-
-
 if __name__ == '__main__':
-    enqueue(Video(19, 37, 0, "video_1.mp4", ["--fullscreen"]))
+    enqueue(Video(17, 39, 0, "video_1.mp4", ["--fullscreen"]))
     t = threading.Thread(target=start_queue)
-    t.start()
+    t.start()    
     override()
