@@ -28,13 +28,13 @@ class Video:
         self.thread.start()
 
     def play_at_time(self):
+        print(self.hour, self.minute, self.second)
+        if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
+            return
 
-        
-        #Changed to round to seconds
-        while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute, int(datetime.datetime.now().second)) != datetime.time(self.hour, self.minute, self.second):
-            #Debug statements - please leave in for convenience!
+        while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute, self.second):
             time.sleep(0.05)
         self.play()
 
-    def play(self, player=player_api.PLAYER_CVLC):
+    def play(self, player=player_api.PLAYER_VLC):
         player_api.play(player, self.filename, self.flags)

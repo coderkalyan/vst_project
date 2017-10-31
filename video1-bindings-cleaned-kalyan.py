@@ -1,25 +1,28 @@
 #!/usr/bin/python3
+# Tested version with fixed indents and a few  big fixes in table_dump()
 import sys
-import scheduler
 import threading
+
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QLabel
+
+import scheduler
+from load_video_dialog import Ui_Dialog as VideoDialog
+from nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
 from video import Video
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QWidget, QFileDialog, QLabel
-from video1 import Ui_MainWindow as videosched
-from load_video_dialog import Ui_Dialog as videodialog
-from nothing_to_inspect import Ui_Dialog as nothing_to_inspect
+from video1 import Ui_MainWindow as MainUI
 
-#binds all buttons to functions
 
+# binds all buttons to functions
 def bind():
-    ui.loadnew.clicked.connect(newEntry)
+    ui.loadnew.clicked.connect(new_entry)
+    ui.actionQuit.triggered.connect(app.quit)
 
-#---------------------------------------------------------------------
 
 def open_vst():
     # opens a text file for reading and writing video entries
     global location
 
-    with open("pointer.txt","w+") as pointer:
+    with open("pointer.txt", "r+") as pointer:
         location = pointer.read()
         # if we read from empty file(just created), fill it with path to default table
         if location == "":
@@ -41,8 +44,8 @@ def table_dump():
 
     for row in table:
         try:
-            h, m, s, name, args = row.split(' ') # to be safe(and readable), always put the ' '
-            h, m, s = map(int,(h, m, s)) # convert these to int
+            h, m, s, name, args = row.split(' ')  # to be safe(and readable), always put the ' '
+            h, m, s = map(int, (h, m, s))  # convert these to int
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
@@ -56,7 +59,7 @@ def table_dump():
         except IndexError:
             continue
 
-        # loop through both lists at same time - videos -> video, times -> time, and keep the index -> i
+    # loop through both lists at same time - videos -> video, times -> time, and keep the index -> i
     for i, (video, time) in enumerate(zip(videos, times)):
         label = QLabel()
         label.setText(video)
@@ -66,15 +69,16 @@ def table_dump():
         label.setText(time if time != "-1:-1:-1" else "Manual Play")
         ui.table_videos.setCellWidget(i, 1, label)
 
-#creates new video entry to be played in table
 
-def newEntry():
+# creates new video entry to be played in table
+
+def new_entry():
     video = QFileDialog.getOpenFileName()
     print(video)
-    if video[0]!="":
+    if video[0] != "":
         vstfile = open(location, "a")
-        #print (video[0])
-        #its currently hard coded to 8:06 PM, will add UI support
+        # print (video[0])
+        # its currently hard coded to 8:06 PM, will add UI support
         vstfile.write("-1 -1 -1 " + video[0] + " none\n")
         vstfile.close()
         table_dump()
@@ -83,13 +87,15 @@ def newEntry():
         ui.label_now_playing.setText(video[0].split('/')[-1])
 
 
-#opens gui window
+# opens gui window
 
 # Initialize the GUI interface (put widgets and windows on the actual screen where humans can see them)
 def main():
+    global app
+
     app = QApplication(sys.argv)
 
-    global window2
+    # global window2
     global window3
 
     window = QMainWindow()
@@ -100,21 +106,20 @@ def main():
     global ui2
     global ui3
 
-    ui = videosched()
+    ui = MainUI()
     ui.setupUi(window)
 
-    ui2 = videodialog()
+    ui2 = VideoDialog()
     ui2.setupUi(window2)
 
-    ui3 = nothing_to_inspect()
+    ui3 = NothingToInspectDialog()
     ui3.setupUi(window3)
 
     bind()
-    ui.table_videos.setRowCount(0)
-    window.setWindowTitle("Video Scheduling Utility by KVK")
     window.show()
     open_vst()
     sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
     main()
