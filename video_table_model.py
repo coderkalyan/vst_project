@@ -1,3 +1,5 @@
+import warnings
+
 from PyQt5.QtCore import QAbstractTableModel, Qt
 
 from video import Video
@@ -54,7 +56,7 @@ class VideoTableModel(QAbstractTableModel):
         if not index.isValid():
             return None
         if index.column() == 0:
-            print(self.data[index.row()])
+            value = self.data[index.row()].filename
             value = self.data[index.row()].filename
         elif index.column() == 1:
             r = self.data[index.row()]
@@ -66,12 +68,12 @@ class VideoTableModel(QAbstractTableModel):
             return value
         elif role == Qt.DisplayRole:
             return value
-        elif role == Qt.CheckStateRole:
+        """elif role == Qt.CheckStateRole:
             if index.column() == 0:
                 if self.data[index.row()][index.column()].isChecked():
                     return Qt.Checked
                 else:
-                    return Qt.Unchecked
+                    return Qt.Unchecked"""
 
     def headerData(self, col, orientation, role=None):
         """
@@ -98,6 +100,8 @@ class VideoTableModel(QAbstractTableModel):
             return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
 
     def setData(self, index, value, role=None):
+        warnings.warn("Function not yet working",Warning)
+        # TODO - fix this function
         """
         Sets the data of a specified cell
         :param index: location of the specified cell
@@ -116,3 +120,11 @@ class VideoTableModel(QAbstractTableModel):
                 self.data[index.row()][index.column()].setText("关")
         self.dataChanged.emit(index, index)
         return True
+
+    """def contextMenuEvent(self, event):
+        self.menu = QtGui.QMenu(self)
+        renameAction = QtGui.QAction('Rename', self)
+        renameAction.triggered.connect(lambda: self.renameSlot(event))
+        self.menu.addAction(renameAction)
+        # add other required actions
+        self.menu.popup(QtGui.QCursor.pos())"""
