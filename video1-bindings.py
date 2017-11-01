@@ -60,7 +60,7 @@ def table_dump():
                 t = threading.Thread(target=lambda: scheduler.enqueue(Video(h, m, s, name, ["--fullscreen"])))
                 t.start()
                 # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
-        except IndexError:
+        except (IndexError, ValueError):
             continue
 
     model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
@@ -75,29 +75,53 @@ def select_video():
 
 
 def inspect(new: bool):
-    window2.show()
-    global video
-    ui2.buttonBox.disconnect()
-    ui2.buttonBox.accepted.connect(window2.accept)
-    ui2.buttonBox.rejected.connect(window2.reject)    
-    ui2.buttonBox.accepted.connect(lambda: entry(new))
-    print("run")
+    show = True
+    if not new:
+        print ("im old")
+        if not len(ui.table_videos.selectionModel().selectedRows()) > 0:
+            window3.show()
+            show = False
+        else:
+            # Get selected row
+            inspectedRow = ui.table_videos.selectionModel().selectedRows()[0].row()
+            ui2.label_load_video_name.setText(ui.table_videos.model().data[inspectedRow].filename.split('/')[-1])
+            
+            # Set inspector values to values in inspected row
+            ui2.hours.setValue(ui.table_videos.model().data[inspectedRow].hour)
+            ui2.minutes.setValue(ui.table_videos.model().data[inspectedRow].minute)
+            ui2.seconds.setValue(ui.table_videos.model().data[inspectedRow].second)
+            
+    if show:
+        window2.show()
+        global video
+        ui2.buttonBox.disconnect()
+        ui2.buttonBox.accepted.connect(window2.accept)
+        ui2.buttonBox.rejected.connect(window2.reject)    
+        ui2.buttonBox.accepted.connect(lambda: entry(new))
+        print("run")
     
 
 def entry(new: bool):
     if new:
         print("i'm new!")
-    if video[0] != "":
-        vst_file = open(location, "a")
-        # print (video[0])
-        # its currently hard coded to 8:06 PM, will add UI support
-        print(ui2.hours.value())
-        vst_file.write(" ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[0] + " none\n")
-        vst_file.close()
-        table_dump()
+    try:
+        if video[0] != "":
+            vst_file = open(location, "a")
+            print(ui2.hours.value())
+            if ui2.manualPlay.checkState():
+                vst_file.write("-1 -1 -1 " + video[0] + " none\n")
+            else: 
+                vst_file.write(" ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[0] + " none\n")
+            
+            
+            vst_file.close()
+            table_dump()
+            ui.label_now_playing.setText(video[0].split('/')[-1])
+    except:
+        pass
 
         # set the text to 
-        ui.label_now_playing.setText(video[0].split('/')[-1])
+        
 
 
 def table_clicked(position):
