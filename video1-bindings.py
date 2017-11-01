@@ -76,87 +76,88 @@ def select_video():
 
 
 def inspect(new: bool):
-    inspectedRow = 0
+    inspected_row = 0
     show = True
     if not new:
-        print ("im old")
+        print("im old")
         if not len(ui.table_videos.selectionModel().selectedRows()) > 0:
             window3.show()
             show = False
         else:
             # Get selected row
-            inspectedRow = ui.table_videos.selectionModel().selectedRows()[0].row()
-            ui2.label_load_video_name.setText(ui.table_videos.model().data[inspectedRow].filename.split('/')[-1])
-            
+            inspected_row = ui.table_videos.selectionModel().selectedRows()[0].row()
+            ui2.label_load_video_name.setText(ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
+
             # Set inspector values to values in inspected row
-            ui2.hours.setValue(ui.table_videos.model().data[inspectedRow].hour)
-            ui2.minutes.setValue(ui.table_videos.model().data[inspectedRow].minute)
-            ui2.seconds.setValue(ui.table_videos.model().data[inspectedRow].second)
-            
+            ui2.hours.setValue(ui.table_videos.model().data[inspected_row].hour)
+            ui2.minutes.setValue(ui.table_videos.model().data[inspected_row].minute)
+            ui2.seconds.setValue(ui.table_videos.model().data[inspected_row].second)
+
     if show:
         window2.show()
         global video
         ui2.buttonBox.disconnect()
         ui2.buttonBox.accepted.connect(window2.accept)
-        ui2.buttonBox.rejected.connect(window2.reject)    
-        ui2.buttonBox.accepted.connect(lambda: entry(new, inspectedRow))
+        ui2.buttonBox.rejected.connect(window2.reject)
+        ui2.buttonBox.accepted.connect(lambda: entry(new, inspected_row))
         print("run")
-    
 
-def entry(new: bool, inspectedRow: int):
+
+def entry(new: bool, inspected_row: int):
     vst_file = open(location, "a+")
     if new:
         print("i'm new!")
     try:
         if video[0] != "":
-            
+
             print(ui2.hours.value())
             if ui2.manualPlay.checkState():
                 if not new:
                     print("YEE")
-                    vst_file.seek(0, 0) #reset file pointer to beginning
-                    entries = vst_file.readlines() # read lines from file
+                    vst_file.seek(0, 0)  # reset file pointer to beginning
+                    entries = vst_file.readlines()  # read lines from file
                     print(entries)
-                    del entries[inspectedRow]
-                    entries.insert(inspectedRow, "-1 -1 -1 " + video[0] + " none\n") #replace line
+                    del entries[inspected_row]
+                    entries.insert(inspected_row, "-1 -1 -1 " + video[0] + " none\n")  # replace line
                     print(entries)
-                    vst_file.seek(0, 0) #reset again because file was just parsed
+                    vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
                     vst_file.close()
                 else:
-                    
+
                     vst_file.write("-1 -1 -1 " + video[0] + " none\n")
                     vst_file.close()
-            
+
             else:
                 if not new:
-                    print("YEE")
-                    vst_file.seek(0, 0) #reset file pointer to beginning
-                    entries = vst_file.readlines() # read lines from file
+                    vst_file.seek(0, 0)  # reset file pointer to beginning
+                    entries = vst_file.readlines()  # read lines from file
                     print(entries)
-                    del entries[inspectedRow]
-                    entries.insert(inspectedRow, " ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[0] + " none\n") #replace line
-                    vst_file.seek(0, 0) #reset again because file was just parsed
+                    del entries[inspected_row]
+                    entries.insert(inspected_row, " ".join(
+                        [str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[
+                                       0] + " none\n")  # replace line
+                    vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
                     print(entries)
                     vst_file.close()
                 else:
-                    
-                    vst_file.write(" ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[0] + " none\n")
+
+                    vst_file.write(
+                        " ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) +
+                        video[0] + " none\n")
                     vst_file.close()
-            
-            
+
             vst_file.close()
             table_dump()
             ui.label_now_playing.setText(video[0].split('/')[-1])
-                
+
     except:
         pass
 
         # set the text to 
-        
 
 
 def table_clicked(position):
@@ -165,8 +166,13 @@ def table_clicked(position):
     menu = QMenu()
     actionInspect = menu.addAction("Inspect")
     actionDelete = menu.addAction("Delete")
-    # actionDelete.setEnabled(False)
+    actionDelete.setEnabled(False)
+    def wrapper():
+        inspect(False)
+    actionInspect.triggered.connect(wrapper)
     menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
+
+
 # opens gui window
 
 

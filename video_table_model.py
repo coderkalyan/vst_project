@@ -1,5 +1,6 @@
 import warnings
 
+import re
 from PyQt5.QtCore import QAbstractTableModel, Qt
 
 from video import Video
@@ -57,7 +58,6 @@ class VideoTableModel(QAbstractTableModel):
             return None
         if index.column() == 0:
             value = self.data[index.row()].filename
-            value = self.data[index.row()].filename
         elif index.column() == 1:
             r = self.data[index.row()]
             if r.hour != -1:
@@ -97,14 +97,12 @@ class VideoTableModel(QAbstractTableModel):
         """
         if not index.isValid():
             return None
-        if index.column() == 0:
-            return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsUserCheckable
+        if index.column() == 0 or index.column() == 2:
+            return Qt.ItemIsEnabled | Qt.ItemIsSelectable
         else:
             return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
 
     def setData(self, index, value, role=None):
-        warnings.warn("Function not yet working",Warning)
-        # TODO - fix this function
         """
         Sets the data of a specified cell
         :param index: location of the specified cell
@@ -112,15 +110,25 @@ class VideoTableModel(QAbstractTableModel):
         :param role:
         :return: if the data was set or not
         """
+        print(role)
         if not index.isValid():
             return False
-        if role == Qt.CheckStateRole and index.column() == 0:
-            if value == Qt.Checked:
-                self.data[index.row()][index.column()].setChecked(True)
-                self.data[index.row()][index.column()].setText("开")
-            else:
-                self.data[index.row()][index.column()].setChecked(False)
-                self.data[index.row()][index.column()].setText("关")
+        if role == Qt.EditRole:
+            if index.column() == 1:
+                # change the time
+                pattern1 = re.compile(".*:.*:.*")
+                ok = pattern1.match(value) or value == "-1" or value == "-1:-1:-1"
+                if not ok:
+                    return False
+
+                h, m, s = value.split(":")
+                if not h.isdigit() or not m.isdigit() or not s.isdigit():
+                    return False
+                self.data[index.row()].hour = h
+                self.data[index.row()].minute = m
+                self.data[index.row()].second = s
+                print(self.data[index.row()])
+
         self.dataChanged.emit(index, index)
         return True
 

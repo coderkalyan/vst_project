@@ -12,6 +12,12 @@ class Video:
         self.filename = name
         self.flags = flags
 
+    def __str__(self):
+        if self.hour == -1:
+            return "{} playing manually".format(self.filename)
+        else:
+            return "{} will play at {}:{}:{}".format(self.filename, self.hour, self.minute, self.second)
+
     def set_play_time(self, hour: int, minute: int, second: int):
         self.hour = hour
         self.minute = minute
