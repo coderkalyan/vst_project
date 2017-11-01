@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="material-info">
+    <file>imgs/ic_info_black_24px.svg</file>
+  </qresource>
+  <qresource prefix="material-play-next">
+    <file>imgs/ic_queue_play_next_black_24px.svg</file>
+  </qresource>
+  <qresource prefix="material-add-video">
+    <file>imgs/ic_add_to_queue_black_24px.svg</file>
+  </qresource>
+</RCC>

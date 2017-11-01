@@ -1,1 +1,6 @@
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
+1 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
+0 0 0 /home/kalyan/PycharmProjects/media-autoplay/video_1.mp4 none

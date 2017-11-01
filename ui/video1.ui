@@ -17,7 +17,7 @@
    <string>Video Scheduling Utility by KVK</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1,1,1">
       <item>
@@ -64,8 +64,8 @@
          <string>Inspect</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>ic_info_black_24px.svg</normaloff>ic_info_black_24px.svg</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/material-info/imgs/ic_info_black_24px.svg</normaloff>:/material-info/imgs/ic_info_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -99,8 +99,8 @@
          <string>Load New</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>imgs/ic_add_to_queue_black_24px.svg</normaloff>imgs/ic_add_to_queue_black_24px.svg</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/material-add-video/imgs/ic_add_to_queue_black_24px.svg</normaloff>:/material-add-video/imgs/ic_add_to_queue_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -140,8 +140,8 @@
          <string>Play Next</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>imgs/ic_queue_play_next_black_24px.svg</normaloff>imgs/ic_queue_play_next_black_24px.svg</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/material-play-next/imgs/ic_queue_play_next_black_24px.svg</normaloff>:/material-play-next/imgs/ic_queue_play_next_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -230,6 +230,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
