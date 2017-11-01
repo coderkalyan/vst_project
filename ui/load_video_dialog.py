@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'load_video_dialog.ui'
+# Form implementation generated from reading ui file 'ui/load_video_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -61,7 +61,7 @@ class Ui_Dialog(object):
         self.manualPlay.setObjectName("manualPlay")
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.manualPlay)
         self.loop = QtWidgets.QCheckBox(Dialog)
-        self.loop.setChecked(True)
+        self.loop.setChecked(False)
         self.loop.setObjectName("loop")
         self.formLayout.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.loop)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
@@ -111,14 +111,4 @@ class Ui_Dialog(object):
         self.label_relative.setToolTip(_translate("Dialog", "<html><head/><body><p>The delay between the END of the last video and the START of this one in seconds.</p></body></html>"))
         self.label_relative.setText(_translate("Dialog", "Start Time(relative):"))
         self.relative_spinBox.setToolTip(_translate("Dialog", "The delay between the END of the last video and the START of this one."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
 

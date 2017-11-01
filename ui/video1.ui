@@ -16,10 +16,14 @@
   <property name="windowTitle">
    <string>Video Scheduling Utility by KVK</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
+    <normaloff>:/material-icons/imgs/ic_queue_black_24px.svg</normaloff>:/material-icons/imgs/ic_queue_black_24px.svg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1,1,1">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -54,12 +58,18 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>Inspect</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>gtk-info.svg</normaloff>gtk-info.svg</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/material-icons/imgs/ic_info_outline_black_24px.svg</normaloff>:/material-icons/imgs/ic_info_outline_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -80,6 +90,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
@@ -87,8 +103,8 @@
          <string>Load New</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>ic_add_to_queue_black_24px.svg</normaloff>ic_add_to_queue_black_24px.svg</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/material-icons/imgs/ic_add_to_queue_black_24px.svg</normaloff>:/material-icons/imgs/ic_add_to_queue_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -118,12 +134,18 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>Play Next</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>ic_queue_play_next_black_24px.svg</normaloff>ic_queue_play_next_black_24px.svg</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/material-icons/imgs/ic_queue_play_next_black_24px.svg</normaloff>:/material-icons/imgs/ic_queue_play_next_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -212,6 +234,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

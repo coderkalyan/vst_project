@@ -15,7 +15,7 @@ This README would normally document whatever steps are necessary to get your app
 ### What is this repository for? ###
 
 * New Repo for VST(Video Scheduling Table) Project
-* Version 1.3 Cosmic Apple
+* Version 1.5.3 Cosmic Apple
 
 ### How do I get set up? ###
 

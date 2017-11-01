@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'video1.ui'
+# Form implementation generated from reading ui file 'ui/video1.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -13,6 +13,9 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
         MainWindow.resize(800, 601)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_queue_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -38,9 +41,10 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.inspector.sizePolicy().hasHeightForWidth())
         self.inspector.setSizePolicy(sizePolicy)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("gtk-info.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.inspector.setIcon(icon)
+        self.inspector.setMaximumSize(QtCore.QSize(150, 16777215))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_info_outline_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.inspector.setIcon(icon1)
         self.inspector.setIconSize(QtCore.QSize(64, 64))
         self.inspector.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.inspector.setObjectName("inspector")
@@ -51,10 +55,11 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.loadnew.sizePolicy().hasHeightForWidth())
         self.loadnew.setSizePolicy(sizePolicy)
+        self.loadnew.setMaximumSize(QtCore.QSize(150, 16777215))
         self.loadnew.setFocusPolicy(QtCore.Qt.TabFocus)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("ic_add_to_queue_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.loadnew.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_add_to_queue_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.loadnew.setIcon(icon2)
         self.loadnew.setIconSize(QtCore.QSize(64, 64))
         self.loadnew.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
         self.loadnew.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
@@ -68,13 +73,18 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.next.sizePolicy().hasHeightForWidth())
         self.next.setSizePolicy(sizePolicy)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("ic_queue_play_next_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.next.setIcon(icon2)
+        self.next.setMaximumSize(QtCore.QSize(150, 16777215))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_queue_play_next_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.next.setIcon(icon3)
         self.next.setIconSize(QtCore.QSize(64, 64))
         self.next.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.next.setObjectName("next")
         self.horizontalLayout.addWidget(self.next)
+        self.horizontalLayout.setStretch(0, 3)
+        self.horizontalLayout.setStretch(1, 1)
+        self.horizontalLayout.setStretch(2, 1)
+        self.horizontalLayout.setStretch(3, 1)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.nextPlaying = QtWidgets.QLabel(self.centralwidget)
         self.nextPlaying.setEnabled(True)
@@ -83,7 +93,6 @@ class Ui_MainWindow(object):
         self.table_videos = QtWidgets.QTableView(self.centralwidget)
         self.table_videos.setObjectName("table_videos")
         self.verticalLayout.addWidget(self.table_videos)
-        self.verticalLayout.setStretch(2, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -137,3 +146,4 @@ class Ui_MainWindow(object):
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
         self.actionQuit_2.setText(_translate("MainWindow", "Quit"))
 
+import icons_rc

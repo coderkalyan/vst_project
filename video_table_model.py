@@ -60,7 +60,10 @@ class VideoTableModel(QAbstractTableModel):
             value = self.data[index.row()].filename
         elif index.column() == 1:
             r = self.data[index.row()]
-            value = ":".join([str(r.hour), str(r.minute), str(r.second)])
+            if r.hour != -1:
+                value = ":".join([str(r.hour), str(r.minute), str(r.second)])
+            else:
+                value = "Manual Play"
         elif index.column() == 2:
             # TODO - duration
             value = "1:00"

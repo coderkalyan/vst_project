@@ -4,10 +4,11 @@ import threading
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
-from ui.video1 import Ui_MainWindow as MainUI
+
 import scheduler
-from load_video_dialog import Ui_Dialog as LoadVideoDialog
-from nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
+from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
+from ui.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
+from ui.video1 import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
@@ -159,6 +160,7 @@ def entry(new: bool, inspectedRow: int):
 
 
 def table_clicked(position):
+    print(ui.table_videos.model().data)
     index = ui.table_videos.selectedIndexes()[0]
     menu = QMenu()
     actionInspect = menu.addAction("Inspect")
