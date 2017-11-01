@@ -43,7 +43,11 @@ class Ui_MainWindow(object):
         self.inspector.setSizePolicy(sizePolicy)
         self.inspector.setMaximumSize(QtCore.QSize(150, 16777215))
         icon1 = QtGui.QIcon()
+<<<<<<< HEAD
         icon1.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_info_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+=======
+        icon1.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_info_outline_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+>>>>>>> kalyan-edits
         self.inspector.setIcon(icon1)
         self.inspector.setIconSize(QtCore.QSize(64, 64))
         self.inspector.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)

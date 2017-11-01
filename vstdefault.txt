@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -7,6 +8,7 @@
 1 0 0 /home/kalyan/PycharmProjects/media-autoplay/vlc-record-2017-10-16-08h30m19s-video-1.mp4 none
 0 0 0 /home/kalyan/PycharmProjects/media-autoplay/video_1.mp4 none
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> vincent-edits
 0 0 0 /home/bbworld/git/vst_project/video_1.mp4 none
@@ -19,3 +21,6 @@
 >>>>>>> vincent-edits
 =======
 >>>>>>> vincent-edits
+=======
+>>>>>>> Stashed changes
+>>>>>>> kalyan-edits
