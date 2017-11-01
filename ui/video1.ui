@@ -69,11 +69,7 @@
         </property>
         <property name="icon">
          <iconset resource="../icons.qrc">
-<<<<<<< HEAD
-          <normaloff>:/material-icons/imgs/ic_info_black_24px.svg</normaloff>:/material-icons/imgs/ic_info_black_24px.svg</iconset>
-=======
           <normaloff>:/material-icons/imgs/ic_info_outline_black_24px.svg</normaloff>:/material-icons/imgs/ic_info_outline_black_24px.svg</iconset>
->>>>>>> kalyan-edits
         </property>
         <property name="iconSize">
          <size>
