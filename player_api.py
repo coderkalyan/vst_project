@@ -20,8 +20,10 @@ PATH_CVLC = "cvlc"
 def play(player, file, args):
     if player == PLAYER_VLC:
         # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
+        print(file)
         p = subprocess.Popen([PATH_VLC, " ".join(args), file])
     if player == PLAYER_CVLC:
+        print(file)
         os.system(PATH_CVLC + " " + " ".join(args) + " " + file)
 
 

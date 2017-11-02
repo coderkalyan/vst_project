@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
 import threading
-
+import subprocess
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
 
@@ -12,6 +12,7 @@ from ui.video1 import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
+
 
 
 def bind():
@@ -37,6 +38,10 @@ def open_vst():
             pointer.write(location)
     table_dump()
 
+def getLength(filename):
+    result = subprocess.run(["ffprobe", filename],
+                                stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+    return [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x]
 
 # Dump all entries into a QTable for editing in the GUI
 def table_dump():
@@ -52,14 +57,15 @@ def table_dump():
         try:
             h, m, s, name, args = row.split(' ')  # to be safe(and readable), always put the ' '
             h, m, s = map(int, (h, m, s))  # convert these to int
+            print(h,m,s)
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
-            video_list.append(Video(h, m, s, name, args))
-            # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
             if h != -1:
-                t = threading.Thread(target=lambda: scheduler.enqueue(Video(h, m, s, name, ["--fullscreen"])))
-                t.start()
+                video_list.append(Video(h, m, s, name, ["--fullscreen"], True))
+            else:
+                video_list.append(Video(h, m, s, name, ["--fullscreen"], False))
+            # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
                 # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
         except (IndexError, ValueError):
             continue
@@ -89,9 +95,9 @@ def inspect(new: bool):
             ui2.label_load_video_name.setText(ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
 
             # Set inspector values to values in inspected row
-            ui2.hours.setValue(ui.table_videos.model().data[inspected_row].hour)
-            ui2.minutes.setValue(ui.table_videos.model().data[inspected_row].minute)
-            ui2.seconds.setValue(ui.table_videos.model().data[inspected_row].second)
+            ui2.hours.setValue(int(ui.table_videos.model().data[inspected_row].hour))
+            ui2.minutes.setValue(int(ui.table_videos.model().data[inspected_row].minute))
+            ui2.seconds.setValue(int(ui.table_videos.model().data[inspected_row].second))
 
     if show:
         window2.show()
@@ -110,16 +116,16 @@ def entry(new: bool, inspected_row: int):
     try:
         if video[0] != "":
 
-            print(ui2.hours.value())
+            
             if ui2.manualPlay.checkState():
                 if not new:
                     print("YEE")
                     vst_file.seek(0, 0)  # reset file pointer to beginning
                     entries = vst_file.readlines()  # read lines from file
-                    print(entries)
+                    
                     del entries[inspected_row]
                     entries.insert(inspected_row, "-1 -1 -1 " + video[0] + " none\n")  # replace line
-                    print(entries)
+                    
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
@@ -133,7 +139,7 @@ def entry(new: bool, inspected_row: int):
                 if not new:
                     vst_file.seek(0, 0)  # reset file pointer to beginning
                     entries = vst_file.readlines()  # read lines from file
-                    print(entries)
+                    
                     del entries[inspected_row]
                     entries.insert(inspected_row, " ".join(
                         [str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[
@@ -141,7 +147,7 @@ def entry(new: bool, inspected_row: int):
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
-                    print(entries)
+                    
                     vst_file.close()
                 else:
 
@@ -161,7 +167,7 @@ def entry(new: bool, inspected_row: int):
 
 
 def table_clicked(position):
-    print(ui.table_videos.model().data)
+    
     index = ui.table_videos.selectedIndexes()[0]
     menu = QMenu()
     actionInspect = menu.addAction("Inspect")

@@ -20,6 +20,7 @@ class VideoTableModel(QAbstractTableModel):
         QAbstractTableModel.__init__(self, parent)
         self.data = data
         self.header = header
+        print(data,header)
 
     def set_data(self, data):
         """
@@ -53,9 +54,9 @@ class VideoTableModel(QAbstractTableModel):
         :param role:
         :return:
         """
-        value = None
+        value = 0
         if not index.isValid():
-            return None
+            return 0
         if index.column() == 0:
             value = self.data[index.row()].filename
         elif index.column() == 1:
@@ -87,7 +88,7 @@ class VideoTableModel(QAbstractTableModel):
         """
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return self.header[col]
-        return None
+        return 0
 
     def flags(self, index):
         """
@@ -96,7 +97,7 @@ class VideoTableModel(QAbstractTableModel):
         :return: the flags for the requested cell
         """
         if not index.isValid():
-            return None
+            return 0
         if index.column() == 0 or index.column() == 2:
             return Qt.ItemIsEnabled | Qt.ItemIsSelectable
         else:
