@@ -61,7 +61,9 @@ class VideoTableModel(QAbstractTableModel):
         elif index.column() == 1:
             r = self.data[index.row()]
             if r.hour != -1:
-                value = ":".join([str(r.hour), str(r.minute), str(r.second)])
+                # value = ":".join([str(r.hour), str(r.minute), str(r.second)])
+                value = "{:02d}:{:02d}:{:02d}".format(r.hour, r.minute, r.second)
+                # value = value.format()
             else:
                 value = "Manual Play"
         elif index.column() == 2:
@@ -117,13 +119,20 @@ class VideoTableModel(QAbstractTableModel):
             if index.column() == 1:
                 # change the time
                 pattern1 = re.compile(".*:.*:.*")
-                ok = pattern1.match(value) or value == "-1" or value == "-1:-1:-1"
+                ok = (pattern1.match(value) or value == "-1" or value == "-1:-1:-1")
                 if not ok:
                     return False
 
+                if value == "-1":
+                    self.data[index.row()].hour = -1
+                    self.data[index.row()].minute = -1
+                    self.data[index.row()].second = -1
+                    return True
+
                 h, m, s = value.split(":")
-                if not h.isdigit() or not m.isdigit() or not s.isdigit():
+                if not h.lstrip('-').isdigit() or not m.lstrip('-').isdigit() or not s.lstrip('-').isdigit():
                     return False
+                h, m, s = map(int, (h, m, s))
                 self.data[index.row()].hour = h
                 self.data[index.row()].minute = m
                 self.data[index.row()].second = s
@@ -131,11 +140,3 @@ class VideoTableModel(QAbstractTableModel):
 
         self.dataChanged.emit(index, index)
         return True
-
-    """def contextMenuEvent(self, event):
-        self.menu = QtGui.QMenu(self)
-        renameAction = QtGui.QAction('Rename', self)
-        renameAction.triggered.connect(lambda: self.renameSlot(event))
-        self.menu.addAction(renameAction)
-        # add other required actions
-        self.menu.popup(QtGui.QCursor.pos())"""
