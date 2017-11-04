@@ -67,7 +67,7 @@ def table_dump():
             videos.append(name)
             flags.append(args)
             if h != -1:
-                video_list.append(Video(h, m, s, name, ["--fullscreen"], True))
+                video_list.append(Video(h, m, s, '"'+name+'"', ["--fullscreen"], True))
             else:
                 video_list.append(Video(h, m, s, name, ["--fullscreen"], False))
             # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
