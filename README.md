@@ -7,15 +7,20 @@
 
 
 
+# CURRENT VERSION #
+
+## Version 1.6 Flavorful Apple ##
+
+
+
+
+
 
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
 
-### What is this repository for? ###
-
-* New Repo for VST(Video Scheduling Table) Project
-* Version 1.5.3 Cosmic Apple
+#### Welcome to the new repository for the VST(Video Scheduling Table) Project ####
+#### Version 1.5.3 Cosmic Apple ####
 
 ### How do I get set up? ###
 

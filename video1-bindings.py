@@ -169,7 +169,6 @@ def entry(new: bool, inspected_row: int):
             vst_file.close()
             table_dump()
             ui.label_now_playing.setText(video[0].split('/')[-1])
-
     except:
         pass
 
@@ -180,14 +179,23 @@ def table_clicked(position):
     
     index = ui.table_videos.selectedIndexes()[0]
     menu = QMenu()
-    actionInspect = menu.addAction("Inspect")
-    actionDelete = menu.addAction("Delete")
-    actionDelete.setEnabled(False)
+    action_inspect = menu.addAction("Inspect")
+    action_delete = menu.addAction("Delete")
+    action_delete.setEnabled(False)
+
     def wrapper():
         inspect(False)
-    actionInspect.triggered.connect(wrapper)
+    action_inspect.triggered.connect(wrapper)
     menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
 
+
+def table_double_clicked(index):
+    if index.column() == 0:
+        # we want to open a file dialog to choose new video
+        filename, status = QFileDialog.getOpenFileName(caption="Choose Video File")
+        print(filename)
+    else:
+        return
 
 # opens gui window
 
@@ -196,7 +204,6 @@ def table_clicked(position):
 def main():
     global app
     app = QApplication(sys.argv)
-
     global window2
     global window3
     global credits_window
@@ -221,7 +228,9 @@ def main():
     ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
     # ui.table_videos.clicked.connect(table_clicked)
     ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
-    ui.table_videos.customContextMenuRequested.connect(table_clicked)
+    ui.table_videos.customContextMenuRequested.connect(table_right_clicked)
+    ui.table_videos.doubleClicked.connect(table_double_clicked)
+
     ui2 = LoadVideoDialog()
     ui2.setupUi(window2)
 
