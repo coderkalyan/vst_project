@@ -110,7 +110,6 @@ def inspect(new: bool):
 
     if show:
         window2.show()
-        print(video)
         ui2.buttonBox.disconnect()
         ui2.buttonBox.accepted.connect(window2.accept)
         ui2.buttonBox.rejected.connect(window2.reject)
@@ -175,7 +174,7 @@ def entry(new: bool, inspected_row: int):
         # set the text to 
 
 
-def table_clicked(position):
+def table_right_clicked(position):
     
     index = ui.table_videos.selectedIndexes()[0]
     menu = QMenu()
