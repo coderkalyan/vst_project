@@ -21,10 +21,10 @@ def play(player, file, args):
     if player == PLAYER_VLC:
         # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
         print(file)
-        p = subprocess.Popen([PATH_VLC, " ".join(args), file])
+        p = subprocess.Popen([PATH_VLC, " ".join(args), '"'+file+'"'])
     if player == PLAYER_CVLC:
         print(file)
-        os.system(PATH_CVLC + " " + " ".join(args) + " " + file)
+        os.system(PATH_CVLC + " " + " ".join(args) + " " + '"'+file+'"')
 
 
 def stop():
