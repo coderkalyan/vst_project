@@ -244,7 +244,7 @@ def main():
     ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
     # ui.table_videos.clicked.connect(table_clicked)
     ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
-    ui.table_videos.customContextMenuRequested.connect(table_clicked)
+    ui.table_videos.customContextMenuRequested.connect(table_right_clicked)
     ui.table_videos.doubleClicked.connect(table_double_clicked)
 
     ui2 = LoadVideoDialog()
