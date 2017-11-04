@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="full" width="1280"
+height="720"
+version="1.1"
+xmlns="http://www.w3.org/2000/svg"
+xmlns:ev="http://www.w3.org/2001/xml-events"
+xmlns:xlink="http://www.w3.org/1999/xlink"><defs />
+<text fill="yellow" x="50%" y="40%" font-family="Gill Sans" font-weight="bold" font-size="100" text-anchor="middle">Today, Monday,</text>
+<text fill="yellow" x="50%" y="55%" font-family="Gill Sans" font-weight="bold" font-size="100" text-anchor="middle">September 18,</text>
+<text fill="yellow" x="50%" y="70%" font-family="Gill Sans" font-weight="bold" font-size="100" text-anchor="middle">Academic Tutoring,</text>
+<text fill="yellow" x="50%" y="85%" font-family="Gill Sans" font-weight="bold" font-size="100" text-anchor="middle">3:15-4:15 PM,</text>
+<text fill="yellow" x="50%" y="100%" font-family="Gill Sans" font-weight="bold" font-size="100" text-anchor="middle">Library</text>
+</svg>

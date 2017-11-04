@@ -64,7 +64,7 @@ def table_dump():
 
     for row in table:
         try:
-            h, m, s, name, args = row.split(' ')  # to be safe(and readable), always put the ' '
+            h, m, s, name, args = row.split(',')  # to be safe(and readable), always put the ' '
             h, m, s = map(int, (h, m, s))  # convert these to int
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
@@ -116,7 +116,6 @@ def inspect(new: bool):
             # Get selected row
             inspected_row = ui.table_videos.selectionModel().selectedRows()[0].row()
             ui2.label_load_video_name.setText(ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
-            global video
             print("setting video var")
             video = [ui.table_videos.model().data[inspected_row].filename, "Never Gonna Give You Up"]
             print(video)
@@ -151,7 +150,7 @@ def entry(new: bool, inspected_row: int):
                     entries = vst_file.readlines()  # read lines from file
                     
                     del entries[inspected_row]
-                    entries.insert(inspected_row, "-1 -1 -1 " + video[0] + " none\n")  # replace line
+                    entries.insert(inspected_row, "-1,-1,-1," + video[0] + ",none\n")  # replace line
                     
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
@@ -159,7 +158,7 @@ def entry(new: bool, inspected_row: int):
                     vst_file.close()
                 else:
 
-                    vst_file.write("-1 -1 -1 " + video[0] + " none\n")
+                    vst_file.write("-1,-1,-1," + video[0] + ",none\n")
                     vst_file.close()
 
             else:
@@ -168,9 +167,9 @@ def entry(new: bool, inspected_row: int):
                     entries = vst_file.readlines()  # read lines from file
                     
                     del entries[inspected_row]
-                    entries.insert(inspected_row, " ".join(
+                    entries.insert(inspected_row, ",".join(
                         [str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[
-                                       0] + " none\n")  # replace line
+                                       0] + ",none\n")  # replace line
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
@@ -179,8 +178,8 @@ def entry(new: bool, inspected_row: int):
                 else:
 
                     vst_file.write(
-                        " ".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) +
-                        video[0] + " none\n")
+                        ",".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) +
+                        video[0] + ",none\n")
                     vst_file.close()
 
             vst_file.close()
@@ -245,7 +244,7 @@ def main():
     ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
     # ui.table_videos.clicked.connect(table_clicked)
     ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
-    ui.table_videos.customContextMenuRequested.connect(table_right_clicked)
+    ui.table_videos.customContextMenuRequested.connect(table_clicked)
     ui.table_videos.doubleClicked.connect(table_double_clicked)
 
     ui2 = LoadVideoDialog()
