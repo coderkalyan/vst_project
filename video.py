@@ -5,12 +5,15 @@ import player_api
 
 
 class Video:
-    def __init__(self, hour: int, minute: int, second: int, name: str, flags: list):
+    def __init__(self, hour: int, minute: int, second: int, name: str, flags: list, switch: bool):
         self.hour = hour
         self.minute = minute
         self.second = second
         self.filename = name
         self.flags = flags
+        if switch:
+            t = threading.Thread(target=self.play_at_time)
+            t.start()
 
     def __str__(self):
         if self.hour == -1:
@@ -31,19 +34,23 @@ class Video:
         b) the video has NOT started playing yet
         """
         # self.thread.start()
+        pass
 
     def play_at_time(self):
-        print(self.hour, self.minute, self.second)
-        if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
-            return
+        try:
+            if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
+                return
+    
+            while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute, self.second):
+                time.sleep(0.05)
+            self.play()
+        except:
+            pass
 
-        while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute, self.second):
-            time.sleep(0.05)
-        self.play()
-
-    @staticmethod
+    @staticmethod # wtf, you couldn't do this inline?
     def num_columns():
         return 3
 
     def play(self, player=player_api.PLAYER_VLC):
+        print(self.filename)
         player_api.play(player, self.filename, self.flags)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/video1.ui'
+# Form implementation generated from reading ui file 'video1.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -147,3 +147,13 @@ class Ui_MainWindow(object):
         self.actionQuit_2.setText(_translate("MainWindow", "Quit"))
 
 import icons_rc
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
