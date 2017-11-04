@@ -4,6 +4,9 @@ import threading
 import subprocess
 
 # Import PyQt5. If it's not installed, try to install it.
+import os
+import platform
+
 try:
     from PyQt5.QtCore import Qt
     from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
@@ -18,7 +21,6 @@ from ui.video1 import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
-
 
 
 def bind():
@@ -53,6 +55,7 @@ def getLength(filename):
 def table_dump():
     with open(location) as f:
         table = f.read().splitlines()
+    print(table)
     # Change rows to amount of "queued" videos
     video_list = []
     times = []
@@ -66,15 +69,30 @@ def table_dump():
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
+            # make sure video uses os-specific directory separator
+            print("Not removed", name)
+            name = name.replace("C:/", "")
+            print("Removed", name)
+            name_split = name.split("/")
+            print("System: ", platform.system())
+            if platform.system() == "Windows":
+                print("Windows!")
+                name_split.insert(0, "C:\\")
+            print(name_split)
+            name = os.path.join(*name_split)
+            print("Name:", name)
             if h != -1:
                 video_list.append(Video(h, m, s, name, ["--fullscreen"], True))
             else:
                 video_list.append(Video(h, m, s, name, ["--fullscreen"], False))
+            # print("Video list:", video_list)
+
             # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
                 # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
         except (IndexError, ValueError):
             continue
 
+    print("Video list:", video_list)
     model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
     ui.table_videos.setModel(model)
 
