@@ -57,7 +57,6 @@ def table_dump():
         try:
             h, m, s, name, args = row.split(' ')  # to be safe(and readable), always put the ' '
             h, m, s = map(int, (h, m, s))  # convert these to int
-            print(h,m,s)
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
@@ -93,6 +92,10 @@ def inspect(new: bool):
             # Get selected row
             inspected_row = ui.table_videos.selectionModel().selectedRows()[0].row()
             ui2.label_load_video_name.setText(ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
+            global video
+            print("setting video var")
+            video = [ui.table_videos.model().data[inspected_row].filename, "Never Gonna Give You Up"]
+            print(video)
 
             # Set inspector values to values in inspected row
             ui2.hours.setValue(int(ui.table_videos.model().data[inspected_row].hour))
@@ -101,7 +104,7 @@ def inspect(new: bool):
 
     if show:
         window2.show()
-        global video
+        print(video)
         ui2.buttonBox.disconnect()
         ui2.buttonBox.accepted.connect(window2.accept)
         ui2.buttonBox.rejected.connect(window2.reject)
@@ -111,6 +114,7 @@ def inspect(new: bool):
 
 def entry(new: bool, inspected_row: int):
     vst_file = open(location, "a+")
+    print(video)
     if new:
         print("i'm new!")
     try:
