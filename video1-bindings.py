@@ -2,8 +2,14 @@
 import sys
 import threading
 import subprocess
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
+
+# Import PyQt5. If it's not installed, try to install it.
+try:
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
+except ImportError:
+    print("Installing dependencies...")
+    subprocess.Popen(['pip3','install','PyQt5'])
 
 import scheduler
 from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
