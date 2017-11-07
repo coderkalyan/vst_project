@@ -68,7 +68,6 @@ class VideoTableModel(QAbstractTableModel):
             else:
                 value = "Manual Play"
         elif index.column() == 2:
-            # TODO - duration
             value = self.data[index.row()].length
         if role == Qt.EditRole:
             return value

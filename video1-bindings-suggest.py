@@ -20,8 +20,8 @@ except ImportError:
 
 import scheduler
 from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
-from ui.video1 import Ui_MainWindow as MainUI
+from ui.generated.nothing_to_inspect_generated import Ui_Dialog as NothingToInspectDialog
+from ui.main_window import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
@@ -35,14 +35,22 @@ def bind():
     ui.loadnew.clicked.connect(lambda: inspect(True))
     ui2.button_choose_video.clicked.connect(select_video)
     ui.actionQuit.triggered.connect(app.quit)
-    ui.actionSettings.triggered.connect(test)
+    ui.actionSettings.triggered.connect(prefshow)
     # ui.actionAbout.triggered.connect(credits_window.exec_)
-    # TODO - help action
+    ui.actionHelp.triggered.connect(help)
+    ui.actionAbout.triggered.connect(help)
 
-def test():
+def prefshow():
     prefs_window.show()
     prefs_ui.helpabout.hide()
     prefs_ui.output.hide()
+    prefs_ui.person.show()
+
+def help():
+    prefs_window.show()
+    prefs_ui.output.hide()
+    prefs_ui.person.hide()
+    prefs_ui.helpabout.show()
 
 def open_vst():
     # opens a text file for reading and writing video entries
@@ -115,6 +123,7 @@ def select_video():
     global video
     video = QFileDialog.getOpenFileName()
     ui2.label_load_video_name.setText(video[0].split('/')[-1])
+    ui2.label_load_video_length.setText(getLength(video[0]))
 
 
 def inspect(new: bool):
