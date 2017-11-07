@@ -9,17 +9,28 @@ import subprocess
 
 # constants for different players
 PLAYER_VLC = 1
-PLAYER_FFPLAY = 2
+PLAYER_CVLC = 2
+PLAYER_FFPLAY = 3
 
 # paths to the different players - for now, we don't put full path,
 # assuming that the program is in the user's PATH
 PATH_VLC = "vlc"
+PATH_CVLC = "cvlc"
 PATH_FFPLAY = "ffplay"
 
 
 def play(player, file, args):
     if player == PLAYER_VLC:
+        #file = "'{}'".format(file)
+        # file = "'" + file + "'"
+        print("File to play:", file)
+        print(args)
         # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
+        command = "{} {} \"{}\"".format(PATH_VLC, " ".join(args), file)
+        print(command)
+        os.system(command)
+        # p = subprocess.Popen([PATH_VLC, " ".join(args), file])
+    elif player == PLAYER_CVLC:
         print(file)
         p = subprocess.Popen([PATH_VLC, " ".join(args), '"'+file+'"'])
     if player == PLAYER_FFPLAY:
