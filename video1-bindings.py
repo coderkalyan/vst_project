@@ -1,23 +1,22 @@
 #!/usr/bin/python3
-import sys
-import threading
-import subprocess
-
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
+import subprocess
+import sys
 
+# TODO - remove this
 try:
     from PyQt5.QtCore import Qt
-    from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
+    from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, \
+        QAbstractItemView, QHeaderView, QMenu
 except ImportError:
     print("Installing dependencies...")
-    subprocess.Popen(['pip3','install','PyQt5'])
+    subprocess.Popen(['pip3', 'install', 'PyQt5'])
 
-import scheduler
-from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
-from ui.video1 import Ui_MainWindow as MainUI
+from ui.generated.load_video_dialog_generated import Ui_Dialog as LoadVideoDialog
+from ui.generated.nothing_to_inspect_generated import Ui_Dialog as NothingToInspectDialog
+from ui.generated.main_window_generated import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
@@ -46,10 +45,12 @@ def open_vst():
             pointer.write(location)
     table_dump()
 
-def getLength(filename):
+
+def get_length(filename):
     result = subprocess.run(["ffprobe", filename],
-                                stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x]
+
 
 # Dump all entries into a QTable for editing in the GUI
 def table_dump():
@@ -72,6 +73,7 @@ def table_dump():
             # make sure video uses os-specific directory separator
             print("Not removed", name)
             name = name.replace("C:/", "")
+            # name = name.replace(" ","\ ")
             print("Removed", name)
             name_split = name.split("/")
             print("System: ", platform.system())
@@ -88,7 +90,8 @@ def table_dump():
             # print("Video list:", video_list)
 
             # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
-                # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
+                # we need a list to keep track of these threads, so they can be stopped later
+                # if the video is deleted
         except (IndexError, ValueError):
             continue
 
@@ -141,8 +144,6 @@ def entry(new: bool, inspected_row: int):
         print("i'm new!")
     try:
         if video[0] != "":
-
-            
             if ui2.manualPlay.checkState():
                 if not new:
                     print("YEE")
@@ -222,7 +223,7 @@ def main():
     app = QApplication(sys.argv)
     global window2
     global window3
-    global credits_window
+    global settings_window
 
     window = QMainWindow()
     window2 = QDialog()
@@ -244,7 +245,7 @@ def main():
     ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
     # ui.table_videos.clicked.connect(table_clicked)
     ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
-    ui.table_videos.customContextMenuRequested.connect(table_clicked)
+    ui.table_videos.customContextMenuRequested.connect(table_right_clicked)
     ui.table_videos.doubleClicked.connect(table_double_clicked)
 
     ui2 = LoadVideoDialog()

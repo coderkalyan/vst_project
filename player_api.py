@@ -19,12 +19,18 @@ PATH_CVLC = "cvlc"
 
 def play(player, file, args):
     if player == PLAYER_VLC:
+        #file = "'{}'".format(file)
+        # file = "'" + file + "'"
+        print("File to play:", file)
+        print(args)
         # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
+        command = "{} {} \"{}\"".format(PATH_VLC, " ".join(args), file)
+        print(command)
+        os.system(command)
+        # p = subprocess.Popen([PATH_VLC, " ".join(args), file])
+    elif player == PLAYER_CVLC:
         print(file)
-        p = subprocess.Popen([PATH_VLC, " ".join(args), '"'+file+'"'])
-    if player == PLAYER_CVLC:
-        print(file)
-        os.system(PATH_CVLC + " " + " ".join(args) + " " + '"'+file+'"')
+        os.system(PATH_CVLC + " " + " ".join(args) + " " + "" + file)
 
 
 def stop():

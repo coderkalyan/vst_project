@@ -19,7 +19,8 @@ class Video:
         if self.hour == -1:
             return "{} playing manually".format(self.filename)
         else:
-            return "{} will play at {}:{}:{}".format(self.filename, self.hour, self.minute, self.second)
+            return "{} will play at {}:{}:{}".format(self.filename, self.hour, self.minute,
+                                                     self.second)
 
     def set_play_time(self, hour: int, minute: int, second: int):
         self.hour = hour
@@ -33,21 +34,21 @@ class Video:
         a) the time is after current time
         b) the video has NOT started playing yet
         """
-        # self.thread.start()
         pass
 
     def play_at_time(self):
         try:
             if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
                 return
-    
-            while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute, self.second):
+
+            while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute,
+                                                                  self.second):
                 time.sleep(0.05)
             self.play()
         except:
             pass
 
-    @staticmethod # wtf, you couldn't do this inline?
+    @staticmethod
     def num_columns():
         return 3
 
