@@ -9,12 +9,12 @@ import subprocess
 
 # constants for different players
 PLAYER_VLC = 1
-PLAYER_CVLC = 2
+PLAYER_FFPLAY = 2
 
 # paths to the different players - for now, we don't put full path,
 # assuming that the program is in the user's PATH
 PATH_VLC = "vlc"
-PATH_CVLC = "cvlc"
+PATH_FFPLAY = "ffplay"
 
 
 def play(player, file, args):
@@ -22,9 +22,9 @@ def play(player, file, args):
         # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
         print(file)
         p = subprocess.Popen([PATH_VLC, " ".join(args), '"'+file+'"'])
-    if player == PLAYER_CVLC:
+    if player == PLAYER_FFPLAY:
         print(file)
-        os.system(PATH_CVLC + " " + " ".join(args) + " " + '"'+file+'"')
+        os.system(PATH_FFPLAY + " " + " ".join(args) + " " + '"'+file+'"')
 
 
 def stop():
@@ -35,7 +35,7 @@ def stop():
 
 
 def main():
-    play(PLAYER_CVLC, "video_1.mp4", ["--fullscreen"])
+    play(PLAYER_FFPLAY, "video_1.mp4", ["--fullscreen"])
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from video import Video
 # playback of videos
 
 # by default, we are using cvlc for playing
-player = player_api.PLAYER_CVLC
+player = player_api.PLAYER_FFPLAY
 
 
 isOverride = False

@@ -1,2 +1,1 @@
-1,2,3,/home/bbworld/git/vst_project/video_1.mp4,none
-12,13,0,/home/bbworld/2017-09-12 21-30-57.mp4,none
+1,3,4,/home/bbworld/git/vst_project/video_1.mp4,none

@@ -5,6 +5,7 @@
 #svg.write('<text fill="red" x="50%" y="60%" font-size="100" text-anchor="middle">Lols, 3:15-4:15 PM, Gym</text>\n</svg>')
 #svg.close()
 
+import moviepy
 def title(color, size, text):
     svg2 = open("title.svg", "w+")
     svg2.write('<?xml version="1.0" encoding="utf-8" ?>\n')

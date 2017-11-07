@@ -69,7 +69,7 @@ class VideoTableModel(QAbstractTableModel):
                 value = "Manual Play"
         elif index.column() == 2:
             # TODO - duration
-            value = "1:00"
+            value = self.data[index.row()].length
         if role == Qt.EditRole:
             return value
         elif role == Qt.DisplayRole:
@@ -90,7 +90,7 @@ class VideoTableModel(QAbstractTableModel):
         """
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return self.header[col]
-        return 0
+        return None
 
     def flags(self, index):
         """

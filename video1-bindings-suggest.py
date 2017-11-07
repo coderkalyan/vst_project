@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+#BACONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+#include <stdio.h>
+#include "bacon" //because bacon is always needed.
 import sys
 import threading
 import subprocess
@@ -6,6 +9,7 @@ import subprocess
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
+import player_api
 
 try:
     from PyQt5.QtCore import Qt
@@ -21,6 +25,7 @@ from ui.video1 import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
+from ui.vst_prefs import Ui_Dialog as prefs
 
 
 def bind():
@@ -30,9 +35,14 @@ def bind():
     ui.loadnew.clicked.connect(lambda: inspect(True))
     ui2.button_choose_video.clicked.connect(select_video)
     ui.actionQuit.triggered.connect(app.quit)
+    ui.actionSettings.triggered.connect(test)
     # ui.actionAbout.triggered.connect(credits_window.exec_)
     # TODO - help action
 
+def test():
+    prefs_window.show()
+    prefs_ui.helpabout.hide()
+    prefs_ui.output.hide()
 
 def open_vst():
     # opens a text file for reading and writing video entries
@@ -49,7 +59,7 @@ def open_vst():
 def getLength(filename):
     result = subprocess.run(["ffprobe", filename],
                                 stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
-    return [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x]
+    return [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[0].split(".")[0]
 
 # Dump all entries into a QTable for editing in the GUI
 def table_dump():
@@ -66,6 +76,9 @@ def table_dump():
         try:
             h, m, s, name, args = row.split(',')  # to be safe(and readable), always put the ' '
             h, m, s = map(int, (h, m, s))  # convert these to int
+            print(name)
+            length = getLength(name)
+            print(length)
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
@@ -82,9 +95,9 @@ def table_dump():
             name = os.path.join(*name_split)
             print("Name:", name)
             if h != -1:
-                video_list.append(Video(h, m, s, name, ["--fullscreen"], True))
+                video_list.append(Video(h, m, s, name, ["--fullscreen"], length, True))
             else:
-                video_list.append(Video(h, m, s, name, ["--fullscreen"], False))
+                video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
             # print("Video list:", video_list)
 
             # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
@@ -114,6 +127,8 @@ def inspect(new: bool):
             show = False
         else:
             # Get selected row
+            global video
+            print("inspecting")
             inspected_row = ui.table_videos.selectionModel().selectedRows()[0].row()
             ui2.label_load_video_name.setText(ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
             print("setting video var")
@@ -135,17 +150,14 @@ def inspect(new: bool):
 
 
 def entry(new: bool, inspected_row: int):
-    print("going fest")
     vst_file = open(location, "a+")
+    print(video)
     if new:
         print("i'm new!")
     try:
-        print("going fester")
-        print(video[0] == "")
         if video[0] != "":
-            print("sanic speed")
 
-            print(video[0])
+            
             if ui2.manualPlay.checkState():
                 if not new:
                     print("YEE")
@@ -226,16 +238,19 @@ def main():
     global window2
     global window3
     global credits_window
+    global prefs_window
 
     window = QMainWindow()
     window2 = QDialog()
     window3 = QDialog()
     credits_window = QDialog()
+    prefs_window = QDialog()
 
     global ui
     global ui2
     global ui3
     global credits_ui
+    global prefs_ui
 
     ui = MainUI()
     ui.setupUi(window)
@@ -249,12 +264,17 @@ def main():
     ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
     ui.table_videos.customContextMenuRequested.connect(table_right_clicked)
     ui.table_videos.doubleClicked.connect(table_double_clicked)
+    ui.actionSettings.triggered.connect(prefs_window.show)
 
     ui2 = LoadVideoDialog()
     ui2.setupUi(window2)
 
     ui3 = NothingToInspectDialog()
     ui3.setupUi(window3)
+    
+    prefs_ui = prefs()
+    prefs_ui.setupUi(prefs_window)
+
 
     bind()
     # ui.table_videos.setRowCount(0)
