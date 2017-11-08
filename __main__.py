@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-import sys
-import threading
 import subprocess
+import sys
 
 # Import PyQt5. If it's not installed, try to install it.
 try:
@@ -9,16 +8,14 @@ try:
     from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
 except ImportError:
     print("Installing dependencies...")
-    subprocess.Popen(['pip3','install','PyQt5'])
+    subprocess.Popen(['pip3', 'install', 'PyQt5'])
 
-import scheduler
-from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
-from ui.video1 import Ui_MainWindow as MainUI
+from ui.generated.load_video_dialog import Ui_Dialog as LoadVideoDialog
+from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
+from ui.generated.video1 import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
-
 
 
 def bind():
@@ -28,7 +25,7 @@ def bind():
     ui.loadnew.clicked.connect(lambda: inspect(True))
     ui2.button_choose_video.clicked.connect(select_video)
     ui.actionQuit.triggered.connect(app.quit)
-    # ui.actionAbout.triggered.connect(credits_window.exec_)
+    # ui_old.actionAbout.triggered.connect(credits_window.exec_)
     # TODO - help action
 
 
@@ -44,10 +41,12 @@ def open_vst():
             pointer.write(location)
     table_dump()
 
-def getLength(filename):
+
+def get_length(filename):
     result = subprocess.run(["ffprobe", filename],
-                                stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x]
+
 
 # Dump all entries into a QTable for editing in the GUI
 def table_dump():
@@ -70,7 +69,7 @@ def table_dump():
                 video_list.append(Video(h, m, s, name, ["--fullscreen"], True))
             else:
                 video_list.append(Video(h, m, s, name, ["--fullscreen"], False))
-            # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
+                # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
                 # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
         except (IndexError, ValueError):
             continue
@@ -125,16 +124,15 @@ def entry(new: bool, inspected_row: int):
     try:
         if video[0] != "":
 
-            
             if ui2.manualPlay.checkState():
                 if not new:
                     print("YEE")
                     vst_file.seek(0, 0)  # reset file pointer to beginning
                     entries = vst_file.readlines()  # read lines from file
-                    
+
                     del entries[inspected_row]
                     entries.insert(inspected_row, "-1 -1 -1 " + video[0] + " none\n")  # replace line
-                    
+
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
@@ -148,7 +146,7 @@ def entry(new: bool, inspected_row: int):
                 if not new:
                     vst_file.seek(0, 0)  # reset file pointer to beginning
                     entries = vst_file.readlines()  # read lines from file
-                    
+
                     del entries[inspected_row]
                     entries.insert(inspected_row, " ".join(
                         [str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[
@@ -156,7 +154,7 @@ def entry(new: bool, inspected_row: int):
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
-                    
+
                     vst_file.close()
                 else:
 
@@ -175,7 +173,6 @@ def entry(new: bool, inspected_row: int):
 
 
 def table_right_clicked(position):
-    
     index = ui.table_videos.selectedIndexes()[0]
     menu = QMenu()
     action_inspect = menu.addAction("Inspect")
@@ -184,6 +181,7 @@ def table_right_clicked(position):
 
     def wrapper():
         inspect(False)
+
     action_inspect.triggered.connect(wrapper)
     menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
 
@@ -195,6 +193,7 @@ def table_double_clicked(index):
         print(filename)
     else:
         return
+
 
 # opens gui window
 
@@ -225,7 +224,7 @@ def main():
     ui.table_videos.setSelectionBehavior(QAbstractItemView.SelectRows)
     ui.table_videos.setModel(model)
     ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-    # ui.table_videos.clicked.connect(table_clicked)
+    # ui_old.table_videos.clicked.connect(table_clicked)
     ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
     ui.table_videos.customContextMenuRequested.connect(table_right_clicked)
     ui.table_videos.doubleClicked.connect(table_double_clicked)
@@ -237,7 +236,7 @@ def main():
     ui3.setupUi(window3)
 
     bind()
-    # ui.table_videos.setRowCount(0)
+    # ui_old.table_videos.setRowCount(0)
     # window.setWindowTitle("Video Scheduling Utility by KVK")
     window.show()
     open_vst()
