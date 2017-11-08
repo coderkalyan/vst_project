@@ -1,3 +1,4 @@
-11 26 0 C:/Users/kalya/PycharmProjects/vst_project/video_3.mp4 none
-11 29 55 C:/Users/kalya/PycharmProjects/vst_project/video_3.mp4 none
-11 31 45 C:/Users/kalya/PycharmProjects/vst_project/video_3.mp4 none
+0,0,0,home/bbworld/git/vst_project/video_1.mp4,none
+0,0,0,/home/bbworld/git/vst_project/video_1.mp4,none
+0,0,0,/home/bbworld/git/vst_project/video_1.mp4,none
+1,0,0,/home/bbworld/git/vst_project/video_1.mp4,none
