@@ -1,141 +1,159 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QAbstractItemView, QHeaderView, QMenu, QFileDialog, QDialog
+# -*- coding: utf-8 -*-
 
-from ui.generated.main_window_generated import Ui_MainWindow
-from ui.load_video_dialog import LoadVideoDialog
-from video_table_model import VideoTableModel
+# Form implementation generated from reading ui_old file 'video1.ui_old'
+#
+# Created by: PyQt5 UI code generator 5.9
+#
+# WARNING! All changes made in this file will be lost!
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 
-class MainUI(Ui_MainWindow):
-    def __init__(self, window):
-        self.setupUi(window)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowModality(QtCore.Qt.NonModal)
+        MainWindow.resize(800, 601)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_queue_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.label_now_playing = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_now_playing.setFont(font)
+        self.label_now_playing.setTextFormat(QtCore.Qt.AutoText)
+        self.label_now_playing.setObjectName("label_now_playing")
+        self.verticalLayout_2.addWidget(self.label_now_playing)
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(self.label)
+        self.horizontalLayout.addLayout(self.verticalLayout_2)
+        self.inspector = QtWidgets.QToolButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.inspector.sizePolicy().hasHeightForWidth())
+        self.inspector.setSizePolicy(sizePolicy)
+        self.inspector.setMaximumSize(QtCore.QSize(150, 16777215))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_info_outline_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.inspector.setIcon(icon1)
+        self.inspector.setIconSize(QtCore.QSize(64, 64))
+        self.inspector.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.inspector.setObjectName("inspector")
+        self.horizontalLayout.addWidget(self.inspector)
+        self.loadnew = QtWidgets.QToolButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.loadnew.sizePolicy().hasHeightForWidth())
+        self.loadnew.setSizePolicy(sizePolicy)
+        self.loadnew.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.loadnew.setFocusPolicy(QtCore.Qt.TabFocus)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_add_to_queue_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.loadnew.setIcon(icon2)
+        self.loadnew.setIconSize(QtCore.QSize(64, 64))
+        self.loadnew.setPopupMode(QtWidgets.QToolButton.DelayedPopup)
+        self.loadnew.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.loadnew.setAutoRaise(False)
+        self.loadnew.setArrowType(QtCore.Qt.NoArrow)
+        self.loadnew.setObjectName("loadnew")
+        self.horizontalLayout.addWidget(self.loadnew)
+        self.next = QtWidgets.QToolButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.next.sizePolicy().hasHeightForWidth())
+        self.next.setSizePolicy(sizePolicy)
+        self.next.setMaximumSize(QtCore.QSize(150, 16777215))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_queue_play_next_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.next.setIcon(icon3)
+        self.next.setIconSize(QtCore.QSize(64, 64))
+        self.next.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.next.setObjectName("next")
+        self.horizontalLayout.addWidget(self.next)
+        self.horizontalLayout.setStretch(0, 3)
+        self.horizontalLayout.setStretch(1, 1)
+        self.horizontalLayout.setStretch(2, 1)
+        self.horizontalLayout.setStretch(3, 1)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.nextPlaying = QtWidgets.QLabel(self.centralwidget)
+        self.nextPlaying.setEnabled(True)
+        self.nextPlaying.setObjectName("nextPlaying")
+        self.verticalLayout.addWidget(self.nextPlaying)
+        self.table_videos = QtWidgets.QTableView(self.centralwidget)
+        self.table_videos.setObjectName("table_videos")
+        self.verticalLayout.addWidget(self.table_videos)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 800, 23))
+        self.menuBar.setObjectName("menuBar")
+        self.menuVideo_Queuer = QtWidgets.QMenu(self.menuBar)
+        self.menuVideo_Queuer.setObjectName("menuVideo_Queuer")
+        self.menuEdit = QtWidgets.QMenu(self.menuBar)
+        self.menuEdit.setObjectName("menuEdit")
+        self.menuFile = QtWidgets.QMenu(self.menuBar)
+        self.menuFile.setObjectName("menuFile")
+        MainWindow.setMenuBar(self.menuBar)
+        self.actionHelp = QtWidgets.QAction(MainWindow)
+        self.actionHelp.setObjectName("actionHelp")
+        self.actionAbout = QtWidgets.QAction(MainWindow)
+        self.actionAbout.setObjectName("actionAbout")
+        self.actionQuit = QtWidgets.QAction(MainWindow)
+        self.actionQuit.setObjectName("actionQuit")
+        self.actionSettings = QtWidgets.QAction(MainWindow)
+        self.actionSettings.setObjectName("actionSettings")
+        self.actionQuit_2 = QtWidgets.QAction(MainWindow)
+        self.actionQuit_2.setObjectName("actionQuit_2")
+        self.menuVideo_Queuer.addAction(self.actionHelp)
+        self.menuVideo_Queuer.addSeparator()
+        self.menuEdit.addAction(self.actionSettings)
+        self.menuFile.addAction(self.actionQuit_2)
+        self.menuBar.addAction(self.menuFile.menuAction())
+        self.menuBar.addAction(self.menuEdit.menuAction())
+        self.menuBar.addAction(self.menuVideo_Queuer.menuAction())
 
-        self.model = VideoTableModel(None, [], ["Video File Name", "Play Time", "Duration"])
-        self.setup_table_videos()
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # TODO - implement play next
-        self.next.setEnabled(False)
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "Video Scheduling Utility by KVK"))
+        self.label_now_playing.setText(_translate("MainWindow", "Playing <File Name>"))
+        self.label.setText(_translate("MainWindow", "Time left:"))
+        self.inspector.setText(_translate("MainWindow", "Inspect"))
+        self.loadnew.setText(_translate("MainWindow", "Load New"))
+        self.next.setText(_translate("MainWindow", "Play Next"))
+        self.nextPlaying.setText(_translate("MainWindow", " Next Playing: <File Name> in 1:10"))
+        self.menuVideo_Queuer.setTitle(_translate("MainWindow", "Video Queuer"))
+        self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.actionHelp.setText(_translate("MainWindow", "Help"))
+        self.actionAbout.setText(_translate("MainWindow", "About"))
+        self.actionQuit.setText(_translate("MainWindow", "Quit"))
+        self.actionSettings.setText(_translate("MainWindow", "Settings"))
+        self.actionQuit_2.setText(_translate("MainWindow", "Quit"))
 
-        self.inspector_dialog = QDialog(parent=window, flags=Qt.Dialog)
-        self.inspector_dialog_ui = LoadVideoDialog(self.inspector_dialog)
-        self.inspector_dialog_ui.setupUi(self.inspector_dialog)
+import icons_rc
 
-    def setup_table_videos(self):
-        self.table_videos.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.table_videos.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.table_videos.setModel(self.model)
-        self.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.table_videos.customContextMenuRequested.connect(self.table_right_clicked)
-        self.table_videos.doubleClicked.connect(self.table_double_clicked)
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
 
-    def table_right_clicked(self, position):
-
-        index = self.table_videos.selectedIndexes()[0]
-        menu = QMenu()
-        action_inspect = menu.addAction("Inspect")
-        action_delete = menu.addAction("Delete")
-        action_delete.setEnabled(False)
-
-        action_inspect.triggered.connect(lambda: self.inspect(False))
-        menu.exec_(self.table_videos.viewport().mapToGlobal(position))
-
-    def inspect(self, new: bool):
-        pass
-        inspected_row = 0
-        show = True
-        if not new:
-            if not len(self.table_videos.selectionModel().selectedRows()) > 0:
-                # TODO - show nothing to inspect dialog
-                # window3.show()
-                show = False
-            else:
-                # Get selected row
-                inspected_row = self.table_videos.selectionModel().selectedRows()[0].row()
-                self.inspector_dialog_ui.label_load_video_name.setText(
-                    self.table_videos.model().data[inspected_row].filename.split('/')[-1])
-                video = [self.table_videos.model().data[inspected_row].filename,
-                         "Never Gonna Give You Up"]
-
-                # Set inspector values to values in inspected row
-                self.inspector_dialog_ui.hours.setValue(int(self.table_videos.model()
-                                                            .data[inspected_row].hour))
-                self.inspector_dialog_ui.minutes.setValue(int(self.table_videos.model()
-                                                              .data[inspected_row].minute))
-                self.inspector_dialog_ui.seconds.setValue(int(self.table_videos.model()
-                                                              .data[inspected_row].second))
-
-        if show:
-            self.inspector_dialog.show()
-            self.inspector_dialog_ui.buttonBox.disconnect()
-            self.inspector_dialog_ui.buttonBox.accepted.connect(self.inspector_dialog.accept)
-            self.inspector_dialog_ui.buttonBox.rejected.connect(self.inspector_dialog.reject)
-            self.inspector_dialog_ui.buttonBox.accepted.connect(lambda: entry(new, inspected_row))
-            print("run")
-
-    def table_double_clicked(self, index):
-        # TODO - actually change filename
-        if index.column() == 0:
-            # we want to open a file dialog to choose new video
-            filename, status = QFileDialog.getOpenFileName(caption="Choose Video File")
-            print(filename)
-        else:
-            return
-
-    def entry(new: bool, inspected_row: int):
-        vst_file = open(location, "a+")
-        print(video)
-        if new:
-            print("i'm new!")
-        try:
-            if video[0] != "":
-
-                if ui2.manualPlay.checkState():
-                    if not new:
-                        print("YEE")
-                        vst_file.seek(0, 0)  # reset file pointer to beginning
-                        entries = vst_file.readlines()  # read lines from file
-
-                        del entries[inspected_row]
-                        entries.insert(inspected_row,
-                                       "-1,-1,-1," + video[0] + ",none\n")  # replace line
-
-                        vst_file.seek(0, 0)  # reset again because file was just parsed
-                        vst_file.truncate()
-                        vst_file.write("".join(entries))
-                        vst_file.close()
-                    else:
-
-                        vst_file.write("-1,-1,-1," + video[0] + ",none\n")
-                        vst_file.close()
-
-                else:
-                    if not new:
-                        vst_file.seek(0, 0)  # reset file pointer to beginning
-                        entries = vst_file.readlines()  # read lines from file
-
-                        del entries[inspected_row]
-                        entries.insert(inspected_row, ",".join(
-                            [str(ui2.hours.value()), str(ui2.minutes.value()),
-                             str(ui2.seconds.value()), ""]) + video[
-                                           0] + ",none\n")  # replace line
-                        vst_file.seek(0, 0)  # reset again because file was just parsed
-                        vst_file.truncate()
-                        vst_file.write("".join(entries))
-
-                        vst_file.close()
-                    else:
-
-                        vst_file.write(
-                            ",".join([str(ui2.hours.value()), str(ui2.minutes.value()),
-                                      str(ui2.seconds.value()), ""]) +
-                            video[0] + ",none\n")
-                        vst_file.close()
-
-                vst_file.close()
-                table_dump()
-                ui.label_now_playing.setText(video[0].split('/')[-1])
-        except:
-            pass
-
-            # set the text to

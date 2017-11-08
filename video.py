@@ -38,6 +38,7 @@ class Video:
         pass
 
     def play_at_time(self):
+        print("Play at time called")
         try:
             if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
                 return
@@ -45,14 +46,17 @@ class Video:
             while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute,
                                                                   self.second):
                 time.sleep(0.05)
+            print("It's time")
             self.play()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     @staticmethod
     def num_columns():
         return 3
 
-    def play(self, player=player_api.PLAYER_VLC):
+    def play(self, player=player_api.PLAYER_FFPLAY):
+        print("play() called")
         print(self.filename)
         player_api.play(player, self.filename, self.flags)
