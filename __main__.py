@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+# BACONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+# include <stdio.h>
+# include "bacon" //because bacon is always needed.
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
@@ -20,6 +23,8 @@ from video import Video
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
 
+FFPROBE_PATH = "ffprobe"
+
 
 def bind():
     # Connect Main UI Load New button to Load New function
@@ -27,11 +32,20 @@ def bind():
     ui.inspector.clicked.connect(lambda: inspect(False))
     ui.loadnew.clicked.connect(lambda: inspect(True))
     ui2.button_choose_video.clicked.connect(select_video)
+    prefs_ui.savebutton.clicked.connect(saveprefs)
+
     ui.actionQuit.triggered.connect(app.quit)
     ui.actionSettings.triggered.connect(prefshow)
     # ui.actionAbout.triggered.connect(credits_window.exec_)
-    ui.actionHelp.triggered.connect(show_help)
-    ui.actionAbout.triggered.connect(show_help)
+    ui.actionHelp.triggered.connect(help)
+    ui.actionAbout.triggered.connect(help)
+
+
+def saveprefs():
+    global FFPROBE_PATH
+    FFPROBE_PATH = prefs_ui.path.text()
+    print(FFPROBE_PATH)
+    pass
 
 
 def prefshow():
@@ -41,7 +55,7 @@ def prefshow():
     prefs_ui.person.show()
 
 
-def show_help():
+def help():
     prefs_window.show()
     prefs_ui.output.hide()
     prefs_ui.person.hide()
@@ -61,7 +75,7 @@ def open_vst():
     table_dump()
 
 
-def get_length(filename):
+def getLength(filename):
     result = subprocess.run(["ffprobe", filename],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return \
@@ -72,7 +86,7 @@ def get_length(filename):
 def table_dump():
     with open(location) as f:
         table = f.read().splitlines()
-    print(table)
+    print(table, "table")
     # Change rows to amount of "queued" videos
     video_list = []
     times = []
@@ -80,15 +94,18 @@ def table_dump():
     flags = []
 
     for row in table:
+        print(row, "row")
         try:
             h, m, s, name, args = row.split(',')  # to be safe(and readable), always put the ' '
+            print("Phase 1")
             h, m, s = map(int, (h, m, s))  # convert these to int
-            print(name)
-            length = get_length(name)
-            print(length)
+            print(name, "name")
+            length = getLength(name)
+            print(length, "length")
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
             flags.append(args)
+            print("Phase 2")
             # make sure video uses os-specific directory separator
             print("Not removed", name)
             name = name.replace("C:/", "")
@@ -98,20 +115,25 @@ def table_dump():
             if platform.system() == "Windows":
                 print("Windows!")
                 name_split.insert(0, "C:\\")
-            print(name_split)
-            name = os.path.join(*name_split)
-            print("Name:", name)
-            if platform.system() == "Linux":
-                name = "/" + name
-            if h != -1:
-                video_list.append(Video(h, m, s, name, [], length, True))
+                print(name_split, "splitname")
+                name = os.path.join(*name_split)
             else:
-                video_list.append(Video(h, m, s, name, [], length, False))
+                print(name_split, "splitname")
+                name = "/" + os.path.join(*name_split)
+
+            print("Name:", name)
+            if h != -1:
+                video_list.append(Video(h, m, s, name, ["-fs"], length, True))
+            else:
+                video_list.append(Video(h, m, s, name, ["-fs"], length, False))
                 # print("Video list:", video_list)
 
                 # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
                 # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
+            print(times, videos, flags, "total")
         except (IndexError, ValueError):
+            print(row, "row-except")
+            print("excepted")
             continue
 
     print("Video list:", video_list)
@@ -124,7 +146,7 @@ def select_video():
     global video
     video = QFileDialog.getOpenFileName()
     ui2.label_load_video_name.setText(video[0].split('/')[-1])
-    ui2.label_load_video_length.setText(get_length(video[0]))
+    ui2.label_load_video_length.setText(getLength(video[0]))
 
 
 def inspect(new: bool):
@@ -165,7 +187,10 @@ def entry(new: bool, inspected_row: int):
     if new:
         print("i'm new!")
     try:
+        print(video[0] + ": video name")
         if video[0] != "":
+            print(video, "phase 5")
+            print("setvar")
 
             if ui2.manualPlay.checkState():
                 if not new:
@@ -175,7 +200,7 @@ def entry(new: bool, inspected_row: int):
 
                     del entries[inspected_row]
                     entries.insert(inspected_row, "-1,-1,-1," + video[0] + ",none\n")  # replace line
-
+                    print(entries)
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
@@ -187,16 +212,21 @@ def entry(new: bool, inspected_row: int):
 
             else:
                 if not new:
+                    print("wee")
                     vst_file.seek(0, 0)  # reset file pointer to beginning
                     entries = vst_file.readlines()  # read lines from file
-
+                    print(inspected_row)
+                    print("still running?")
+                    print(entries, ": read lines")
                     del entries[inspected_row]
                     entries.insert(inspected_row, ",".join(
                         [str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[
                                        0] + ",none\n")  # replace line
+                    print(entries, " printed entries")
                     vst_file.seek(0, 0)  # reset again because file was just parsed
                     vst_file.truncate()
                     vst_file.write("".join(entries))
+                    print(vst_file.read(), " written entries?")
 
                     vst_file.close()
                 else:
@@ -222,7 +252,10 @@ def table_right_clicked(position):
     action_delete = menu.addAction("Delete")
     action_delete.setEnabled(False)
 
-    action_inspect.triggered.connect(lambda: inspect(False))
+    def wrapper():
+        inspect(False)
+
+    action_inspect.triggered.connect(wrapper)
     menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
 
 

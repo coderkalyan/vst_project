@@ -33,7 +33,7 @@ def play(player, file, args):
     elif player == PLAYER_CVLC:
         print(file)
         p = subprocess.Popen([PATH_VLC, " ".join(args), '"'+file+'"'])
-    if player == PLAYER_FFPLAY:
+    elif player == PLAYER_FFPLAY:
         print(file)
         os.system(PATH_FFPLAY + " " + " ".join(args) + " " + '"'+file+'"')
 
