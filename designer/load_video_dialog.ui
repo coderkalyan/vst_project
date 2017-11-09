@@ -62,7 +62,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="label_absolute">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The absolute time the video starts (ex: 8:31:00) in note format (HH:MM:SS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -75,7 +75,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QSpinBox" name="hours">
@@ -118,14 +118,14 @@
      </item>
     </layout>
    </item>
-   <item row="7" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Flags:</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="0" colspan="2">
+   <item row="10" column="0" colspan="2">
     <widget class="QCheckBox" name="manualPlay">
      <property name="text">
       <string>Play Manually</string>
@@ -138,7 +138,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="11" column="0">
     <widget class="QCheckBox" name="loop">
      <property name="text">
       <string>Loop</string>
@@ -148,7 +148,7 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="0" colspan="2">
+   <item row="12" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -172,7 +172,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="label_relative">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The delay between the END of the last video and the START of this one in seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -182,7 +182,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="7" column="1">
     <widget class="QSpinBox" name="relative_spinBox">
      <property name="toolTip">
       <string>The delay between the END of the last video and the START of this one.</string>
@@ -194,6 +194,9 @@
       <number>60</number>
      </property>
     </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QDateTimeEdit" name="dateTimeEdit"/>
    </item>
   </layout>
  </widget>

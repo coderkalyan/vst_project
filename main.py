@@ -25,7 +25,7 @@ class Window(QtWidgets.QMainWindow):
         self.dialog_load_new_video = LoadVideoDialog()
         self.setWindowTitle("Video Queuer")
 
-        uic.loadUi('player.ui', self)
+        uic.loadUi('player.ui_old', self)
 
         self.setup_columns()
 
@@ -100,7 +100,7 @@ class LoadVideoDialog(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi("load_video_dialog.ui", self)
+        uic.loadUi("load_video_dialog.ui_old", self)
 
         self.button_choose_video.clicked.connect(self.button_choose_video_clicked)
         self.buttonbox_load_new_video.accepted.connect(self.load_new_video_clicked)
