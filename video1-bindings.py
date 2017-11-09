@@ -2,11 +2,14 @@
 #BACONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 #include <stdio.h>
 #include "bacon" //because bacon is always needed.
+import sys
+import threading
+import subprocess
+
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
-import subprocess
-import sys
+import player_api
 
 try:
     from PyQt5.QtCore import Qt
@@ -15,13 +18,14 @@ except ImportError:
     print("Installing dependencies...")
     subprocess.Popen(['pip3','install','PyQt5'])
 
-from ui.generated.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
-from ui.generated.main_window import Ui_MainWindow as MainUI
+import scheduler
+from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
+from ui.generated.nothing_to_inspect_generated import Ui_Dialog as NothingToInspectDialog
+from ui.main_window import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
-from ui.generated.vst_prefs import Ui_Dialog as prefs
+from ui.vst_prefs import Ui_Dialog as prefs
 
 FFPROBE_PATH="ffprobe"
 
