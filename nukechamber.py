@@ -99,7 +99,6 @@ class VideoGUI():
         print(FFPROBE_PATH)
         pass
 
-
     def prefshow(self):
         prefs_window.show()
         prefs_ui.helpabout.hide()
@@ -195,7 +194,6 @@ class VideoGUI():
         print("Video list:", video_list)
         model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
         ui.table_videos.setModel(model)
-
 
     # creates new video entry to be played in table
     def select_video(self):
