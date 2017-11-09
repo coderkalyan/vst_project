@@ -80,9 +80,13 @@ def getLength(filename):
 
 # Dump all entries into a QTable for editing in the GUI
 def table_dump():
-    with open(location) as f:
-        table = f.read().splitlines()
-    print(table, "table")
+    try:
+        with open(location) as f:
+            table = f.read().splitlines()
+    except FileNotFoundError:
+        f2 = open(location, "w+")
+        f2.close()
+        table_dump()
     # Change rows to amount of "queued" videos
     video_list = []
     times = []
