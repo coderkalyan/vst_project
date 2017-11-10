@@ -7,7 +7,6 @@ import subprocess
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
-import player_api
 
 try:
     from PyQt5.QtCore import Qt
@@ -25,16 +24,10 @@ from video import Video
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
 
-FFPROBE_PATH = "ffprobe"
-
 class VideoGUI():
     def __init__(self):
-        global app
+        self.FFPROBE_PATH = "ffprobe"
         app = QApplication(sys.argv)
-        global window2
-        global window3
-        global credits_window
-        global prefs_window
 
         window = QMainWindow()
         window2 = QDialog()
@@ -76,6 +69,8 @@ class VideoGUI():
         self.credits_window = credits_window
         self.prefs_window = prefs_window
 
+        self.app = app
+
         self.bind()
         # ui.table_videos.setRowCount(0)
         # window.setWindowTitle("Video Scheduling Utility by KVK")
@@ -91,7 +86,7 @@ class VideoGUI():
         self.ui2.button_choose_video.clicked.connect(self.select_video)
         self.prefs_ui.savebutton.clicked.connect(self.saveprefs)
 
-        self.ui.actionQuit.triggered.connect(app.quit)
+        self.ui.actionQuit.triggered.connect(self.app.quit)
         self.ui.actionSettings.triggered.connect(self.prefshow)
         # ui.actionAbout.triggered.connect( .exec_)
         self.ui.actionHelp.triggered.connect(help)
@@ -99,9 +94,8 @@ class VideoGUI():
 
 
     def saveprefs(self):
-        global FFPROBE_PATH
-        FFPROBE_PATH = self.prefs_ui.path.text()
-        print(FFPROBE_PATH)
+        self.FFPROBE_PATH = self.prefs_ui.path.text()
+        print(self.FFPROBE_PATH)
         pass
 
 
@@ -121,14 +115,13 @@ class VideoGUI():
 
     def open_vst(self):
         # opens a text file for reading and writing video entries
-        global location
 
         with open("pointer.txt", "w+") as pointer:
-            location = pointer.read()
+            self.location = pointer.read()
             # if we read from empty file(just created), fill it with path to default table
-            if location == "":
-                location = "vstdefault.txt"
-                pointer.write(location)
+            if self.location == "":
+                self.location = "vstdefault.txt"
+                pointer.write(self.location)
         self.table_dump()
 
 
@@ -142,10 +135,10 @@ class VideoGUI():
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
         try:
-            with open(location) as f:
+            with open(self.location) as f:
                 table = f.read().splitlines()
         except FileNotFoundError:
-            f2 = open(location, "w+")
+            f2 = open(self.location, "w+")
             f2.close()
             self.table_dump()
         # Change rows to amount of "queued" videos
@@ -204,10 +197,9 @@ class VideoGUI():
 
     # creates new video entry to be played in table
     def select_video(self):
-        global video
-        video = QFileDialog.getOpenFileName()
-        self.ui2.label_load_video_name.setText(video[0].split('/')[-1])
-        self.ui2.label_load_video_length.setText(self.getLength(video[0]))
+        self.video = QFileDialog.getOpenFileName()
+        self.ui2.label_load_video_name.setText(self.video[0].split('/')[-1])
+        self.ui2.label_load_video_length.setText(self.getLength(self.video[0]))
 
 
     def inspect(self, new: bool):
@@ -220,13 +212,9 @@ class VideoGUI():
                 show = False
             else:
                 # Get selected row
-                global video
-                print("inspecting")
                 inspected_row = self.ui.table_videos.selectionModel().selectedRows()[0].row()
                 self.ui2.label_load_video_name.setText(self.ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
-                print("setting video var")
-                video = [self.ui.table_videos.model().data[inspected_row].filename, "Never Gonna Give You Up"]
-                print(video)
+                self.video = [self.ui.table_videos.model().data[inspected_row].filename, "Never Gonna Give You Up"]
 
                 # Set inspector values to values in inspected row
                 self.ui2.hours.setValue(int(self.ui.table_videos.model().data[inspected_row].hour))
@@ -243,14 +231,13 @@ class VideoGUI():
 
 
     def entry(self, new: bool, inspected_row: int):
-        vst_file = open(location, "a+")
-        print(video)
+        vst_file = open(self.location, "a+")
         if new:
             print("i'm new!")
         try:
-            print(video[0] + ": video name")
-            if video[0] != "":
-                print(video, "phase 5")
+            print(self.video[0] + ": video name")
+            if self.video[0] != "":
+                print(self.video, "phase 5")
                 print("setvar")
 
                 if self.ui2.manualPlay.checkState():
@@ -260,7 +247,7 @@ class VideoGUI():
                         entries = vst_file.readlines()  # read lines from file
 
                         del entries[inspected_row]
-                        entries.insert(inspected_row, "-1,-1,-1," + video[0] + ",none\n")  # replace line
+                        entries.insert(inspected_row, "-1,-1,-1," + self.video[0] + ",none\n")  # replace line
                         print(entries)
                         vst_file.seek(0, 0)  # reset again because file was just parsed
                         vst_file.truncate()
@@ -268,7 +255,7 @@ class VideoGUI():
                         vst_file.close()
                     else:
 
-                        vst_file.write("-1,-1,-1," + video[0] + ",none\n")
+                        vst_file.write("-1,-1,-1," + self.video[0] + ",none\n")
                         vst_file.close()
 
                 else:
@@ -281,7 +268,7 @@ class VideoGUI():
                         print(entries, ": read lines")
                         del entries[inspected_row]
                         entries.insert(inspected_row, ",".join(
-                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) + video[
+                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) + self.video[
                                            0] + ",none\n")  # replace line
                         print(entries, " printed entries")
                         vst_file.seek(0, 0)  # reset again because file was just parsed
@@ -294,12 +281,12 @@ class VideoGUI():
 
                         vst_file.write(
                             ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) +
-                            video[0] + ",none\n")
+                            self.video[0] + ",none\n")
                         vst_file.close()
 
                 vst_file.close()
                 self.table_dump()
-                self.ui.label_now_playing.setText(video[0].split('/')[-1])
+                self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
         except:
             pass
 
