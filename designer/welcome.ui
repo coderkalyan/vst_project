@@ -167,34 +167,6 @@
      <string>Setup and Prerequisites</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>291</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Segoe UI</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>1. Open terminal of choice in directory, or press button to launch default terminal: </string>
-    </property>
-    <property name="scaledContents">
-     <bool>false</bool>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
@@ -221,24 +193,11 @@
      <string>Exit</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_9">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>90</y>
-      <width>131</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Open default terminal</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>130</y>
+      <x>40</x>
+      <y>90</y>
       <width>141</width>
       <height>21</height>
      </rect>
@@ -250,35 +209,7 @@
      </font>
     </property>
     <property name="text">
-     <string>2. Type in the following:</string>
-    </property>
-    <property name="scaledContents">
-     <bool>false</bool>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>160</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Consolas</family>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>pip3 install -r requirements.txt</string>
+     <string>Installing prerequisites</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
@@ -301,6 +232,25 @@
     </property>
     <property name="text">
      <string>Back</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>120</y>
+      <width>331</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>0</number>
+    </property>
+    <property name="value">
+     <number>-1</number>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
