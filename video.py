@@ -5,7 +5,7 @@ import player_api
 
 
 class Video:
-    def __init__(self, hour: int, minute: int, second: int, name: str, flags: list, length: str, switch: bool, id:int = None):
+    def __init__(self, hour: int, minute: int, second: int, name: str, flags: list, length: str, auto_schedule: bool, id: int = None):
         self.hour = hour
         self.minute = minute
         self.second = second
@@ -13,7 +13,7 @@ class Video:
         self.flags = flags
         self.length = length
         self.id = id
-        if switch:
+        if auto_schedule:
             t = threading.Thread(target=self.play_at_time)
             t.start()
 
