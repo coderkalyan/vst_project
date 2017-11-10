@@ -140,3 +140,70 @@ class VideoTableModel(QAbstractTableModel):
 
         self.dataChanged.emit(index, index)
         return True
+
+
+import platform, os
+
+class tableManipulator():
+    def table_dump(self):
+        try:
+            with open(self.location) as f:
+                table = f.read().splitlines()
+        except FileNotFoundError:
+            f2 = open(self.location, "w+")
+            f2.close()
+            self.table_dump()
+        # Change rows to amount of "queued" videos
+        video_list = []
+        times = []
+        videos = []
+        flags = []
+
+        for row in table:
+            print(row, "row")
+            try:
+                h, m, s, name, args = row.split(',')  # to be safe(and readable), always put the ' '
+                print("Phase 1")
+                h, m, s = map(int, (h, m, s))  # convert these to int
+                print(name, "name")
+                length = self.get_length(name)
+                print(length, "length")
+                times.append(":".join([str(h), str(m), str(s)]))
+                videos.append(name)
+                flags.append(args)
+                print("Phase 2")
+                # make sure video uses os-specific directory separator
+                print("Not removed", name)
+                name = name.replace("C:/", "")
+                print("Removed", name)
+                name_split = name.split("/")
+                print("System: ", platform.system())
+                if platform.system() == "Windows":
+                    print("Windows!")
+                    name_split.insert(0, "C:\\")
+                    print(name_split, "splitname")
+                    name = os.path.join(*name_split)
+                else:
+                    print(name_split, "splitname")
+                    name = "/" + os.path.join(*name_split)
+
+                print("Name:", name)
+                if h != -1:
+                    video_list.append(Video(h, m, s, name, ["--fullscreen"], length, True))
+                else:
+                    video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
+                    # print("Video list:", video_list)
+
+                    # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
+                    # we need a list to keep track of these threads, so they can be stopped later
+                    # if the video is deleted
+                print(times, videos, flags, "total")
+            except (IndexError, ValueError):
+                print(row, "row-except")
+                print("excepted")
+                continue
+
+        print("Video list:", video_list)
+        model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
+        self.ui.table_videos.setModel(model)
+
