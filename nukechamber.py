@@ -23,11 +23,6 @@ from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
-<<<<<<< HEAD
-=======
-
-FFPROBE_PATH = "ffprobe"
->>>>>>> cf1320fe4d7fd3571d106fc2d32b953c962650f4
 
 class VideoGUI():
     def __init__(self):
