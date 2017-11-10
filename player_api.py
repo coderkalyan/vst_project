@@ -21,7 +21,7 @@ PATH_FFPLAY = "ffplay"
 
 def play(player, file, args):
     if player == PLAYER_VLC:
-        #file = "'{}'".format(file)
+        # file = "'{}'".format(file)
         # file = "'" + file + "'"
         print("File to play:", file)
         print(args)

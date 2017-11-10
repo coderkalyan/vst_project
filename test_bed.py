@@ -7,14 +7,9 @@ import platform
 
 from schedule_saver import DBManager, Schedule
 
-try:
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
-except ImportError:
-    print("Installing dependencies...")
-    subprocess.Popen(['pip3', 'install', 'PyQt5'])
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
 
-import scheduler
 from ui.generated.load_video_dialog import Ui_Dialog as LoadVideoDialog
 from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
 from ui.generated.main_window import Ui_MainWindow as MainUI
@@ -278,11 +273,13 @@ class VideoGUI():
                         print(entries, ": read lines")
                         del entries[inspected_row]
                         entries.insert(inspected_row, ",".join(
-                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) + self.video[
+                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()),
+                             str(self.ui2.seconds.value()), ""]) + self.video[
                                            0] + ",none\n")  # replace line
                         print(entries, " printed entries")
                         vst_file.seek(0, 0)  # reset again because file was just parsed
                         vst_file.truncate()
+
                         vst_file.write("".join(entries))
                         print(vst_file.read(), " written entries?")
 
@@ -290,7 +287,8 @@ class VideoGUI():
                     else:
 
                         vst_file.write(
-                            ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) +
+                            ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()),
+                                      str(self.ui2.seconds.value()), ""]) +
                             self.video[0] + ",none\n")
                         vst_file.close()
 
