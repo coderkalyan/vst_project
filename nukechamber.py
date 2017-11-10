@@ -27,6 +27,7 @@ from ui.generated.vst_prefs import Ui_Dialog as prefs
 
 FFPROBE_PATH = "ffprobe"
 
+
 class VideoGUI():
     def __init__(self):
         global app
@@ -92,26 +93,26 @@ class VideoGUI():
         ui.actionHelp.triggered.connect(help)
         ui.actionAbout.triggered.connect(help)
 
-
-    def saveprefs(self):
+    @staticmethod
+    def saveprefs():
         global FFPROBE_PATH
         FFPROBE_PATH = prefs_ui.path.text()
         print(FFPROBE_PATH)
         pass
 
-    def prefshow(self):
+    @staticmethod
+    def prefshow():
         prefs_window.show()
         prefs_ui.helpabout.hide()
         prefs_ui.output.hide()
         prefs_ui.person.show()
 
-
-    def help(self):
+    @staticmethod
+    def help():
         prefs_window.show()
         prefs_ui.output.hide()
         prefs_ui.person.hide()
         prefs_ui.helpabout.show()
-
 
     def open_vst(self):
         # opens a text file for reading and writing video entries
@@ -125,13 +126,13 @@ class VideoGUI():
                 pointer.write(location)
         self.table_dump()
 
-
-    def getLength(self, filename):
+    @staticmethod
+    def get_length(filename):
         result = subprocess.run(["ffprobe", filename],
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         return \
-        [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[0].split(".")[0]
-
+            [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[
+                0].split(".")[0]
 
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
@@ -155,7 +156,7 @@ class VideoGUI():
                 print("Phase 1")
                 h, m, s = map(int, (h, m, s))  # convert these to int
                 print(name, "name")
-                length = self.getLength(name)
+                length = self.get_length(name)
                 print(length, "length")
                 times.append(":".join([str(h), str(m), str(s)]))
                 videos.append(name)
@@ -184,7 +185,8 @@ class VideoGUI():
                     # print("Video list:", video_list)
 
                     # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
-                    # we need a list to keep track of these threads, so they can be stopped later if the video is deleted
+                    # we need a list to keep track of these threads, so they can be stopped later
+                    # if the video is deleted
                 print(times, videos, flags, "total")
             except (IndexError, ValueError):
                 print(row, "row-except")
@@ -200,8 +202,7 @@ class VideoGUI():
         global video
         video = QFileDialog.getOpenFileName()
         ui2.label_load_video_name.setText(video[0].split('/')[-1])
-        ui2.label_load_video_length.setText(self.getLength(video[0]))
-
+        ui2.label_load_video_length.setText(self.get_length(video[0]))
 
     def inspect(self, new: bool):
         inspected_row = 0
@@ -233,7 +234,6 @@ class VideoGUI():
             ui2.buttonBox.rejected.connect(window2.reject)
             ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row))
             print("run")
-
 
     def entry(self, new: bool, inspected_row: int):
         vst_file = open(location, "a+")
@@ -293,11 +293,10 @@ class VideoGUI():
                 vst_file.close()
                 self.table_dump()
                 ui.label_now_playing.setText(video[0].split('/')[-1])
-        except:
+        finally:
             pass
 
             # set the text to
-
 
     def table_right_clicked(self, position):
         index = ui.table_videos.selectedIndexes()[0]
@@ -312,16 +311,14 @@ class VideoGUI():
         action_inspect.triggered.connect(wrapper)
         menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
 
-
-    def table_double_clicked(self, index):
+    @staticmethod
+    def table_double_clicked(index):
         if index.column() == 0:
             # we want to open a file dialog to choose new video
             filename, status = QFileDialog.getOpenFileName(caption="Choose Video File")
             print(filename)
         else:
             return
-
-
 
 
 if __name__ == "__main__":
