@@ -9,7 +9,7 @@
 
 # CURRENT VERSION #
 
-## Version 1.6 Flavorful Apple ##
+## Version 1.6.6 Flavorful Apple ##
 
 
 
