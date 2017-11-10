@@ -16,6 +16,7 @@ class DBManager:
     This class does not create any tables. Its sole purpose is to manage the
     SQLite database that we are saving everything inside.
     """
+
     def __init__(self, db_name: str = "schedules.vstx"):
         self.connection = sqlite3.connect(db_name)
 
@@ -31,13 +32,14 @@ class Schedule:
                    "hour INTEGER, minute INTEGER, second INTEGER, filename TEXT ," \
                    "flags TEXT)"
     RENAME_TABLE = "ALTER TABLE {} RENAME TO {}"
-    INSERT_NEW_VIDEO = "INSERT INTO {} (filename,hour,minute,second,flags) VALUES " \
+    INSERT_NEW_VIDEO = "INSERT INTO {} (hour,minute,second,filename,flags) VALUES " \
                        "(?,?,?,?,?)"
     SELECT_ALL_VIDEOS = "SELECT * FROM {}"
     SELECT_TABLE_NAMES = "SELECT name FROM sqlite_master WHERE type='table' " \
                          "ORDER BY name"
     SELECT_BY_ID = "SELECT * FROM {} WHERE id=?"
     UPDATE_VIDEO = "UPDATE {} SET hour=?, minute=?, second=?, filename=?, WHERE id=?"
+    DELETE_VIDEO = "DELETE FROM {} WHERE id=?"
 
     def __init__(self, connection, table_name: str = "default"):
         self.table_name = table_name
@@ -59,7 +61,7 @@ class Schedule:
 
     def is_open(self):
         try:
-            result = self.connection.execute(self.SELECT_TABLE_NAMES)
+            self.connection.execute(self.SELECT_TABLE_NAMES)
         except sqlite3.ProgrammingError:
             return False
         else:
@@ -105,15 +107,23 @@ class Schedule:
             return
 
         cursor = self.connection.cursor()
-        cursor.execute(self.UPDATE_VIDEO, (video.hour, video.minute, video.second,
-                                           video.filename))
+        cursor.execute(self.UPDATE_VIDEO.format(self.table_name),
+                       (video.hour, video.minute, video.second, video.filename))
+        self.connection.commit()
+
+    def delete(self, video: Video):
+        if not self.is_open():
+            return
+
+        cursor = self.connection.cursor()
+        cursor.execute(self.DELETE_VIDEO.format(self.table_name), (video.id,))
         self.connection.commit()
 
 
 if __name__ == '__main__':
     with DBManager("schedules.vstx") as conn:
         schedule1 = Schedule(conn, "schedule_1")
-        #schedule1.insert(Video(1,2,3,"video_1",[],"1",True))
-        #schedule1.insert(Video(1, 2, 3, "video_2",[], "1", True))
-        #schedule1.insert(Video(1, 2, 3,"video_3", [], "1", True))
+        schedule1.insert(Video(1, 2, 3, "video_1", [], "1", True))
+        schedule1.insert(Video(1, 2, 3, "video_2", [], "1", True))
+        schedule1.insert(Video(1, 2, 3, "video_3", [], "1", True))
         schedule1.list_all()
