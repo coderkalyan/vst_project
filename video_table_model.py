@@ -146,6 +146,10 @@ import platform, os
 
 class tableManipulator():
     def table_dump(self):
+        """
+        Primitive function which basically reads the entire contents of the file and dumps those contents into the QTableView.
+        :return:
+        """
         try:
             with open(self.location) as f:
                 table = f.read().splitlines()
@@ -206,4 +210,13 @@ class tableManipulator():
         print("Video list:", video_list)
         model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
         self.ui.table_videos.setModel(model)
+    def insertRow(self, row):
+        """
+        inserts an entry in the QTable and the savefile.
+        :param row: row to be inserted
+        :return:
+        """
+        # TODO - Create a function for inserting row
+        pass
+
 
