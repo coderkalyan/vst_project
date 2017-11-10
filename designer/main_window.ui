@@ -17,7 +17,7 @@
    <string>Video Scheduling Utility by KVK</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../icons.qrc">
+   <iconset>
     <normaloff>:/material-icons/imgs/ic_queue_black_24px.svg</normaloff>:/material-icons/imgs/ic_queue_black_24px.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -75,7 +75,7 @@
          <string>Inspect</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/material-icons/imgs/ic_info_outline_black_24px.svg</normaloff>:/material-icons/imgs/ic_info_outline_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
@@ -110,7 +110,7 @@
          <string>Load New</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/material-icons/imgs/ic_add_to_queue_black_24px.svg</normaloff>:/material-icons/imgs/ic_add_to_queue_black_24px.svg</iconset>
         </property>
         <property name="iconSize">
@@ -151,7 +151,7 @@
          <string>Play Next</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/material-icons/imgs/ic_queue_play_next_black_24px.svg</normaloff>:/material-icons/imgs/ic_queue_play_next_black_24px.svg</iconset>
         </property>
         <property name="iconSize">

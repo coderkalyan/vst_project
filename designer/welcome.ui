@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>600</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -126,17 +126,11 @@
      <string>Exit</string>
     </property>
    </widget>
-   <zorder>label</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>win2</zorder>
   </widget>
   <widget class="QFrame" name="win2">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>10</x>
      <y>10</y>
      <width>381</width>
      <height>281</height>
@@ -254,11 +248,11 @@
     </property>
    </widget>
   </widget>
-  <widget class="QFrame" name="win2_2">
+  <widget class="QFrame" name="win3">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>310</y>
+     <y>10</y>
      <width>381</width>
      <height>281</height>
     </rect>
@@ -471,11 +465,11 @@
     </property>
    </widget>
   </widget>
-  <widget class="QFrame" name="win2_3">
+  <widget class="QFrame" name="win4">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>310</y>
+     <x>10</x>
+     <y>10</y>
      <width>381</width>
      <height>281</height>
     </rect>
@@ -576,10 +570,10 @@
     </property>
    </widget>
   </widget>
-  <widget class="QFrame" name="win2_4">
+  <widget class="QFrame" name="win6">
    <property name="geometry">
     <rect>
-     <x>810</x>
+     <x>10</x>
      <y>10</y>
      <width>381</width>
      <height>281</height>
@@ -737,11 +731,11 @@
     </property>
    </widget>
   </widget>
-  <widget class="QFrame" name="win2_5">
+  <widget class="QFrame" name="win5">
    <property name="geometry">
     <rect>
-     <x>810</x>
-     <y>310</y>
+     <x>10</x>
+     <y>10</y>
      <width>381</width>
      <height>281</height>
     </rect>
@@ -910,7 +904,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_3</sender>
    <signal>clicked()</signal>
-   <receiver>win2_2</receiver>
+   <receiver>win3</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -926,7 +920,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_11</sender>
    <signal>clicked()</signal>
-   <receiver>win2_2</receiver>
+   <receiver>win3</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -974,7 +968,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_5</sender>
    <signal>clicked()</signal>
-   <receiver>win2_3</receiver>
+   <receiver>win4</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -990,7 +984,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_5</sender>
    <signal>clicked()</signal>
-   <receiver>win2_2</receiver>
+   <receiver>win3</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1006,7 +1000,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_12</sender>
    <signal>clicked()</signal>
-   <receiver>win2_3</receiver>
+   <receiver>win4</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1022,7 +1016,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_12</sender>
    <signal>clicked()</signal>
-   <receiver>win2_2</receiver>
+   <receiver>win3</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1038,7 +1032,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_7</sender>
    <signal>clicked()</signal>
-   <receiver>win2_3</receiver>
+   <receiver>win4</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1054,7 +1048,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_7</sender>
    <signal>clicked()</signal>
-   <receiver>win2_4</receiver>
+   <receiver>win6</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1070,7 +1064,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_16</sender>
    <signal>clicked()</signal>
-   <receiver>win2_4</receiver>
+   <receiver>win6</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1086,7 +1080,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_16</sender>
    <signal>clicked()</signal>
-   <receiver>win2_3</receiver>
+   <receiver>win4</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1102,7 +1096,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_13</sender>
    <signal>clicked()</signal>
-   <receiver>win2_4</receiver>
+   <receiver>win6</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1118,7 +1112,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_13</sender>
    <signal>clicked()</signal>
-   <receiver>win2_5</receiver>
+   <receiver>win5</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1134,7 +1128,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_19</sender>
    <signal>clicked()</signal>
-   <receiver>win2_5</receiver>
+   <receiver>win5</receiver>
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1150,7 +1144,7 @@ Advanced: the README.md file also contains information about setup and use of th
   <connection>
    <sender>pushButton_19</sender>
    <signal>clicked()</signal>
-   <receiver>win2_4</receiver>
+   <receiver>win6</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1160,6 +1154,70 @@ Advanced: the README.md file also contains information about setup and use of th
     <hint type="destinationlabel">
      <x>914</x>
      <y>281</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>win6</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>876</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>win3</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>344</x>
+     <y>252</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>341</x>
+     <y>352</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>win4</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>358</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>495</x>
+     <y>345</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>win5</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>358</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>849</x>
+     <y>324</y>
     </hint>
    </hints>
   </connection>
