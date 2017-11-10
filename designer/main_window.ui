@@ -189,7 +189,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuVideo_Queuer">
@@ -198,6 +198,7 @@
     </property>
     <addaction name="actionHelp"/>
     <addaction name="separator"/>
+    <addaction name="actionTutorial"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -238,6 +239,11 @@
   <action name="actionQuit_2">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionTutorial">
+   <property name="text">
+    <string>Tutorial</string>
    </property>
   </action>
  </widget>
