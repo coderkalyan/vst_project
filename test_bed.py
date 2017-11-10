@@ -23,6 +23,8 @@ from video import Video
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
 
+VSTX_SAVE = 1
+VST_SAVE = 2
 
 class VideoGUI():
     def __init__(self):
@@ -122,11 +124,14 @@ class VideoGUI():
 
     @staticmethod
     def get_length(filename):
-        result = subprocess.run(["ffprobe", filename],
-                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        return \
-            [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[
-                0].split(".")[0]
+        try:
+            result = subprocess.run(["ffprobe", filename],
+                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            return \
+                [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[
+                    0].split(".")[0]
+        except FileNotFoundError:
+            return
 
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
@@ -137,13 +142,11 @@ class VideoGUI():
                 # TODO: multiple schedules
                 # TODO: use configs from preferences or drop down
                 schedule = Schedule(conn)
-                schedule.clear()
-                # TODO: remove the following 3 lines - just for debug
-                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
-                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
-                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
+                print("write1")
+                ## TODO: remove the following 3 lines - just for debug
+                schedule.insert(Video(5, 5, 5, "C:/Downloads/1080p.MOV", [], "1", True))
                 table = schedule.list_all()
-                print(table)
+                print(table, "listall")
 
         except FileNotFoundError:
             f2 = open(self.location, "w+")
@@ -187,10 +190,14 @@ class VideoGUI():
                     name = "/" + os.path.join(*name_split)
 
                 print("Name:", name)
-                if h != -1:
-                    video_list.append(Video(h, m, s, name, ["--fullscreen"], length, True))
-                else:
-                    video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
+                # if h != -1:
+                video = Video(h, m, s, name, ["--fullscreen"], length, h != -1)
+                video_list.append(video)
+                print(video_list, "vidlist")
+                print("wtf this should be working")                 
+                print("wrote to db")
+                # else:
+                    # video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
                     # print("Video list:", video_list)
 
                     # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
@@ -202,6 +209,7 @@ class VideoGUI():
                 print(row, "row-except")
                 print("excepted")
                 continue
+                     
 
         print("Video list:", video_list)
         model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
@@ -240,7 +248,7 @@ class VideoGUI():
             self.ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row))
             print("run")
 
-    def entry(self, new: bool, inspected_row: int):
+    def entry(self, new: bool, inspected_row: int, savetype: int):
         vst_file = open(self.location, "a+")
         if new:
             print("i'm new!")

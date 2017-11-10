@@ -2,8 +2,9 @@ import warnings
 
 import re
 from PyQt5.QtCore import QAbstractTableModel, Qt
-
+from test_bed import MainUI as UI
 from video import Video
+
 
 
 class VideoTableModel(QAbstractTableModel):
@@ -143,6 +144,7 @@ class VideoTableModel(QAbstractTableModel):
 
 
 import platform, os
+from schedule_saver import DBManager, Schedule
 
 class tableManipulator():
     def table_dump(self):
@@ -218,5 +220,77 @@ class tableManipulator():
         """
         # TODO - Create a function for inserting row
         pass
+    
+    def entry(self, new: bool, inspected_row: int, savetype: int):
+        vst_file = open(self.location, "a+")
+        if new:
+            print("i'm new!")
+        try:
+            if savetype == 1:
+                if UI.video[0] != "":
+                    if UI.ui2.manualPlay.checkState():
+                        print("i need help")
+                        if not new:
+                            with DBManager("schedule.vstx") as conn:
+                                schedule = Schedule(conn)
+                                schedule.update(UI.video_list[inspected_row])
+                    else:
+                        print("my brain")
+                    
+            elif savetype == 2:
+                print(UI.video[0] + ": video name")
+                if UI.video[0] != "":
+                    print(UI.video, "phase 5")
+                    print("setvar")
+        
+                    if UI.ui2.manualPlay.checkState():
+                        if not new:
+                            print("YEE")
+                            vst_file.seek(0, 0)  # reset file pointer to beginning
+                            entries = vst_file.readlines()  # read lines from file
+        
+                            del entries[inspected_row]
+                            entries.insert(inspected_row, "-1,-1,-1," + UI.video[0] + ",none\n")  # replace line
+                            print(entries)
+                            vst_file.seek(0, 0)  # reset again because file was just parsed
+                            vst_file.truncate()
+                            vst_file.write("".join(entries))
+                            vst_file.close()
+                        else:
+        
+                            vst_file.write("-1,-1,-1," + UI.video[0] + ",none\n")
+                            vst_file.close()
+        
+                    else:
+                        if not new:
+                            print("wee")
+                            vst_file.seek(0, 0)  # reset file pointer to beginning
+                            entries = vst_file.readlines()  # read lines from file
+                            print(inspected_row)
+                            print("still running?")
+                            print(entries, ": read lines")
+                            del entries[inspected_row]
+                            entries.insert(inspected_row, ",".join(
+                                [str(UI.ui2.hours.value()), str(UI.ui2.minutes.value()), str(UI.ui2.seconds.value()), ""]) + UI.video[
+                                               0] + ",none\n")  # replace line
+                            print(entries, " printed entries")
+                            vst_file.seek(0, 0)  # reset again because file was just parsed
+                            vst_file.truncate()
+                            vst_file.write("".join(entries))
+                            print(vst_file.read(), " written entries?")
+        
+                            vst_file.close()
+                        else:
+        
+                            vst_file.write(
+                                ",".join([str(UI.ui2.hours.value()), str(UI.ui2.minutes.value()), str(UI.ui2.seconds.value()), ""]) +
+                                UI.video[0] + ",none\n")
+                            vst_file.close()
+        
+                    vst_file.close()
+                    UI.table_dump()
+                    UI.ui.label_now_playing.setText(UI.video[0].split('/')[-1])
+        finally:
+            pass        
 
 
