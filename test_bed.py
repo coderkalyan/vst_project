@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-# BACONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-# include <stdio.h>
-# include "bacon" //because bacon is always needed.
 import sys
 import subprocess
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
+
+from schedule_saver import DBManager, Schedule
 
 try:
     from PyQt5.QtCore import Qt
@@ -132,11 +131,24 @@ class VideoGUI():
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
         try:
-            with open(self.location) as f:
-                table = f.read().splitlines()
+            # with open(self.location) as f:
+            #    table = f.read().splitlines()
+            with DBManager("schedules.vstx") as conn:
+                # TODO: multiple schedules
+                # TODO: use configs from preferences or drop down
+                schedule = Schedule(conn)
+                schedule.clear()
+                # TODO: remove the following 3 lines - just for debug
+                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
+                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
+                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
+                table = schedule.list_all()
+                print(table)
+
         except FileNotFoundError:
             f2 = open(self.location, "w+")
             f2.close()
+            table = []
             self.table_dump()
         # Change rows to amount of "queued" videos
         video_list = []
@@ -147,12 +159,14 @@ class VideoGUI():
         for row in table:
             print(row, "row")
             try:
-                h, m, s, name, args = row.split(',')  # to be safe(and readable), always put the ' '
+                # h, m, s, name, args = row  # row.split(',')
+                h, m, s, name, args = row.hour, row.minute, row.second, row.filename, row.flags
                 print("Phase 1")
-                h, m, s = map(int, (h, m, s))  # convert these to int
+                # h, m, s = map(int, (h, m, s))  # convert these to int
                 print(name, "name")
                 length = self.get_length(name)
                 print(length, "length")
+                print(h, m, s)
                 times.append(":".join([str(h), str(m), str(s)]))
                 videos.append(name)
                 flags.append(args)
@@ -183,7 +197,8 @@ class VideoGUI():
                     # we need a list to keep track of these threads, so they can be stopped later
                     # if the video is deleted
                 print(times, videos, flags, "total")
-            except (IndexError, ValueError):
+            except (IndexError, ValueError) as e:
+                print(e)
                 print(row, "row-except")
                 print("excepted")
                 continue
