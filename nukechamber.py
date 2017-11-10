@@ -7,7 +7,6 @@ import subprocess
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
-import player_api
 
 try:
     from PyQt5.QtCore import Qt
@@ -25,29 +24,17 @@ from video import Video
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
 
-FFPROBE_PATH = "ffprobe"
-
 
 class VideoGUI():
     def __init__(self):
-        global app
+        self.FFPROBE_PATH = "ffprobe"
         app = QApplication(sys.argv)
-        global window2
-        global window3
-        global credits_window
-        global prefs_window
 
         window = QMainWindow()
         window2 = QDialog()
         window3 = QDialog()
         credits_window = QDialog()
         prefs_window = QDialog()
-
-        global ui
-        global ui2
-        global ui3
-        global credits_ui
-        global prefs_ui
 
         ui = MainUI()
         ui.setupUi(window)
@@ -72,58 +59,69 @@ class VideoGUI():
         prefs_ui = prefs()
         prefs_ui.setupUi(prefs_window)
 
+        self.ui = ui
+        self.ui2 = ui2
+        self.ui3 = ui3
+        self.prefs_ui = prefs_ui
+
+        self.window = window
+        self.window2 = window2
+        self.window3 = window3
+        self.credits_window = credits_window
+        self.prefs_window = prefs_window
+
+        self.app = app
+
         self.bind()
         # ui.table_videos.setRowCount(0)
         # window.setWindowTitle("Video Scheduling Utility by KVK")
-        window.show()
+        self.window.show()
         self.open_vst()
         sys.exit(app.exec_())
 
     def bind(self):
         # Connect Main UI Load New button to Load New function
         # Inspector OK button bindings moved to inspector due to design limitations and human idiocy
-        ui.inspector.clicked.connect(lambda: self.inspect(False))
-        ui.loadnew.clicked.connect(lambda: self.inspect(True))
-        ui2.button_choose_video.clicked.connect(self.select_video)
-        prefs_ui.savebutton.clicked.connect(self.saveprefs)
+        self.ui.inspector.clicked.connect(lambda: self.inspect(False))
+        self.ui.loadnew.clicked.connect(lambda: self.inspect(True))
+        self.ui2.button_choose_video.clicked.connect(self.select_video)
+        self.prefs_ui.savebutton.clicked.connect(self.saveprefs)
 
-        ui.actionQuit.triggered.connect(app.quit)
-        ui.actionSettings.triggered.connect(self.prefshow)
-        # ui.actionAbout.triggered.connect(credits_window.exec_)
-        ui.actionHelp.triggered.connect(help)
-        ui.actionAbout.triggered.connect(help)
+        self.ui.actionQuit.triggered.connect(self.app.quit)
+        self.ui.actionSettings.triggered.connect(self.prefshow)
+        # ui.actionAbout.triggered.connect( .exec_)
+        self.ui.actionHelp.triggered.connect(help)
+        self.ui.actionAbout.triggered.connect(help)
 
     @staticmethod
     def saveprefs():
-        global FFPROBE_PATH
-        FFPROBE_PATH = prefs_ui.path.text()
-        print(FFPROBE_PATH)
+        self.FFPROBE_PATH = self.prefs_ui.path.text()
+        print(self.FFPROBE_PATH)
         pass
 
     @staticmethod
     def prefshow():
-        prefs_window.show()
-        prefs_ui.helpabout.hide()
-        prefs_ui.output.hide()
-        prefs_ui.person.show()
+        self.prefs_window.show()
+        self.prefs_ui.helpabout.hide()
+        self.prefs_ui.output.hide()
+        self.prefs_ui.person.show()
 
     @staticmethod
     def help():
-        prefs_window.show()
-        prefs_ui.output.hide()
-        prefs_ui.person.hide()
-        prefs_ui.helpabout.show()
+        self.prefs_window.show()
+        self.prefs_ui.output.hide()
+        self.prefs_ui.person.hide()
+        self.prefs_ui.helpabout.show()
 
     def open_vst(self):
         # opens a text file for reading and writing video entries
-        global location
 
         with open("pointer.txt", "w+") as pointer:
-            location = pointer.read()
+            self.location = pointer.read()
             # if we read from empty file(just created), fill it with path to default table
-            if location == "":
-                location = "vstdefault.txt"
-                pointer.write(location)
+            if self.location == "":
+                self.location = "vstdefault.txt"
+                pointer.write(self.location)
         self.table_dump()
 
     @staticmethod
@@ -137,10 +135,10 @@ class VideoGUI():
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
         try:
-            with open(location) as f:
+            with open(self.location) as f:
                 table = f.read().splitlines()
         except FileNotFoundError:
-            f2 = open(location, "w+")
+            f2 = open(self.location, "w+")
             f2.close()
             self.table_dump()
         # Change rows to amount of "queued" videos
@@ -195,65 +193,59 @@ class VideoGUI():
 
         print("Video list:", video_list)
         model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
-        ui.table_videos.setModel(model)
+        self.ui.table_videos.setModel(model)
 
     # creates new video entry to be played in table
     def select_video(self):
-        global video
-        video = QFileDialog.getOpenFileName()
-        ui2.label_load_video_name.setText(video[0].split('/')[-1])
-        ui2.label_load_video_length.setText(self.get_length(video[0]))
+        self.video = QFileDialog.getOpenFileName()
+        self.ui2.label_load_video_name.setText(self.video[0].split('/')[-1])
+        self.ui2.label_load_video_length.setText(self.get_length(self.video[0]))
 
     def inspect(self, new: bool):
         inspected_row = 0
         show = True
         if not new:
             print("im old")
-            if not len(ui.table_videos.selectionModel().selectedRows()) > 0:
-                window3.show()
+            if not len(self.ui.table_videos.selectionModel().selectedRows()) > 0:
+                self.window3.show()
                 show = False
             else:
                 # Get selected row
-                global video
-                print("inspecting")
-                inspected_row = ui.table_videos.selectionModel().selectedRows()[0].row()
-                ui2.label_load_video_name.setText(ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
-                print("setting video var")
-                video = [ui.table_videos.model().data[inspected_row].filename, "Never Gonna Give You Up"]
-                print(video)
+                inspected_row = self.ui.table_videos.selectionModel().selectedRows()[0].row()
+                self.ui2.label_load_video_name.setText(self.ui.table_videos.model().data[inspected_row].filename.split('/')[-1])
+                self.video = [self.ui.table_videos.model().data[inspected_row].filename, "Never Gonna Give You Up"]
 
                 # Set inspector values to values in inspected row
-                ui2.hours.setValue(int(ui.table_videos.model().data[inspected_row].hour))
-                ui2.minutes.setValue(int(ui.table_videos.model().data[inspected_row].minute))
-                ui2.seconds.setValue(int(ui.table_videos.model().data[inspected_row].second))
+                self.ui2.hours.setValue(int(self.ui.table_videos.model().data[inspected_row].hour))
+                self.ui2.minutes.setValue(int(self.ui.table_videos.model().data[inspected_row].minute))
+                self.ui2.seconds.setValue(int(self.ui.table_videos.model().data[inspected_row].second))
 
         if show:
-            window2.show()
-            ui2.buttonBox.disconnect()
-            ui2.buttonBox.accepted.connect(window2.accept)
-            ui2.buttonBox.rejected.connect(window2.reject)
-            ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row))
+            self.window2.show()
+            self.ui2.buttonBox.disconnect()
+            self.ui2.buttonBox.accepted.connect(self.window2.accept)
+            self.ui2.buttonBox.rejected.connect(self.window2.reject)
+            self.ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row))
             print("run")
 
     def entry(self, new: bool, inspected_row: int):
-        vst_file = open(location, "a+")
-        print(video)
+        vst_file = open(self.location, "a+")
         if new:
             print("i'm new!")
         try:
-            print(video[0] + ": video name")
-            if video[0] != "":
-                print(video, "phase 5")
+            print(self.video[0] + ": video name")
+            if self.video[0] != "":
+                print(self.video, "phase 5")
                 print("setvar")
 
-                if ui2.manualPlay.checkState():
+                if self.ui2.manualPlay.checkState():
                     if not new:
                         print("YEE")
                         vst_file.seek(0, 0)  # reset file pointer to beginning
                         entries = vst_file.readlines()  # read lines from file
 
                         del entries[inspected_row]
-                        entries.insert(inspected_row, "-1,-1,-1," + video[0] + ",none\n")  # replace line
+                        entries.insert(inspected_row, "-1,-1,-1," + self.video[0] + ",none\n")  # replace line
                         print(entries)
                         vst_file.seek(0, 0)  # reset again because file was just parsed
                         vst_file.truncate()
@@ -261,7 +253,7 @@ class VideoGUI():
                         vst_file.close()
                     else:
 
-                        vst_file.write("-1,-1,-1," + video[0] + ",none\n")
+                        vst_file.write("-1,-1,-1," + self.video[0] + ",none\n")
                         vst_file.close()
 
                 else:
@@ -274,7 +266,7 @@ class VideoGUI():
                         print(entries, ": read lines")
                         del entries[inspected_row]
                         entries.insert(inspected_row, ",".join(
-                            [str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) + video[
+                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) + self.video[
                                            0] + ",none\n")  # replace line
                         print(entries, " printed entries")
                         vst_file.seek(0, 0)  # reset again because file was just parsed
@@ -286,20 +278,20 @@ class VideoGUI():
                     else:
 
                         vst_file.write(
-                            ",".join([str(ui2.hours.value()), str(ui2.minutes.value()), str(ui2.seconds.value()), ""]) +
-                            video[0] + ",none\n")
+                            ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) +
+                            self.video[0] + ",none\n")
                         vst_file.close()
 
                 vst_file.close()
                 self.table_dump()
-                ui.label_now_playing.setText(video[0].split('/')[-1])
+                self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
         finally:
             pass
 
             # set the text to
 
     def table_right_clicked(self, position):
-        index = ui.table_videos.selectedIndexes()[0]
+        index = self.ui.table_videos.selectedIndexes()[0]
         menu = QMenu()
         action_inspect = menu.addAction("Inspect")
         action_delete = menu.addAction("Delete")
@@ -309,7 +301,7 @@ class VideoGUI():
             self.inspect(False)
 
         action_inspect.triggered.connect(wrapper)
-        menu.exec_(ui.table_videos.viewport().mapToGlobal(position))
+        menu.exec_(self.ui.table_videos.viewport().mapToGlobal(position))
 
     @staticmethod
     def table_double_clicked(index):
