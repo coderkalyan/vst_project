@@ -85,29 +85,26 @@ class VideoGUI():
         self.ui.inspector.clicked.connect(lambda: self.inspect(False))
         self.ui.loadnew.clicked.connect(lambda: self.inspect(True))
         self.ui2.button_choose_video.clicked.connect(self.select_video)
-        self.prefs_ui.savebutton.clicked.connect(self.saveprefs)
+        self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
 
         self.ui.actionQuit.triggered.connect(self.app.quit)
-        self.ui.actionSettings.triggered.connect(self.prefshow)
+        self.ui.actionSettings.triggered.connect(self.pref_show)
         # ui.actionAbout.triggered.connect( .exec_)
         self.ui.actionHelp.triggered.connect(help)
         self.ui.actionAbout.triggered.connect(help)
 
-    @staticmethod
-    def saveprefs():
+    def save_prefs(self):
         self.FFPROBE_PATH = self.prefs_ui.path.text()
         print(self.FFPROBE_PATH)
         pass
 
-    @staticmethod
-    def prefshow():
+    def pref_show(self):
         self.prefs_window.show()
         self.prefs_ui.helpabout.hide()
         self.prefs_ui.output.hide()
         self.prefs_ui.person.show()
 
-    @staticmethod
-    def help():
+    def help(self):
         self.prefs_window.show()
         self.prefs_ui.output.hide()
         self.prefs_ui.person.hide()
