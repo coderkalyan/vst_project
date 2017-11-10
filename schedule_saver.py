@@ -1,5 +1,6 @@
 """
-This script handles I/O of schedule files(.vstx)
+This script handles I/O of schedule database files(named ".db")
+They use standard SQLite3 format
 For each schedule file, one creates a new instance of the Schedule class
 This class will keep track of its file name, and handle reading and writing of
 that file.
@@ -7,15 +8,112 @@ that file.
 
 import sqlite3
 
+from video import Video
+
+
+class DBManager:
+    """
+    This class does not create any tables. Its sole purpose is to manage the
+    SQLite database that we are saving everything inside.
+    """
+    def __init__(self, db_name: str = "schedules.vstx"):
+        self.connection = sqlite3.connect(db_name)
+
+    def __enter__(self):
+        return self.connection
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.connection.close()
+
 
 class Schedule:
-    CREATE_TABLE_VIDEOS = "CREATE TABLE IF NOT EXISTS videos"
-    INSERT_NEW = "INSERT INTO "
-    def __init__(self, filename: str = "default.vstx"):
-        self.filename = filename
+    CREATE_TABLE = "CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY, " \
+                   "hour INTEGER, minute INTEGER, second INTEGER, filename TEXT ," \
+                   "flags TEXT)"
+    RENAME_TABLE = "ALTER TABLE {} RENAME TO {}"
+    INSERT_NEW_VIDEO = "INSERT INTO {} (filename,hour,minute,second,flags) VALUES " \
+                       "(?,?,?,?,?)"
+    SELECT_ALL_VIDEOS = "SELECT * FROM {}"
+    SELECT_TABLE_NAMES = "SELECT name FROM sqlite_master WHERE type='table' " \
+                         "ORDER BY name"
+    SELECT_BY_ID = "SELECT * FROM {} WHERE id=?"
+    UPDATE_VIDEO = "UPDATE {} SET hour=?, minute=?, second=?, filename=?, WHERE id=?"
 
-    def insert(self):
-        conn = sqlite3.connect(database=self.filename)
-        c = conn.cursor()
-        cursor.ins
-        f.write()
+    def __init__(self, connection, table_name: str = "default"):
+        self.table_name = table_name
+
+        self.connection = connection
+
+        if not self.is_open():
+            return
+
+        self.connection = connection
+
+        cursor = self.connection.cursor()
+        cursor.execute(self.CREATE_TABLE.format(self.table_name))
+        self.connection.commit()  # NOTE: NOT "cursor.commit()"
+
+        res = self.connection.execute(self.SELECT_TABLE_NAMES)
+        for name in res:
+            print(name[0])
+
+    def is_open(self):
+        try:
+            result = self.connection.execute(self.SELECT_TABLE_NAMES)
+        except sqlite3.ProgrammingError:
+            return False
+        else:
+            return True
+
+    def rename(self, new_name: str = "default"):
+        if not self.is_open():
+            return False
+
+        cursor = self.connection.cursor()
+        cursor.execute(self.RENAME_TABLE.format(self.table_name, new_name))
+        self.connection.commit()
+
+        self.table_name = new_name
+
+        return True
+
+    def insert(self, video: Video):
+        if not self.is_open():
+            return
+
+        cursor = self.connection.cursor()
+        cursor.execute(self.INSERT_NEW_VIDEO
+                       .format(self.table_name), (video.hour, video.minute, video.second,
+                                                  video.filename,
+                                                  ",".join(video.flags)))
+        self.connection.commit()
+
+    def list_all(self):
+        if not self.is_open():
+            return
+
+        cursor = self.connection.cursor()
+        cursor.execute(self.SELECT_ALL_VIDEOS.format(self.table_name))
+        result = cursor.fetchall()
+
+        # TODO - return instead of printing
+        for row in result:
+            print(row)
+
+    def update(self, video: Video):
+        if not self.is_open():
+            return
+
+        cursor = self.connection.cursor()
+        cursor.execute(self.UPDATE_VIDEO, (video.hour, video.minute, video.second,
+                                           video.filename))
+        self.connection.commit()
+
+
+if __name__ == '__main__':
+    with DBManager("schedules.vstx") as conn:
+        schedule1 = Schedule(conn, "schedule_1")
+        #schedule1.insert(Video(1,2,3,"video_1",[],"1",True))
+        #schedule1.insert(Video(1, 2, 3, "video_2",[], "1", True))
+        #schedule1.insert(Video(1, 2, 3,"video_3", [], "1", True))
+        schedule1.list_all()

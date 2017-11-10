@@ -17,13 +17,13 @@ except ImportError:
     subprocess.Popen(['pip3', 'install', 'PyQt5'])
 
 import scheduler
-from ui.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.generated.nothing_to_inspect_generated import Ui_Dialog as NothingToInspectDialog
-from ui.main_window import Ui_MainWindow as MainUI
+from ui.generated.load_video_dialog import Ui_Dialog as LoadVideoDialog
+from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
+from ui.generated.main_window import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
-from ui.vst_prefs import Ui_Dialog as prefs
+from ui.generated.vst_prefs import Ui_Dialog as prefs
 
 FFPROBE_PATH = "ffprobe"
 
@@ -98,7 +98,6 @@ class VideoGUI():
         FFPROBE_PATH = prefs_ui.path.text()
         print(FFPROBE_PATH)
         pass
-
 
     def prefshow(self):
         prefs_window.show()
@@ -195,7 +194,6 @@ class VideoGUI():
         print("Video list:", video_list)
         model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
         ui.table_videos.setModel(model)
-
 
     # creates new video entry to be played in table
     def select_video(self):
