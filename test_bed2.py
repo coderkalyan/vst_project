@@ -157,7 +157,7 @@ class VideoGUI():
             table = []
             self.table_dump()
         # Change rows to amount of "queued" videos
-        video_list = []
+        self.video_list = []
         times = []
         videos = []
         flags = []
@@ -199,13 +199,13 @@ class VideoGUI():
                 # if h != -1:
                 video = Video(h, m, s, name, ["--fullscreen"], length, h != -1)
                 print(video.filename, "filenaame")
-                video_list.append(video)
-                print(video_list, "vidlist")
+                self.video_list.append(video)
+                print(self.video_list, "vidlist")
                 print("wtf this should be working")                 
                 print("wrote to db")
                 # else:
-                    # video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
-                    # print("Video list:", video_list)
+                    # self.video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
+                    # print("Video list:", self.video_list)
 
                     # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
                     # we need a list to keep track of these threads, so they can be stopped later
@@ -218,8 +218,8 @@ class VideoGUI():
                 continue
                      
 
-        print("Video list:", video_list)
-        model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
+        print("Video list:", self.video_list)
+        model = VideoTableModel(None, self.video_list, ["Video File Name", "Play Time", "Duration"])
         self.ui.table_videos.setModel(model)
 
     # creates new video entry to be played in table
@@ -260,13 +260,25 @@ class VideoGUI():
             print("i'm new!")
         try:
             if savetype == 1:
+                print(self.video_list)
                 if self.video[0] != "":
                     if self.ui2.manualPlay.checkState():
                         print("i need help")
                         if not new:
                             with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
-                                schedule.update(self.video_list[inspected_row])
+                                print(self.video_list, "listtt")
+                                print(self.video_list[inspected_row].id)
+                                schedule.update(
+                                    Video(
+                                        -1,
+                                        -1,
+                                        -1,
+                                        self.video[0],
+                                        ["--fullscreen"],
+                                        "1:00",
+                                        False,
+                                        self.video_list[inspected_row].id))
                         else:
                             with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
@@ -275,8 +287,19 @@ class VideoGUI():
                         print("my brain")
                         if not new:
                             with DBManager("schedules.vstx") as conn:
+                                print(self.video_list, "listtt")
                                 schedule = Schedule(conn)
-                                schedule.update(self.video_list[inspected_row])
+                                print(self.video_list[inspected_row].id, "ID")
+                                schedule.update(
+                                    Video(
+                                        self.ui2.hours.value(),
+                                        self.ui2.minutes.value(),
+                                        self.ui2.seconds.value(),
+                                        self.video[0],
+                                        ["--fullscreen"],
+                                        "1:00",
+                                        False,
+                                        schedule.list_all()[inspected_row]))
                         else:
                             with DBManager("schedules.vstx") as conn:
                                 print("WIEHGEIO")
