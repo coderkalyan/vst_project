@@ -161,10 +161,10 @@ class VideoGUI():
         times = []
         videos = []
         flags = []
-        print(table)
+        print(table,"table")
 
         for row in table:
-            print(row, "row")
+            print(row.filename, "row")
             try:
                 # h, m, s, name, args = row  # row.split(',')
                 h, m, s, name, args = row.hour, row.minute, row.second, row.filename, row.flags
@@ -278,26 +278,23 @@ class VideoGUI():
                                 schedule = Schedule(conn)
                                 schedule.update(self.video_list[inspected_row])
                         else:
-                            with DBManager("schedule.vstx") as conn:
+                            with DBManager("schedules.vstx") as conn:
                                 print("WIEHGEIO")
                                 print(self.ui2.hours.value(), self.ui2.minutes.value(), self.ui2.seconds.value())
                                 hour, minute, second = self.ui2.hours.value(), self.ui2.minutes.value(), self.ui2.seconds.value()
                                 schedule = Schedule(conn)
                                 print("hoo")
-                                try:
-                                    schedule.insert(
-                                        Video(hour,
-                                              minute,
-                                              second,
-                                              self.video[0],
-                                              ["--fullscreen"],
-                                              "1:00",
-                                              False))
-                                    test_bed3.i_need_help()
-                                except TypeError as e:
-                                    print(e)
+                                schedule.insert(
+                                    Video(hour,
+                                          minute,
+                                          second,
+                                          self.video[0],
+                                          ["--fullscreen"],
+                                          "1:00",
+                                          False))
+                                # test_bed3.i_need_help(hour,minute,second,self.video[0],["--fullscreen"],"1:00",False)
                                 print("done")
-
+                    self.table_dump()
             elif savetype == 2:
                 vst_file = open(self.location, "a+")
                 print(self.video[0] + ": video name")
@@ -354,8 +351,11 @@ class VideoGUI():
                     vst_file.close()
                     self.table_dump()
                     self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
-        finally:
-            pass
+        except Exception as e:
+            if hasattr(e, 'message'):
+                print(e.message)
+            else:
+                print(e)
 
             # set the text to
 
