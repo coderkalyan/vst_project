@@ -264,17 +264,17 @@ class VideoGUI():
                     if self.ui2.manualPlay.checkState():
                         print("i need help")
                         if not new:
-                            with DBManager("schedule.vstx") as conn:
+                            with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
                                 schedule.update(self.video_list[inspected_row])
                         else:
-                            with DBManager("schedule.vstx") as conn:
+                            with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
                                 schedule.insert(Video(-1, -1, -1, self.video[0], ["--fullscreen"], "1:00", False))
                     else:
                         print("my brain")
                         if not new:
-                            with DBManager("schedule.vstx") as conn:
+                            with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
                                 schedule.update(self.video_list[inspected_row])
                         else:
