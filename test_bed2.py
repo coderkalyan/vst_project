@@ -20,9 +20,9 @@ from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
 from ui.generated.main_window import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
-from video_table_model import  TableManipulator
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
+import test_bed3
 
 VSTX_SAVE = 1
 VST_SAVE = 2
@@ -75,7 +75,6 @@ class VideoGUI():
 
         self.app = app
 
-        self.table_manipulator = TableManipulator()
         print("i am dying inside")
 
         self.bind()
@@ -142,14 +141,13 @@ class VideoGUI():
     def table_dump(self):
         try:
             # with open(self.location) as f:
-            #    table = f.read().splitlines()
+            #    self.table = f.read().splitlines()
             with DBManager("schedules.vstx") as conn:
                 # TODO: multiple schedules
                 # TODO: use configs from preferences or drop down
                 schedule = Schedule(conn)
                 print("write1")
                 ## TODO: remove the following 3 lines - just for debug
-                schedule.insert(Video(5, 5, 5, "C:/Downloads/1080p.MOV", [], "1", True))
                 table = schedule.list_all()
                 print(table, "listall")
 
@@ -163,21 +161,24 @@ class VideoGUI():
         times = []
         videos = []
         flags = []
+        print(table)
 
         for row in table:
             print(row, "row")
             try:
                 # h, m, s, name, args = row  # row.split(',')
                 h, m, s, name, args = row.hour, row.minute, row.second, row.filename, row.flags
+                print(h,m,s,name,args,"YEEE")
                 print("Phase 1")
                 # h, m, s = map(int, (h, m, s))  # convert these to int
                 print(name, "name")
                 length = self.get_length(name)
                 print(length, "length")
                 print(h, m, s)
-                times.append(":".join([str(h), str(m), str(s)]))
-                videos.append(name)
-                flags.append(args)
+                # times.append(":".join([str(h), str(m), str(s)]))
+                # videos.append(name)
+                # flags.append(args)
+
                 print("Phase 2")
                 # make sure video uses os-specific directory separator
                 print("Not removed", name)
@@ -197,6 +198,7 @@ class VideoGUI():
                 print("Name:", name)
                 # if h != -1:
                 video = Video(h, m, s, name, ["--fullscreen"], length, h != -1)
+                print(video.filename, "filenaame")
                 video_list.append(video)
                 print(video_list, "vidlist")
                 print("wtf this should be working")                 
@@ -250,66 +252,108 @@ class VideoGUI():
             self.ui2.buttonBox.disconnect()
             self.ui2.buttonBox.accepted.connect(self.window2.accept)
             self.ui2.buttonBox.rejected.connect(self.window2.reject)
-            self.ui2.buttonBox.accepted.connect(lambda: self.table_manipulator.entry(new, inspected_row, VSTX_SAVE))
+            self.ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row, VSTX_SAVE))
             print("run")
 
     def entry(self, new: bool, inspected_row: int, savetype: int):
-        vst_file = open(self.location, "a+")
         if new:
             print("i'm new!")
         try:
-            print(self.video[0] + ": video name")
-            if self.video[0] != "":
-                print(self.video, "phase 5")
-                print("setvar")
-
-                if self.ui2.manualPlay.checkState():
-                    if not new:
-                        print("YEE")
-                        vst_file.seek(0, 0)  # reset file pointer to beginning
-                        entries = vst_file.readlines()  # read lines from file
-
-                        del entries[inspected_row]
-                        entries.insert(inspected_row, "-1,-1,-1," + self.video[0] + ",none\n")  # replace line
-                        print(entries)
-                        vst_file.seek(0, 0)  # reset again because file was just parsed
-                        vst_file.truncate()
-                        vst_file.write("".join(entries))
-                        vst_file.close()
+            if savetype == 1:
+                if self.video[0] != "":
+                    if self.ui2.manualPlay.checkState():
+                        print("i need help")
+                        if not new:
+                            with DBManager("schedule.vstx") as conn:
+                                schedule = Schedule(conn)
+                                schedule.update(self.video_list[inspected_row])
+                        else:
+                            with DBManager("schedule.vstx") as conn:
+                                schedule = Schedule(conn)
+                                schedule.insert(Video(-1, -1, -1, self.video[0], ["--fullscreen"], "1:00", False))
                     else:
+                        print("my brain")
+                        if not new:
+                            with DBManager("schedule.vstx") as conn:
+                                schedule = Schedule(conn)
+                                schedule.update(self.video_list[inspected_row])
+                        else:
+                            with DBManager("schedule.vstx") as conn:
+                                print("WIEHGEIO")
+                                print(self.ui2.hours.value(), self.ui2.minutes.value(), self.ui2.seconds.value())
+                                hour, minute, second = self.ui2.hours.value(), self.ui2.minutes.value(), self.ui2.seconds.value()
+                                schedule = Schedule(conn)
+                                print("hoo")
+                                try:
+                                    schedule.insert(
+                                        Video(hour,
+                                              minute,
+                                              second,
+                                              self.video[0],
+                                              ["--fullscreen"],
+                                              "1:00",
+                                              False))
+                                    test_bed3.i_need_help()
+                                except TypeError as e:
+                                    print(e)
+                                print("done")
 
-                        vst_file.write("-1,-1,-1," + self.video[0] + ",none\n")
-                        vst_file.close()
+            elif savetype == 2:
+                vst_file = open(self.location, "a+")
+                print(self.video[0] + ": video name")
+                if self.video[0] != "":
+                    print(self.video, "phase 5")
+                    print("setvar")
 
-                else:
-                    if not new:
-                        print("wee")
-                        vst_file.seek(0, 0)  # reset file pointer to beginning
-                        entries = vst_file.readlines()  # read lines from file
-                        print(inspected_row)
-                        print("still running?")
-                        print(entries, ": read lines")
-                        del entries[inspected_row]
-                        entries.insert(inspected_row, ",".join(
-                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) + self.video[
-                                           0] + ",none\n")  # replace line
-                        print(entries, " printed entries")
-                        vst_file.seek(0, 0)  # reset again because file was just parsed
-                        vst_file.truncate()
-                        vst_file.write("".join(entries))
-                        print(vst_file.read(), " written entries?")
+                    if self.ui2.manualPlay.checkState():
+                        if not new:
+                            print("YEE")
+                            vst_file.seek(0, 0)  # reset file pointer to beginning
+                            entries = vst_file.readlines()  # read lines from file
 
-                        vst_file.close()
+                            del entries[inspected_row]
+                            entries.insert(inspected_row, "-1,-1,-1," + self.video[0] + ",none\n")  # replace line
+                            print(entries)
+                            vst_file.seek(0, 0)  # reset again because file was just parsed
+                            vst_file.truncate()
+                            vst_file.write("".join(entries))
+                            vst_file.close()
+                        else:
+
+                            vst_file.write("-1,-1,-1," + self.video[0] + ",none\n")
+                            vst_file.close()
+
                     else:
+                        if not new:
+                            print("wee")
+                            vst_file.seek(0, 0)  # reset file pointer to beginning
+                            entries = vst_file.readlines()  # read lines from file
+                            print(inspected_row)
+                            print("still running?")
+                            print(entries, ": read lines")
+                            del entries[inspected_row]
+                            entries.insert(inspected_row, ",".join(
+                                [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()),
+                                 ""]) + self.video[
+                                               0] + ",none\n")  # replace line
+                            print(entries, " printed entries")
+                            vst_file.seek(0, 0)  # reset again because file was just parsed
+                            vst_file.truncate()
+                            vst_file.write("".join(entries))
+                            print(vst_file.read(), " written entries?")
 
-                        vst_file.write(
-                            ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()), ""]) +
-                            self.video[0] + ",none\n")
-                        vst_file.close()
+                            vst_file.close()
+                        else:
 
-                vst_file.close()
-                self.table_dump()
-                self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
+                            vst_file.write(
+                                ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()),
+                                          str(self.ui2.seconds.value()), ""]) +
+                                self.video[0] + ",none\n")
+                            vst_file.close()
+
+                    vst_file.close()
+                    self.table_dump()
+                    self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
         finally:
             pass
 

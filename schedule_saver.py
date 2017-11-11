@@ -32,8 +32,8 @@ class Schedule:
                    "hour INTEGER, minute INTEGER, second INTEGER, filename TEXT ," \
                    "flags TEXT)"
     RENAME_TABLE = "ALTER TABLE {} RENAME TO {}"
-    INSERT_NEW_VIDEO = "INSERT INTO {} (id, hour,minute,second,filename,flags) VALUES " \
-                       "(?,?,?,?,?,?)"
+    INSERT_NEW_VIDEO = "INSERT INTO {} (hour,minute,second,filename,flags) VALUES " \
+                       "(?,?,?,?,?)"
     SELECT_ALL_VIDEOS = "SELECT * FROM {}"
     SELECT_TABLE_NAMES = "SELECT name FROM sqlite_master WHERE type='table' " \
                          "ORDER BY name"
@@ -83,12 +83,14 @@ class Schedule:
     def insert(self, video: Video):
         if not self.is_open():
             return
+        print("AUGH")
 
         cursor = self.connection.cursor()
         cursor.execute(self.INSERT_NEW_VIDEO
-                       .format(self.table_name), (None, video.hour, video.minute, video.second,
+                       .format(self.table_name), (str(video.hour), str(video.minute), str(video.second),
                                                   video.filename,
                                                   ",".join(video.flags)))
+        print(str(video.hour), str(video.minute), str(video.second), video.filename, "help")
         self.connection.commit()
 
     def list_all(self):
@@ -101,6 +103,7 @@ class Schedule:
         videos = []
         for row in result:
             # TODO: figure out length
+            print(row[1], "1st of row")
             videos.append(Video(row[1], row[2], row[3], row[4], row[5].split(","), "", True))
         return videos
 

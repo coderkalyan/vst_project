@@ -6,9 +6,10 @@ import player_api
 
 class Video:
     def __init__(self, hour: int, minute: int, second: int, name: str, flags: list, length: str, auto_schedule: bool, id: int = None):
-        self.hour = hour
-        self.minute = minute
-        self.second = second
+        print (hour, "KILL MEEE")
+        self.hour = int(hour)
+        self.minute = int(minute)
+        self.second = int(second)
         self.filename = name
         self.flags = flags
         self.length = length
@@ -39,7 +40,6 @@ class Video:
         pass
 
     def play_at_time(self):
-        print("Play at time called")
         try:
             if datetime.datetime.now().time() > datetime.time(self.hour, self.minute, self.second):
                 return
@@ -50,7 +50,7 @@ class Video:
             print("It's time")
             self.play()
         except Exception as e:
-            print(e)
+            print(e, "exception")
             pass
 
     @staticmethod

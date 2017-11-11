@@ -25,7 +25,7 @@ from ui.main_window import Ui_MainWindow as MainUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
-from ui.vst_prefs import Ui_Dialog as prefs
+from ui.generated.vst_prefs import Ui_Dialog as prefs
 
 FFPROBE_PATH="ffprobe"
 
