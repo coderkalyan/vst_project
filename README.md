@@ -11,7 +11,7 @@
 
 # CURRENT VERSION #
 
-## Version 1.6.6 Flavorful Apple ##
+## Version 1.7 Golden Apple ##
 
 
 
