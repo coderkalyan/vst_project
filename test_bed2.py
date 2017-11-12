@@ -259,6 +259,7 @@ class VideoGUI():
         if new:
             print("i'm new!")
         try:
+            # TODO: replace hotfix so that objects can be deleted without issues
             if savetype == 1:
                 print(self.video_list)
                 if self.video[0] != "":
@@ -278,7 +279,7 @@ class VideoGUI():
                                         ["--fullscreen"],
                                         "1:00",
                                         False,
-                                        self.video_list[inspected_row].id))
+                                        inspected_row+1))
                         else:
                             with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
@@ -299,7 +300,7 @@ class VideoGUI():
                                         ["--fullscreen"],
                                         "1:00",
                                         False,
-                                        schedule.list_all()[inspected_row]))
+                                        inspected_row+1))
                         else:
                             with DBManager("schedules.vstx") as conn:
                                 print("WIEHGEIO")
