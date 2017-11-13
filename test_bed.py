@@ -4,6 +4,7 @@ import subprocess
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
+import configparser
 
 from schedule_saver import DBManager, Schedule
 
