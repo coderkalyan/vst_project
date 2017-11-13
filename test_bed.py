@@ -101,8 +101,13 @@ class VideoGUI():
 
     def save_prefs(self):
         self.FFPROBE_PATH = self.prefs_ui.path.text()
-        print(self.FFPROBE_PATH)
-        pass
+        config = configparser.ConfigParser()
+        config['PLAYER'] = {'ffprobe': self.FFPROBE_PATH,
+                             'player': 'mplayer',
+                             'player-path': 'mplayer'}
+        config['GUI'] = {}
+        with open('config.ini', 'w+') as configfile:
+            config.write(configfile)
 
     def pref_show(self):
         self.prefs_window.show()
