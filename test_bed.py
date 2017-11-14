@@ -99,7 +99,7 @@ class VideoGUI():
         self.ui.inspector.clicked.connect(lambda: self.inspect(False))
         self.ui.loadnew.clicked.connect(lambda: self.inspect(True))
         self.ui2.button_choose_video.clicked.connect(self.select_video)
-        #self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
+        self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
 
         self.ui.actionQuit.triggered.connect(self.app.quit)
         self.ui.actionSettings.triggered.connect(self.pref_show)
