@@ -1,5 +1,10 @@
 # auto-compile everything when run
-pyuic5 ui/video1.ui -o ui/video1.py
-pyuic5 ui/load_video_dialog.ui -o ui/load_video_dialog.py
-pyuic5 ui/nothing_to_inspect.ui -o ui/nothing_to_inspect.py
+#pyuic5 ui/video1.ui -o ui/video1.py
+#pyuic5 ui/load_video_dialog.ui -o ui/load_video_dialog.py
+#pyuic5 ui/nothing_to_inspect.ui -o ui/nothing_to_inspect.py
+#pyrcc5 icons.qrc -o icons_rc.py
+for a in $(ls designer)
+do
+	pyuic5 designer/$a -o ui/generated/${a::-2}py
+done
 pyrcc5 icons.qrc -o icons_rc.py

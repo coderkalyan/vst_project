@@ -39,6 +39,7 @@ def bind():
     # ui.actionAbout.triggered.connect(credits_window.exec_)
     ui.actionHelp.triggered.connect(show_help_menu)
     ui.actionAbout.triggered.connect(show_help_menu)
+    ui.actionTutorial.triggered.connect(show_tutorial)
 
 
 def saveprefs():

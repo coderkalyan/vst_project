@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui_old file 'video1.ui_old'
+# Form implementation generated from reading ui file 'designer/main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -31,9 +31,15 @@ class Ui_MainWindow(object):
         self.label_now_playing.setTextFormat(QtCore.Qt.AutoText)
         self.label_now_playing.setObjectName("label_now_playing")
         self.verticalLayout_2.addWidget(self.label_now_playing)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
-        self.verticalLayout_2.addWidget(self.label)
+        self.horizontalLayout_2.addWidget(self.label)
+        self.currentschedcombo = QtWidgets.QComboBox(self.centralwidget)
+        self.currentschedcombo.setObjectName("currentschedcombo")
+        self.horizontalLayout_2.addWidget(self.currentschedcombo)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
         self.inspector = QtWidgets.QToolButton(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
@@ -93,6 +99,9 @@ class Ui_MainWindow(object):
         self.table_videos = QtWidgets.QTableView(self.centralwidget)
         self.table_videos.setObjectName("table_videos")
         self.verticalLayout.addWidget(self.table_videos)
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout.addWidget(self.label_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -117,8 +126,11 @@ class Ui_MainWindow(object):
         self.actionSettings.setObjectName("actionSettings")
         self.actionQuit_2 = QtWidgets.QAction(MainWindow)
         self.actionQuit_2.setObjectName("actionQuit_2")
+        self.actionTutorial = QtWidgets.QAction(MainWindow)
+        self.actionTutorial.setObjectName("actionTutorial")
         self.menuVideo_Queuer.addAction(self.actionHelp)
         self.menuVideo_Queuer.addSeparator()
+        self.menuVideo_Queuer.addAction(self.actionTutorial)
         self.menuEdit.addAction(self.actionSettings)
         self.menuFile.addAction(self.actionQuit_2)
         self.menuBar.addAction(self.menuFile.menuAction())
@@ -133,10 +145,11 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Video Scheduling Utility by KVK"))
         self.label_now_playing.setText(_translate("MainWindow", "Playing <File Name>"))
         self.label.setText(_translate("MainWindow", "Time left:"))
-        self.inspector.setText(_translate("MainWindow", "Inspect"))
+        self.inspector.setText(_translate("MainWindow", "Edit Video"))
         self.loadnew.setText(_translate("MainWindow", "Load New"))
         self.next.setText(_translate("MainWindow", "Play Next"))
         self.nextPlaying.setText(_translate("MainWindow", " Next Playing: <File Name> in 1:10"))
+        self.label_2.setText(_translate("MainWindow", "Status: Playing"))
         self.menuVideo_Queuer.setTitle(_translate("MainWindow", "Video Queuer"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
@@ -145,15 +158,6 @@ class Ui_MainWindow(object):
         self.actionQuit.setText(_translate("MainWindow", "Quit"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
         self.actionQuit_2.setText(_translate("MainWindow", "Quit"))
+        self.actionTutorial.setText(_translate("MainWindow", "Tutorial"))
 
 import icons_rc
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
-
