@@ -177,7 +177,7 @@ class Ui_Dialog(object):
         self.gridLayout_3.addLayout(self.gridLayout_2, 0, 0, 1, 1)
 
         self.retranslateUi(Dialog)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -203,4 +203,14 @@ class Ui_Dialog(object):
 "\n"
 "\n"
 "Advanced: the README.md file also contains information about setup and use of this project, and how to get involved in its development."))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QWidget()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
 

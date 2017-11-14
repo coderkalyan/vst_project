@@ -115,3 +115,13 @@ class Ui_Dialog(object):
         self.label_relative.setText(_translate("Dialog", "Start Time(relative):"))
         self.relative_spinBox.setToolTip(_translate("Dialog", "The delay between the END of the last video and the START of this one."))
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
+

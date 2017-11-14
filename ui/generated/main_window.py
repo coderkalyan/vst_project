@@ -12,7 +12,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(800, 601)
+        MainWindow.resize(778, 601)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/material-icons/imgs/ic_queue_black_24px.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -107,7 +107,7 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 800, 23))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 778, 23))
         self.menuBar.setObjectName("menuBar")
         self.menuVideo_Queuer = QtWidgets.QMenu(self.menuBar)
         self.menuVideo_Queuer.setObjectName("menuVideo_Queuer")
@@ -161,3 +161,13 @@ class Ui_MainWindow(object):
         self.actionTutorial.setText(_translate("MainWindow", "Tutorial"))
 
 import icons_rc
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+

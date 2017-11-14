@@ -5,6 +5,6 @@
 #pyrcc5 icons.qrc -o icons_rc.py
 for a in $(ls designer)
 do
-	pyuic5 designer/$a -o ui/generated/${a::-2}py
+	pyuic5 designer/$a -xo ui/generated/${a::-2}py
 done
 pyrcc5 icons.qrc -o icons_rc.py

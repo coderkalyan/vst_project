@@ -6,15 +6,47 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>589</width>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Wizard</string>
   </property>
-  <widget class="QWizardPage" name="wizardPage1"/>
-  <widget class="QWizardPage" name="wizardPage2"/>
+  <widget class="QWizardPage" name="wizardPage1">
+   <property name="title">
+    <string>Welcome</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:xx-large; font-weight:600;&quot;&gt;KVK Video Scheduler&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Welcome to the KVK Video Scheduler&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;by: Kalyan Sriram, Vincent Wang, and Kai Gottschalk&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;This tutorial will assist you in getting this program up and running for the first time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage2">
+   <property name="title">
+    <string>Setup and Prerequisites</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open up a terminal of your choice, or click the button below to open the default terminal. Once there, type:&lt;/p&gt;&lt;p&gt;On Linux: &lt;/p&gt;&lt;p&gt;&lt;code&gt;sudo -H pip3 install -r requirements.txt&lt;/code&gt;&lt;/p&gt;&lt;p&gt;Note: You may need to enter your password for your computer.&lt;/p&gt;&lt;p&gt;MacOS:&lt;/p&gt;&lt;p&gt;&amp;lt;todo&amp;gt;&lt;/p&gt;&lt;p&gt;Windows:&lt;/p&gt;&lt;p&gt;&lt;code&gt;py -m pip install -r requirements.txt&lt;/code&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources/>
  <connections/>

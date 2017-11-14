@@ -285,3 +285,13 @@ class Ui_Dialog(object):
         self.comboBox_2.setItemText(1, _translate("Dialog", "ffplay"))
         self.comboBox_2.setItemText(2, _translate("Dialog", "mplayer"))
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
+

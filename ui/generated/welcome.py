@@ -344,3 +344,13 @@ class Ui_Form(object):
 "Advanced: the README.md file also contains information about setup and use of this project, and how to get involved in its development."))
         self.pushButton_19.setText(_translate("Form", "Back"))
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())
+

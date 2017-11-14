@@ -35,3 +35,13 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Nothing To Inspect"))
         self.label.setText(_translate("Dialog", "Nothing to inspect."))
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
+

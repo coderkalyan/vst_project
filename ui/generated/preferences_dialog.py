@@ -274,3 +274,13 @@ class Ui_Dialog(object):
         self.label_7.setText(_translate("Dialog", "\'name of file here\'"))
         self.label_9.setText(_translate("Dialog", "Output"))
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
+
