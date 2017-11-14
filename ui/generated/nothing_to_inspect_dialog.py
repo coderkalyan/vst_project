@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui_old file 'ui_old/nothing_to_inspect.ui_old'
+# Form implementation generated from reading ui file 'designer/nothing_to_inspect_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #

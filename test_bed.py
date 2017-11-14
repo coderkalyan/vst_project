@@ -4,29 +4,24 @@ import subprocess
 # Import PyQt5. If it's not installed, try to install it.
 import os
 import platform
-import configparser
+
+from PyQt5.QtGui import QIcon, QPixmap
+
+import icons_rc
 
 from schedule_saver import DBManager, Schedule
 
-try:
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
-except ImportError:
-    print("Installing dependencies...")
-    subprocess.Popen(['pip3', 'install', 'PyQt5'])
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
 
-import scheduler
 from ui.generated.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
+from ui.generated.nothing_to_inspect_dialog import Ui_Dialog as NothingToInspectDialog
 from ui.generated.main_window import Ui_MainWindow as MainUI
+from ui.generated.welcome_2 import Ui_Dialog as TutorialUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
-import test_bed3
-
-VSTX_SAVE = 1
-VST_SAVE = 2
 
 
 class VideoGUI():
@@ -39,14 +34,15 @@ class VideoGUI():
         window3 = QDialog()
         credits_window = QDialog()
         prefs_window = QDialog()
+        self.tutorial_window = QDialog()
 
         ui = MainUI()
         ui.setupUi(window)
 
-        model = VideoTableModel(None, [], ["Video File Name", "Play Time", "Duration"])
+        self.model = VideoTableModel(None, [], ["Video File Name", "Play Time", "Duration"])
         ui.table_videos.setSelectionMode(QAbstractItemView.SingleSelection)
         ui.table_videos.setSelectionBehavior(QAbstractItemView.SelectRows)
-        ui.table_videos.setModel(model)
+        ui.table_videos.setModel(self.model)
         ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         # ui.table_videos.clicked.connect(table_clicked)
         ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -67,6 +63,12 @@ class VideoGUI():
         self.ui2 = ui2
         self.ui3 = ui3
         self.prefs_ui = prefs_ui
+        self.tutorial_ui = TutorialUI()
+        self.tutorial_ui.setupUi(self.tutorial_window)
+        #self.tutorial_ui.pushButton_3.clicked.connect(self.tutorial_ui.stackedWidget.setCurrentIndex(
+        #    self.tutorial_ui.stackedWidget.currentIndex()+1))
+        # print(self.tutorial_ui.stackedWidget.currentIndex())
+        self.tutorial_ui.stackedWidget.setCurrentIndex(2)
 
         self.window = window
         self.window2 = window2
@@ -75,8 +77,6 @@ class VideoGUI():
         self.prefs_window = prefs_window
 
         self.app = app
-
-        print("i am dying inside")
 
         self.bind()
         # ui.table_videos.setRowCount(0)
@@ -91,23 +91,20 @@ class VideoGUI():
         self.ui.inspector.clicked.connect(lambda: self.inspect(False))
         self.ui.loadnew.clicked.connect(lambda: self.inspect(True))
         self.ui2.button_choose_video.clicked.connect(self.select_video)
-        self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
+        # self.prefs_ui.
+        # self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
 
         self.ui.actionQuit.triggered.connect(self.app.quit)
         self.ui.actionSettings.triggered.connect(self.pref_show)
         # ui.actionAbout.triggered.connect( .exec_)
-        self.ui.actionHelp.triggered.connect(help)
-        self.ui.actionAbout.triggered.connect(help)
+        self.ui.actionHelp.triggered.connect(self.help)
+        self.ui.actionAbout.triggered.connect(self.help)
+        self.ui.actionTutorial.triggered.connect(self.show_tutorial)
 
     def save_prefs(self):
         self.FFPROBE_PATH = self.prefs_ui.path.text()
-        config = configparser.ConfigParser()
-        config['PLAYER'] = {'ffprobe': self.FFPROBE_PATH,
-                             'player': 'mplayer',
-                             'player-path': 'mplayer'}
-        config['GUI'] = {}
-        with open('config.ini', 'w+') as configfile:
-            config.write(configfile)
+        print(self.FFPROBE_PATH)
+        pass
 
     def pref_show(self):
         self.prefs_window.show()
@@ -120,6 +117,27 @@ class VideoGUI():
         self.prefs_ui.output.hide()
         self.prefs_ui.person.hide()
         self.prefs_ui.helpabout.show()
+
+    def show_tutorial(self):
+        self.tutorial_window.show()
+        self.tutorial_ui.stackedWidget.setCurrentIndex(0)
+        self.tutorial_ui.next_button.clicked.connect(lambda: self.tutorial_ui.stackedWidget.setCurrentIndex(
+            self.tutorial_ui.stackedWidget.currentIndex() + 1))
+        self.tutorial_ui.back_button.clicked.connect(lambda: self.tutorial_ui.stackedWidget.setCurrentIndex(
+            self.tutorial_ui.stackedWidget.currentIndex() - 1))
+        self.tutorial_ui.stackedWidget.currentChanged.connect(self.stacked_widget_changed)
+        self.tutorial_ui.back_button.setEnabled(False)
+
+    def stacked_widget_changed(self):
+        i = self.tutorial_ui.stackedWidget.currentIndex()
+        if i == 0:
+            self.tutorial_ui.back_button.setEnabled(False)
+        elif i == 5:
+            self.tutorial_ui.next_button.setEnabled(False)
+        else:
+            self.tutorial_ui.next_button.setEnabled(True)
+            self.tutorial_ui.back_button.setEnabled(True)
+
 
     def open_vst(self):
         # opens a text file for reading and writing video entries
@@ -134,28 +152,28 @@ class VideoGUI():
 
     @staticmethod
     def get_length(filename):
-        try:
-            result = subprocess.run(["ffprobe", filename],
-                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            return \
-                [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[
-                    0].split(".")[0]
-        except FileNotFoundError:
-            return
+        result = subprocess.run(["ffprobe", filename],
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        return \
+            [x for x in result.stdout.decode('utf-8').splitlines() if "Duration" in x][0].split()[1].split(",")[
+                0].split(".")[0]
 
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
         try:
             # with open(self.location) as f:
-            #    self.table = f.read().splitlines()
+            #    table = f.read().splitlines()
             with DBManager("schedules.vstx") as conn:
                 # TODO: multiple schedules
                 # TODO: use configs from preferences or drop down
                 schedule = Schedule(conn)
-                print("write1")
-                ## TODO: remove the following 3 lines - just for debug
+                schedule.clear()
+                # TODO: remove the following 3 lines - just for debug
+                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
+                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
+                schedule.insert(Video(5, 5, 5, "/home/kalyan/PycharmProjects/media-autoplay/video_2.mp4", [], "1", True))
                 table = schedule.list_all()
-                print(table, "listall")
+                print(table)
 
         except FileNotFoundError:
             f2 = open(self.location, "w+")
@@ -163,28 +181,25 @@ class VideoGUI():
             table = []
             self.table_dump()
         # Change rows to amount of "queued" videos
-        self.video_list = []
+        video_list = []
         times = []
         videos = []
         flags = []
-        print(table,"table")
 
         for row in table:
-            print(row.filename, "row")
+            print(row, "row")
             try:
                 # h, m, s, name, args = row  # row.split(',')
                 h, m, s, name, args = row.hour, row.minute, row.second, row.filename, row.flags
-                print(h,m,s,name,args,"YEEE")
                 print("Phase 1")
                 # h, m, s = map(int, (h, m, s))  # convert these to int
                 print(name, "name")
                 length = self.get_length(name)
                 print(length, "length")
                 print(h, m, s)
-                # times.append(":".join([str(h), str(m), str(s)]))
-                # videos.append(name)
-                # flags.append(args)
-
+                times.append(":".join([str(h), str(m), str(s)]))
+                videos.append(name)
+                flags.append(args)
                 print("Phase 2")
                 # make sure video uses os-specific directory separator
                 print("Not removed", name)
@@ -202,16 +217,11 @@ class VideoGUI():
                     name = "/" + os.path.join(*name_split)
 
                 print("Name:", name)
-                # if h != -1:
-                video = Video(h, m, s, name, ["--fullscreen"], length, h != -1)
-                print(video.filename, "filenaame")
-                self.video_list.append(video)
-                print(self.video_list, "vidlist")
-                print("wtf this should be working")                 
-                print("wrote to db")
-                # else:
-                    # self.video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
-                    # print("Video list:", self.video_list)
+                if h != -1:
+                    video_list.append(Video(h, m, s, name, ["-fs"], length, True))
+                else:
+                    video_list.append(Video(h, m, s, name, ["-fs"], length, False))
+                    # print("Video list:", video_list)
 
                     # Enqueue videos for playing. If the video is set to play manually, do not enqueue.
                     # we need a list to keep track of these threads, so they can be stopped later
@@ -222,17 +232,20 @@ class VideoGUI():
                 print(row, "row-except")
                 print("excepted")
                 continue
-                     
 
-        print("Video list:", self.video_list)
-        model = VideoTableModel(None, self.video_list, ["Video File Name", "Play Time", "Duration"])
-        self.ui.table_videos.setModel(model)
+        print("Video list:", video_list)
+        self.model = VideoTableModel(None, video_list, ["Video File Name", "Play Time", "Duration"])
+        self.ui.table_videos.setModel(self.model)
 
     # creates new video entry to be played in table
     def select_video(self):
         self.video = QFileDialog.getOpenFileName()
         self.ui2.label_load_video_name.setText(self.video[0].split('/')[-1])
         self.ui2.label_load_video_length.setText(self.get_length(self.video[0]))
+
+    def play_now(self):
+        cell = self.ui.table_videos.selectedIndexes()[0]
+        self.model.data[cell.row()].play()
 
     def inspect(self, new: bool):
         inspected_row = 0
@@ -258,148 +271,91 @@ class VideoGUI():
             self.ui2.buttonBox.disconnect()
             self.ui2.buttonBox.accepted.connect(self.window2.accept)
             self.ui2.buttonBox.rejected.connect(self.window2.reject)
-            self.ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row, VSTX_SAVE))
+            self.ui2.buttonBox.accepted.connect(lambda: self.entry(new, inspected_row))
             print("run")
 
-    def entry(self, new: bool, inspected_row: int, savetype: int):
+    def entry(self, new: bool, inspected_row: int):
+        vst_file = open(self.location, "a+")
         if new:
             print("i'm new!")
         try:
-            # TODO: replace hotfix so that objects can be deleted without issues
-            if savetype == 1:
-                print(self.video_list)
-                if self.video[0] != "":
-                    if self.ui2.manualPlay.checkState():
-                        print("i need help")
-                        if not new:
-                            with DBManager("schedules.vstx") as conn:
-                                schedule = Schedule(conn)
-                                print(self.video_list, "listtt")
-                                print(self.video_list[inspected_row].id)
-                                schedule.update(
-                                    Video(
-                                        -1,
-                                        -1,
-                                        -1,
-                                        self.video[0],
-                                        ["--fullscreen"],
-                                        "1:00",
-                                        False,
-                                        inspected_row+1))
-                        else:
-                            with DBManager("schedules.vstx") as conn:
-                                schedule = Schedule(conn)
-                                schedule.insert(Video(-1, -1, -1, self.video[0], ["--fullscreen"], "1:00", False))
+            print(self.video[0] + ": video name")
+            if self.video[0] != "":
+                print(self.video, "phase 5")
+                print("setvar")
+
+                if self.ui2.manualPlay.checkState():
+                    if not new:
+                        print("YEE")
+                        vst_file.seek(0, 0)  # reset file pointer to beginning
+                        entries = vst_file.readlines()  # read lines from file
+
+                        del entries[inspected_row]
+                        entries.insert(inspected_row, "-1,-1,-1," + self.video[0] + ",none\n")  # replace line
+                        print(entries)
+                        vst_file.seek(0, 0)  # reset again because file was just parsed
+                        vst_file.truncate()
+                        vst_file.write("".join(entries))
+                        vst_file.close()
                     else:
-                        print("my brain")
-                        if not new:
-                            with DBManager("schedules.vstx") as conn:
-                                print(self.video_list, "listtt")
-                                schedule = Schedule(conn)
-                                print(self.video_list[inspected_row].id, "ID")
-                                schedule.update(
-                                    Video(
-                                        self.ui2.hours.value(),
-                                        self.ui2.minutes.value(),
-                                        self.ui2.seconds.value(),
-                                        self.video[0],
-                                        ["--fullscreen"],
-                                        "1:00",
-                                        False,
-                                        inspected_row+1))
-                        else:
-                            with DBManager("schedules.vstx") as conn:
-                                print("WIEHGEIO")
-                                print(self.ui2.hours.value(), self.ui2.minutes.value(), self.ui2.seconds.value())
-                                hour, minute, second = self.ui2.hours.value(), self.ui2.minutes.value(), self.ui2.seconds.value()
-                                schedule = Schedule(conn)
-                                print("hoo")
-                                schedule.insert(
-                                    Video(hour,
-                                          minute,
-                                          second,
-                                          self.video[0],
-                                          ["--fullscreen"],
-                                          "1:00",
-                                          False))
-                                # test_bed3.i_need_help(hour,minute,second,self.video[0],["--fullscreen"],"1:00",False)
-                                print("done")
-                    self.table_dump()
-            elif savetype == 2:
-                vst_file = open(self.location, "a+")
-                print(self.video[0] + ": video name")
-                if self.video[0] != "":
-                    print(self.video, "phase 5")
-                    print("setvar")
 
-                    if self.ui2.manualPlay.checkState():
-                        if not new:
-                            print("YEE")
-                            vst_file.seek(0, 0)  # reset file pointer to beginning
-                            entries = vst_file.readlines()  # read lines from file
+                        vst_file.write("-1,-1,-1," + self.video[0] + ",none\n")
+                        vst_file.close()
 
-                            del entries[inspected_row]
-                            entries.insert(inspected_row, "-1,-1,-1," + self.video[0] + ",none\n")  # replace line
-                            print(entries)
-                            vst_file.seek(0, 0)  # reset again because file was just parsed
-                            vst_file.truncate()
-                            vst_file.write("".join(entries))
-                            vst_file.close()
-                        else:
+                else:
+                    if not new:
+                        print("wee")
+                        vst_file.seek(0, 0)  # reset file pointer to beginning
+                        entries = vst_file.readlines()  # read lines from file
+                        print(inspected_row)
+                        print("still running?")
+                        print(entries, ": read lines")
+                        del entries[inspected_row]
+                        entries.insert(inspected_row, ",".join(
+                            [str(self.ui2.hours.value()), str(self.ui2.minutes.value()),
+                             str(self.ui2.seconds.value()), ""]) + self.video[
+                                           0] + ",none\n")  # replace line
+                        print(entries, " printed entries")
+                        vst_file.seek(0, 0)  # reset again because file was just parsed
+                        vst_file.truncate()
 
-                            vst_file.write("-1,-1,-1," + self.video[0] + ",none\n")
-                            vst_file.close()
+                        vst_file.write("".join(entries))
+                        print(vst_file.read(), " written entries?")
 
+                        vst_file.close()
                     else:
-                        if not new:
-                            print("wee")
-                            vst_file.seek(0, 0)  # reset file pointer to beginning
-                            entries = vst_file.readlines()  # read lines from file
-                            print(inspected_row)
-                            print("still running?")
-                            print(entries, ": read lines")
-                            del entries[inspected_row]
-                            entries.insert(inspected_row, ",".join(
-                                [str(self.ui2.hours.value()), str(self.ui2.minutes.value()), str(self.ui2.seconds.value()),
-                                 ""]) + self.video[
-                                               0] + ",none\n")  # replace line
-                            print(entries, " printed entries")
-                            vst_file.seek(0, 0)  # reset again because file was just parsed
-                            vst_file.truncate()
-                            vst_file.write("".join(entries))
-                            print(vst_file.read(), " written entries?")
 
-                            vst_file.close()
-                        else:
+                        vst_file.write(
+                            ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()),
+                                      str(self.ui2.seconds.value()), ""]) +
+                            self.video[0] + ",none\n")
+                        vst_file.close()
 
-                            vst_file.write(
-                                ",".join([str(self.ui2.hours.value()), str(self.ui2.minutes.value()),
-                                          str(self.ui2.seconds.value()), ""]) +
-                                self.video[0] + ",none\n")
-                            vst_file.close()
-
-                    vst_file.close()
-                    self.table_dump()
-                    self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
-        except Exception as e:
-            if hasattr(e, 'message'):
-                print(e.message)
-            else:
-                print(e)
+                vst_file.close()
+                self.table_dump()
+                self.ui.label_now_playing.setText(self.video[0].split('/')[-1])
+        finally:
+            pass
 
             # set the text to
 
     def table_right_clicked(self, position):
         index = self.ui.table_videos.selectedIndexes()[0]
         menu = QMenu()
-        action_inspect = menu.addAction("Inspect")
+        action_inspect = menu.addAction("Edit Video")
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap(":/material-icons/imgs/ic_mode_edit_black_24px.svg"), QIcon.Normal,
+                        QIcon.Off)
+        action_inspect.setIcon(icon1)
         action_delete = menu.addAction("Delete")
         action_delete.setEnabled(False)
-
-        def wrapper():
-            self.inspect(False)
-
-        action_inspect.triggered.connect(wrapper)
+        action_play_now = menu.addAction("Play Now")
+        icon2 = QIcon()
+        icon2.addPixmap(QPixmap(":/material-icons/imgs/ic_play_arrow_black_24px.svg"), QIcon.Normal,
+                        QIcon.Off)
+        action_play_now.setIcon(icon2)
+        action_inspect.triggered.connect(lambda: self.inspect(False))
+        action_play_now.triggered.connect(self.play_now)
         menu.exec_(self.ui.table_videos.viewport().mapToGlobal(position))
 
     @staticmethod
