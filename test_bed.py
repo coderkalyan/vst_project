@@ -17,8 +17,9 @@ except ImportError:
 
 import scheduler
 from ui.generated.load_video_dialog import Ui_Dialog as LoadVideoDialog
-from ui.generated.nothing_to_inspect import Ui_Dialog as NothingToInspectDialog
+from ui.generated.nothing_to_inspect_dialog import Ui_Dialog as NothingToInspectDialog
 from ui.generated.main_window import Ui_MainWindow as MainUI
+from ui.generated.welcome_2 import Ui_Dialog as TutorialUI
 from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
@@ -39,14 +40,15 @@ class VideoGUI():
         window3 = QDialog()
         credits_window = QDialog()
         prefs_window = QDialog()
+        self.tutorial_window = QDialog()
 
         ui = MainUI()
         ui.setupUi(window)
 
-        model = VideoTableModel(None, [], ["Video File Name", "Play Time", "Duration"])
+        self.model = VideoTableModel(None, [], ["Video File Name", "Play Time", "Duration"])
         ui.table_videos.setSelectionMode(QAbstractItemView.SingleSelection)
         ui.table_videos.setSelectionBehavior(QAbstractItemView.SelectRows)
-        ui.table_videos.setModel(model)
+        ui.table_videos.setModel(self.model)
         ui.table_videos.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         # ui.table_videos.clicked.connect(table_clicked)
         ui.table_videos.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -67,6 +69,12 @@ class VideoGUI():
         self.ui2 = ui2
         self.ui3 = ui3
         self.prefs_ui = prefs_ui
+        self.tutorial_ui = TutorialUI()
+        self.tutorial_ui.setupUi(self.tutorial_window)
+        #self.tutorial_ui.pushButton_3.clicked.connect(self.tutorial_ui.stackedWidget.setCurrentIndex(
+        #    self.tutorial_ui.stackedWidget.currentIndex()+1))
+        # print(self.tutorial_ui.stackedWidget.currentIndex())
+        self.tutorial_ui.stackedWidget.setCurrentIndex(2)
 
         self.window = window
         self.window2 = window2
@@ -91,15 +99,17 @@ class VideoGUI():
         self.ui.inspector.clicked.connect(lambda: self.inspect(False))
         self.ui.loadnew.clicked.connect(lambda: self.inspect(True))
         self.ui2.button_choose_video.clicked.connect(self.select_video)
-        self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
+        #self.prefs_ui.savebutton.clicked.connect(self.save_prefs)
 
         self.ui.actionQuit.triggered.connect(self.app.quit)
         self.ui.actionSettings.triggered.connect(self.pref_show)
         # ui.actionAbout.triggered.connect( .exec_)
-        self.ui.actionHelp.triggered.connect(help)
-        self.ui.actionAbout.triggered.connect(help)
+        self.ui.actionHelp.triggered.connect(self.help)
+        self.ui.actionAbout.triggered.connect(self.help)
+        self.ui.actionTutorial.triggered.connect(self.show_tutorial)
 
     def save_prefs(self):
+       
         config = configparser.ConfigParser()
         config['PLAYER'] = {'ffprobe': self.FFPROBE_PATH,
                              'player': 'mplayer',
@@ -121,6 +131,27 @@ class VideoGUI():
         self.prefs_ui.output.hide()
         self.prefs_ui.person.hide()
         self.prefs_ui.helpabout.show()
+
+    def show_tutorial(self):
+        self.tutorial_window.show()
+        self.tutorial_ui.stackedWidget.setCurrentIndex(0)
+        self.tutorial_ui.next_button.clicked.connect(lambda: self.tutorial_ui.stackedWidget.setCurrentIndex(
+            self.tutorial_ui.stackedWidget.currentIndex() + 1))
+        self.tutorial_ui.back_button.clicked.connect(lambda: self.tutorial_ui.stackedWidget.setCurrentIndex(
+            self.tutorial_ui.stackedWidget.currentIndex() - 1))
+        self.tutorial_ui.stackedWidget.currentChanged.connect(self.stacked_widget_changed)
+        self.tutorial_ui.back_button.setEnabled(False)
+
+    def stacked_widget_changed(self):
+        i = self.tutorial_ui.stackedWidget.currentIndex()
+        if i == 0:
+            self.tutorial_ui.back_button.setEnabled(False)
+        elif i == 5:
+            self.tutorial_ui.next_button.setEnabled(False)
+        else:
+            self.tutorial_ui.next_button.setEnabled(True)
+            self.tutorial_ui.back_button.setEnabled(True)
+
 
     def open_vst(self):
         # opens a text file for reading and writing video entries
@@ -226,14 +257,18 @@ class VideoGUI():
                      
 
         print("Video list:", self.video_list)
-        model = VideoTableModel(None, self.video_list, ["Video File Name", "Play Time", "Duration"])
-        self.ui.table_videos.setModel(model)
+        self.model = VideoTableModel(None, self.video_list, ["Video File Name", "Play Time", "Duration"])
+        self.ui.table_videos.setModel(self.model)
 
     # creates new video entry to be played in table
     def select_video(self):
         self.video = QFileDialog.getOpenFileName()
         self.ui2.label_load_video_name.setText(self.video[0].split('/')[-1])
         self.ui2.label_load_video_length.setText(self.get_length(self.video[0]))
+
+    def play_now(self):
+        cell = self.ui.table_videos.selectedIndexes()[0]
+        self.model.data[cell.row()].play()
 
     def inspect(self, new: bool):
         inspected_row = 0
@@ -393,14 +428,20 @@ class VideoGUI():
     def table_right_clicked(self, position):
         index = self.ui.table_videos.selectedIndexes()[0]
         menu = QMenu()
-        action_inspect = menu.addAction("Inspect")
+        action_inspect = menu.addAction("Edit Video")
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap(":/material-icons/imgs/ic_mode_edit_black_24px.svg"), QIcon.Normal,
+                        QIcon.Off)
+        action_inspect.setIcon(icon1)
         action_delete = menu.addAction("Delete")
         action_delete.setEnabled(False)
-
-        def wrapper():
-            self.inspect(False)
-
-        action_inspect.triggered.connect(wrapper)
+        action_play_now = menu.addAction("Play Now")
+        icon2 = QIcon()
+        icon2.addPixmap(QPixmap(":/material-icons/imgs/ic_play_arrow_black_24px.svg"), QIcon.Normal,
+                        QIcon.Off)
+        action_play_now.setIcon(icon2)
+        action_inspect.triggered.connect(lambda: self.inspect(False))
+        action_play_now.triggered.connect(self.play_now)
         menu.exec_(self.ui.table_videos.viewport().mapToGlobal(position))
 
     @staticmethod

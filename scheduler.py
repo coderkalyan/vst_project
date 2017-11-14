@@ -3,7 +3,9 @@ import player_api
 import time
 import datetime
 from video import Video
+import warnings
 
+warnings.warn("DEPRECATED!")
 # this is a file to provide functionality to schedule, override, and cancel
 # playback of videos
 

@@ -92,6 +92,9 @@ class Schedule:
                                                   ",".join(video.flags)))
         print(str(video.hour), str(video.minute), str(video.second), video.filename, "help")
         self.connection.commit()
+        rowid = cursor.lastrowid
+        print("Rowid", rowid)
+        return rowid
 
     def list_all(self):
         if not self.is_open():

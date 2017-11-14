@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui_old file 'ui_old/load_video_dialog.ui_old'
+# Form implementation generated from reading ui file 'designer/load_video_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -33,7 +33,7 @@ class Ui_Dialog(object):
         self.label_absolute = QtWidgets.QLabel(Dialog)
         self.label_absolute.setScaledContents(False)
         self.label_absolute.setObjectName("label_absolute")
-        self.formLayout.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.label_absolute)
+        self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_absolute)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.hours = QtWidgets.QSpinBox(Dialog)
@@ -51,24 +51,24 @@ class Ui_Dialog(object):
         self.seconds.setMaximum(59)
         self.seconds.setObjectName("seconds")
         self.horizontalLayout.addWidget(self.seconds)
-        self.formLayout.setLayout(5, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
+        self.formLayout.setLayout(6, QtWidgets.QFormLayout.FieldRole, self.horizontalLayout)
         self.label_4 = QtWidgets.QLabel(Dialog)
         self.label_4.setObjectName("label_4")
-        self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.label_4)
+        self.formLayout.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.label_4)
         self.manualPlay = QtWidgets.QCheckBox(Dialog)
         self.manualPlay.setChecked(False)
         self.manualPlay.setTristate(False)
         self.manualPlay.setObjectName("manualPlay")
-        self.formLayout.setWidget(9, QtWidgets.QFormLayout.SpanningRole, self.manualPlay)
+        self.formLayout.setWidget(10, QtWidgets.QFormLayout.SpanningRole, self.manualPlay)
         self.loop = QtWidgets.QCheckBox(Dialog)
         self.loop.setChecked(False)
         self.loop.setObjectName("loop")
-        self.formLayout.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.loop)
+        self.formLayout.setWidget(11, QtWidgets.QFormLayout.LabelRole, self.loop)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
-        self.formLayout.setWidget(11, QtWidgets.QFormLayout.SpanningRole, self.buttonBox)
+        self.formLayout.setWidget(12, QtWidgets.QFormLayout.SpanningRole, self.buttonBox)
         self.button_choose_video = QtWidgets.QPushButton(Dialog)
         self.button_choose_video.setObjectName("button_choose_video")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.button_choose_video)
@@ -77,12 +77,15 @@ class Ui_Dialog(object):
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.label_load_video_length)
         self.label_relative = QtWidgets.QLabel(Dialog)
         self.label_relative.setObjectName("label_relative")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.label_relative)
+        self.formLayout.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.label_relative)
         self.relative_spinBox = QtWidgets.QSpinBox(Dialog)
         self.relative_spinBox.setMaximum(6000)
         self.relative_spinBox.setSingleStep(60)
         self.relative_spinBox.setObjectName("relative_spinBox")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.relative_spinBox)
+        self.formLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.relative_spinBox)
+        self.dateTimeEdit = QtWidgets.QDateTimeEdit(Dialog)
+        self.dateTimeEdit.setObjectName("dateTimeEdit")
+        self.formLayout.setWidget(5, QtWidgets.QFormLayout.SpanningRole, self.dateTimeEdit)
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)
@@ -106,9 +109,19 @@ class Ui_Dialog(object):
         self.label_4.setText(_translate("Dialog", "Flags:"))
         self.manualPlay.setText(_translate("Dialog", "Play Manually"))
         self.loop.setText(_translate("Dialog", "Loop"))
-        self.button_choose_video.setText(_translate("Dialog", "Change Video"))
+        self.button_choose_video.setText(_translate("Dialog", "Open Video"))
         self.label_load_video_length.setText(_translate("Dialog", "<Length>"))
         self.label_relative.setToolTip(_translate("Dialog", "<html><head/><body><p>The delay between the END of the last video and the START of this one in seconds.</p></body></html>"))
         self.label_relative.setText(_translate("Dialog", "Start Time(relative):"))
         self.relative_spinBox.setToolTip(_translate("Dialog", "The delay between the END of the last video and the START of this one."))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
 

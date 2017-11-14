@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui_old file 'ui_old/nothing_to_inspect.ui_old'
+# Form implementation generated from reading ui file 'designer/nothing_to_inspect_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -34,4 +34,14 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Nothing To Inspect"))
         self.label.setText(_translate("Dialog", "Nothing to inspect."))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Dialog = QtWidgets.QDialog()
+    ui = Ui_Dialog()
+    ui.setupUi(Dialog)
+    Dialog.show()
+    sys.exit(app.exec_())
 

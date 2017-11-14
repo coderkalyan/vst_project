@@ -37,8 +37,9 @@ def bind():
     ui.actionQuit.triggered.connect(app.quit)
     ui.actionSettings.triggered.connect(prefshow)
     # ui.actionAbout.triggered.connect(credits_window.exec_)
-    ui.actionHelp.triggered.connect(help)
-    ui.actionAbout.triggered.connect(help)
+    ui.actionHelp.triggered.connect(show_help_menu)
+    ui.actionAbout.triggered.connect(show_help_menu)
+    ui.actionTutorial.triggered.connect(show_tutorial)
 
 
 def saveprefs():
@@ -55,7 +56,7 @@ def prefshow():
     prefs_ui.person.show()
 
 
-def help():
+def show_help_menu():
     prefs_window.show()
     prefs_ui.output.hide()
     prefs_ui.person.hide()
@@ -75,7 +76,7 @@ def open_vst():
     table_dump()
 
 
-def getLength(filename):
+def get_length(filename):
     result = subprocess.run(["ffprobe", filename],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return \
@@ -100,7 +101,7 @@ def table_dump():
             print("Phase 1")
             h, m, s = map(int, (h, m, s))  # convert these to int
             print(name, "name")
-            length = getLength(name)
+            length = get_length(name)
             print(length, "length")
             times.append(":".join([str(h), str(m), str(s)]))
             videos.append(name)
@@ -146,7 +147,7 @@ def select_video():
     global video
     video = QFileDialog.getOpenFileName()
     ui2.label_load_video_name.setText(video[0].split('/')[-1])
-    ui2.label_load_video_length.setText(getLength(video[0]))
+    ui2.label_load_video_length.setText(get_length(video[0]))
 
 
 def inspect(new: bool):
