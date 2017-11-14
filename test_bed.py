@@ -100,12 +100,13 @@ class VideoGUI():
         self.ui.actionAbout.triggered.connect(help)
 
     def save_prefs(self):
-        self.FFPROBE_PATH = self.prefs_ui.path.text()
         config = configparser.ConfigParser()
         config['PLAYER'] = {'ffprobe': self.FFPROBE_PATH,
                              'player': 'mplayer',
                              'player-path': 'mplayer'}
-        config['GUI'] = {}
+        config['GUI'] = {'theme': 'material-design',
+                         'minimal': False,
+                         'large-buttons': False}
         with open('config.ini', 'w+') as configfile:
             config.write(configfile)
 
