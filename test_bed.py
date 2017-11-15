@@ -11,6 +11,7 @@ from schedule_saver import DBManager, Schedule
 try:
     from PyQt5.QtCore import Qt
     from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QFileDialog, QAbstractItemView, QHeaderView, QMenu
+    from PyQt5.QtGui import QIcon, QPixmap
 except ImportError:
     print("Installing dependencies...")
     subprocess.Popen(['pip3', 'install', 'PyQt5'])
