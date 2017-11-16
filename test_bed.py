@@ -236,7 +236,7 @@ class VideoGUI():
 
                 print("Name:", name)
                 # if h != -1:
-                video = Video(h, m, s, name, ["--fullscreen"], length, h != -1)
+                video = Video(h, m, s, name, [], length, h != -1)
                 print(video.filename, "filenaame")
                 self.video_list.append(video)
                 print(self.video_list, "vidlist")
@@ -299,12 +299,17 @@ class VideoGUI():
             print("run")
 
     def entry(self, new: bool, inspected_row: int, savetype: int):
+        args = []
         if new:
             print("i'm new!")
         try:
             # TODO: replace hotfix so that objects can be deleted without issues
             if savetype == 1:
                 print(self.video_list)
+                if self.ui2.loop.checkState():
+                    print("appending")
+                    args.append("-loop 0")
+                    print(args)
                 if self.video[0] != "":
                     if self.ui2.manualPlay.checkState():
                         print("i need help")
@@ -313,20 +318,21 @@ class VideoGUI():
                                 schedule = Schedule(conn)
                                 print(self.video_list, "listtt")
                                 print(self.video_list[inspected_row].id)
+                                print(args, "args")
                                 schedule.update(
                                     Video(
                                         -1,
                                         -1,
                                         -1,
                                         self.video[0],
-                                        ["--fullscreen"],
+                                        args,
                                         "1:00",
                                         False,
                                         inspected_row+1))
                         else:
                             with DBManager("schedules.vstx") as conn:
                                 schedule = Schedule(conn)
-                                schedule.insert(Video(-1, -1, -1, self.video[0], ["--fullscreen"], "1:00", False))
+                                schedule.insert(Video(-1, -1, -1, self.video[0], args, "1:00", False))
                     else:
                         print("my brain")
                         if not new:
@@ -334,13 +340,14 @@ class VideoGUI():
                                 print(self.video_list, "listtt")
                                 schedule = Schedule(conn)
                                 print(self.video_list[inspected_row].id, "ID")
+                                print(args, "args")
                                 schedule.update(
                                     Video(
                                         self.ui2.hours.value(),
                                         self.ui2.minutes.value(),
                                         self.ui2.seconds.value(),
                                         self.video[0],
-                                        ["--fullscreen"],
+                                        ["-loop 0"],
                                         "1:00",
                                         False,
                                         inspected_row+1))
@@ -356,7 +363,7 @@ class VideoGUI():
                                           minute,
                                           second,
                                           self.video[0],
-                                          ["--fullscreen"],
+                                          args,
                                           "1:00",
                                           False))
                                 # test_bed3.i_need_help(hour,minute,second,self.video[0],["--fullscreen"],"1:00",False)

@@ -59,5 +59,5 @@ class Video:
 
     def play(self, player=player_api.PLAYER_FFPLAY):
         print("play() called")
-        print(self.filename)
+        print(self.filename, self.flags, "YYEEE")
         player_api.play(player, self.filename, self.flags)
