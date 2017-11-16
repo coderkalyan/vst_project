@@ -22,7 +22,6 @@
 
 
 #### Welcome to the new repository for the VST(Video Scheduling Table) Project ####
-#### Version 1.5.3 Cosmic Apple ####
 
 ### How do I get set up? ###
 
