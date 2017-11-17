@@ -207,7 +207,7 @@ class VideoGUI():
             try:
                 # h, m, s, name, args = row  # row.split(',')
                 h, m, s, name, args = row.hour, row.minute, row.second, row.filename, row.flags
-                print(h,m,s,name,args,"YEEE")
+                print(h,m,s,name,args,"YE")
                 print("Phase 1")
                 # h, m, s = map(int, (h, m, s))  # convert these to int
                 print(name, "name")
