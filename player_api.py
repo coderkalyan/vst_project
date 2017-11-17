@@ -40,7 +40,7 @@ def play(player, file, args):
     elif player == PLAYER_FFPLAY:
         print(file)
         args.append("-fs")
-        os.system(PATH_FFPLAY + " " + '"'+file+'"' + " ".join(args))
+        os.system(PATH_FFPLAY + " " + '"'+file+'" ' + " ".join(args))
         print(PATH_FFPLAY + " " + '"'+file+'" ' + " ".join(args), "playstring")
     elif player == PLAYER_MPLAYER:
         print(file)

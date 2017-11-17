@@ -16,6 +16,7 @@ class Video:
         self.id = id
         print(flags, self.flags, "flagz")
         if auto_schedule:
+            print("YES MOM I AM DOING HOMEWORK")
             t = threading.Thread(target=self.play_at_time)
             t.start()
 

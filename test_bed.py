@@ -25,7 +25,6 @@ from video import Video
 # binds all buttons to functions
 from video_table_model import VideoTableModel
 from ui.generated.vst_prefs import Ui_Dialog as prefs
-import test_bed3
 
 VSTX_SAVE = 1
 VST_SAVE = 2
@@ -186,7 +185,7 @@ class VideoGUI():
                 # TODO: use configs from preferences or drop down
                 schedule = Schedule(conn)
                 print("write1")
-                ## TODO: remove the following 3 lines - just for debug
+                # TODO: remove the following 3 lines - just for debug
                 table = schedule.list_all()
                 print(table, "listall")
 
@@ -236,7 +235,7 @@ class VideoGUI():
 
                 print("Name:", name)
                 # if h != -1:
-                video = Video(h, m, s, name, [], length, h != -1)
+                video = Video(h, m, s, name, args, length, h != -1)
                 print(video.filename, "filenaame")
                 self.video_list.append(video)
                 print(self.video_list, "vidlist")
@@ -289,6 +288,9 @@ class VideoGUI():
                 self.ui2.hours.setValue(int(self.ui.table_videos.model().data[inspected_row].hour))
                 self.ui2.minutes.setValue(int(self.ui.table_videos.model().data[inspected_row].minute))
                 self.ui2.seconds.setValue(int(self.ui.table_videos.model().data[inspected_row].second))
+                print(any("loop" in s for s in self.ui.table_videos.model().data[inspected_row].flags))
+                self.ui2.loop.setChecked(any("loop" in s for s in self.ui.table_videos.model().data[inspected_row].flags))
+                self.ui2.manualPlay.setChecked(int(self.ui.table_videos.model().data[inspected_row].hour) == -1)
 
         if show:
             self.window2.show()

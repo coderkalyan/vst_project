@@ -38,7 +38,7 @@ class Schedule:
     SELECT_TABLE_NAMES = "SELECT name FROM sqlite_master WHERE type='table' " \
                          "ORDER BY name"
     SELECT_BY_ID = "SELECT * FROM {} WHERE id=?"
-    UPDATE_VIDEO = "UPDATE {} SET hour=?, minute=?, second=?, filename=? flags=? WHERE id=?"
+    UPDATE_VIDEO = "UPDATE {} SET hour=?, minute=?, second=?, filename=?, flags=? WHERE id=?"
     DELETE_VIDEO = "DELETE FROM {} WHERE id=?"
     CLEAR_VIDEOS = "DELETE FROM {}"
 
@@ -113,10 +113,11 @@ class Schedule:
     def update(self, video: Video):
         if not self.is_open():
             return
-
+        
+        print(video.flags, "video flagsss")
         cursor = self.connection.cursor()
         cursor.execute(self.UPDATE_VIDEO.format(self.table_name),
-                       (video.hour, video.minute, video.second, video.filename, video.flags, video.id))
+                       (video.hour, video.minute, video.second, video.filename, ",".join(video.flags), video.id))
         self.connection.commit()
 
     def delete(self, video: Video):
