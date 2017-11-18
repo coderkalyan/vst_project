@@ -177,6 +177,8 @@ class VideoGUI():
         
 
     # Dump all entries into a QTable for editing in the GUI
+        self.ui2.label_load_video_length.setText(self.get_length(self.video[0]))
+
     def table_dump(self):
         try:
             # with open(self.location) as f:
@@ -204,6 +206,8 @@ class VideoGUI():
 
         # Terminates any running threads so we don't get duplicate videos playing.
         for row in table:
+            print (table, "terminating2")
+            print(row.filename, "terminating")
             row.terminate()
             print(row.filename, "row")
             try:
@@ -244,7 +248,10 @@ class VideoGUI():
                 print("wtf this should be working")                 
                 print("wrote to db")
                 for compare in self.video_list:
-                    pass
+                    if (video.hour in range(compare.hour, compare.hour + int(self.get_length(compare.filename).split(":")[0])) or
+                        video.minute in range(compare.minute, compare.minute + int(self.get_length(compare.filename).split(":")[1])) or
+                        video.second in range(compare.second, compare.second + int(self.get_length(compare.filename).split(":")[2]))):
+                        print("WARN: Videos overlap")
                 # else:
                     # self.video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
                     # print("Video list:", self.video_list)
@@ -273,6 +280,7 @@ class VideoGUI():
     def play_now(self):
         cell = self.ui.table_videos.selectedIndexes()[0]
         self.model.data[cell.row()].play()
+        self.ui.label_now_playing.setText("Playing " + self.model.data[cell.row()].filename.split('/')[-1])
 
     def inspect(self, new: bool):
         inspected_row = 0
@@ -316,6 +324,7 @@ class VideoGUI():
                     print("appending")
                     args.append("-loop 0")
                     print(args)
+                print(self.video[0], "videoname")
                 if self.video[0] != "":
                     if self.ui2.manualPlay.checkState():
                         print("i need help")
@@ -374,6 +383,7 @@ class VideoGUI():
                                           False))
                                 # test_bed3.i_need_help(hour,minute,second,self.video[0],["--fullscreen"],"1:00",False)
                                 print("done")
+                    print("tabledump")
                     self.table_dump()
             elif savetype == 2:
                 vst_file = open(self.location, "a+")
