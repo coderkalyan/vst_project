@@ -49,7 +49,6 @@ class Video:
 
             while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute,
                                                                   self.second):
-                print(self.killswitch, "killswitch")
                 if self.killswitch == True:
                     print("return")
                     return

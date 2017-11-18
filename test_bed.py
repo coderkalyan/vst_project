@@ -175,8 +175,6 @@ class VideoGUI():
         except FileNotFoundError:
             return
         
-    def detect_duplicates(self):
-        pass
 
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
@@ -245,6 +243,8 @@ class VideoGUI():
                 print(self.video_list, "vidlist")
                 print("wtf this should be working")                 
                 print("wrote to db")
+                for compare in self.video_list:
+                    pass
                 # else:
                     # self.video_list.append(Video(h, m, s, name, ["--fullscreen"], length, False))
                     # print("Video list:", self.video_list)
