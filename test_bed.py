@@ -174,6 +174,9 @@ class VideoGUI():
                     0].split(".")[0]
         except FileNotFoundError:
             return
+        
+    def detect_duplicates(self):
+        pass
 
     # Dump all entries into a QTable for editing in the GUI
     def table_dump(self):
@@ -201,7 +204,9 @@ class VideoGUI():
         flags = []
         print(table,"table")
 
+        # Terminates any running threads so we don't get duplicate videos playing.
         for row in table:
+            row.terminate()
             print(row.filename, "row")
             try:
                 # h, m, s, name, args = row  # row.split(',')
@@ -236,7 +241,6 @@ class VideoGUI():
                 print("Name:", name)
                 # if h != -1:
                 video = Video(h, m, s, name, args, length, h != -1)
-                print(video.filename, "filenaame")
                 self.video_list.append(video)
                 print(self.video_list, "vidlist")
                 print("wtf this should be working")                 
@@ -349,7 +353,7 @@ class VideoGUI():
                                         self.ui2.minutes.value(),
                                         self.ui2.seconds.value(),
                                         self.video[0],
-                                        ["-loop 0"],
+                                        args,
                                         "1:00",
                                         False,
                                         inspected_row+1))

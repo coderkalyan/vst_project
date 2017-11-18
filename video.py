@@ -7,6 +7,7 @@ import player_api
 class Video:
     def __init__(self, hour: int, minute: int, second: int, name: str, flags: list, length: str, auto_schedule: bool, id: int = None):
         print (hour, "KILL MEEE")
+        self.killswitch = False
         self.hour = int(hour)
         self.minute = int(minute)
         self.second = int(second)
@@ -48,6 +49,11 @@ class Video:
 
             while datetime.datetime.now().time() <= datetime.time(self.hour, self.minute,
                                                                   self.second):
+                print(self.killswitch, "killswitch")
+                if self.killswitch == True:
+                    print("return")
+                    return
+                
                 time.sleep(0.05)
             print("It's time")
             self.play()
@@ -63,3 +69,7 @@ class Video:
         print("play() called")
         print(self.filename, self.flags, "YYEEE")
         player_api.play(player, self.filename, self.flags)
+    
+    def terminate(self):
+        print("Flipping killswitch")
+        self.killswitch = True
