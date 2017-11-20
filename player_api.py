@@ -11,12 +11,14 @@ import subprocess
 PLAYER_VLC = 1
 PLAYER_CVLC = 2
 PLAYER_FFPLAY = 3
+PLAYER_MPLAYER = 4
 
 # paths to the different players - for now, we don't put full path,
 # assuming that the program is in the user's PATH
 PATH_VLC = "vlc"
 PATH_CVLC = "cvlc"
 PATH_FFPLAY = "ffplay"
+PATH_MPLAYER = "mplayer"
 
 
 def play(player, file, args):
@@ -25,6 +27,7 @@ def play(player, file, args):
         # file = "'" + file + "'"
         print("File to play:", file)
         print(args)
+        args.append("--fullscreen")
         # os.system(PATH_VLC + " " + " ".join(args) + " " + file)
         command = "{} {} \"{}\"".format(PATH_VLC, " ".join(args), file)
         print(command)
@@ -32,10 +35,17 @@ def play(player, file, args):
         # p = subprocess.Popen([PATH_VLC, " ".join(args), file])
     elif player == PLAYER_CVLC:
         print(file)
+        args.append("--fullscreen")
         p = subprocess.Popen([PATH_VLC, " ".join(args), '"'+file+'"'])
     elif player == PLAYER_FFPLAY:
         print(file)
-        os.system(PATH_FFPLAY + " " + " ".join(args) + " " + '"'+file+'"')
+        args.append("-fs")
+        os.system(PATH_FFPLAY + " " + '"'+file+'" ' + " ".join(args))
+        print(PATH_FFPLAY + " " + '"'+file+'" ' + " ".join(args), "playstring")
+    elif player == PLAYER_MPLAYER:
+        print(file)
+        args.append("-fs")
+        os.system(PATH_MPLAYER + " " + " ".join(args))
 
 
 def stop():
