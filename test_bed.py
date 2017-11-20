@@ -65,6 +65,8 @@ class VideoGUI():
         prefs_ui = prefs()
         prefs_ui.setupUi(prefs_window)
 
+        self.video_list = []
+
         self.ui = ui
         self.ui2 = ui2
         self.ui3 = ui3
@@ -198,6 +200,11 @@ class VideoGUI():
             table = []
             self.table_dump()
         # Change rows to amount of "queued" videos
+        # Terminate any running videos in video_list. This is to avoid layering videos when queueing 2 or more.
+        if self.video_list != []:
+            for video_item in self.video_list:
+                print("wath")
+                video_item.terminate()
         self.video_list = []
         times = []
         videos = []
@@ -206,10 +213,8 @@ class VideoGUI():
 
         # Terminates any running threads so we don't get duplicate videos playing.
         for row in table:
-            print (table, "terminating2")
-            print(row.filename, "terminating")
             row.terminate()
-            print(row.filename, "row")
+            print(row.hour, row.minute, row.second, row.filename, "row")
             try:
                 # h, m, s, name, args = row  # row.split(',')
                 h, m, s, name, args = row.hour, row.minute, row.second, row.filename, row.flags
