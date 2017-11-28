@@ -13,16 +13,12 @@
 ## Also:
 
 ### Please make sure to add all version changes to the readme here.
-======
 
 # CURRENT VERSION
 
 ## Version 1.7 Golden Apple
-======
 
 
-Alt-H1
-======
 
 # README
 
