@@ -1,3 +1,5 @@
+{::nomarkdown}
+
 <h1>PLEASE READ. IMPORTANT!</h1>
 
 <h3>Please make sure to add tasks that need to be done, are being done currently, and are done into the 'Boards' tab on the left.</h3>
@@ -39,3 +41,5 @@
 <ul>
 <li>Kalyan, Vincent, Kai</li>
 </ul>
+
+{:/}
