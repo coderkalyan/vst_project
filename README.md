@@ -3,12 +3,19 @@
 ## A work meeting will take place this weekend: *Sunday, December 3rd, 2017, 11:00am.* The location will be: *Kai's House.* Vincent will show up at 11:30 and Kalyan will arrive on time at 11:00. Please show up and please read this! Thank you! ##
 
 ☼
+
 ☼
+
 ☼
+
 ☼
+
 ☼
+
 ☼
+
 ☼
+
 ☼
 
 
