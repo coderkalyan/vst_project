@@ -33,7 +33,7 @@
 
 # CURRENT VERSION
 
-## Version 1.7 Golden Apple
+## Version 1.7.1 Golden Apple
 
 ---
 
