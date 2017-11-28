@@ -6,22 +6,6 @@
 
 ☼
 
-☼
-
-☼
-
-☼
-
-☼
-
-☼
-
-☼
-
-
-# PLEASE READ. IMPORTANT! #
-
-
 ### Please make sure to add tasks that need to be done, are being done currently, and are done into the 'Boards' tab on the left.
 
 ### This will be our way of sharing tasks and working together as a team.
@@ -29,6 +13,21 @@
 ## Also:
 
 ### Please make sure to add all version changes to the readme here.
+
+☼
+
+☼
+
+☼
+
+☼
+
+☼
+
+☼
+
+
+
 
 ---
 
