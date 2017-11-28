@@ -3,6 +3,7 @@
 ## A work meeting will take place this weekend: *Sunday, December 3rd, 2017, 11:00am.* The location will be: *Kai's House.* Vincent will show up at 11:30 and Kalyan will arrive on time at 11:00. Please show up and please read this! Thank you! ##
 
 
+
 # PLEASE READ. IMPORTANT!
 
 
@@ -14,11 +15,13 @@
 
 ### Please make sure to add all version changes to the readme here.
 
+---
+
 # CURRENT VERSION
 
 ## Version 1.7 Golden Apple
 
-
+---
 
 # README
 
