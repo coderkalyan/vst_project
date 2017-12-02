@@ -1,6 +1,13 @@
+<dl>
+  <dt>Definition list</dt>
+  <dd>Is something people use sometimes.</dd>
+
+  <dt>Markdown in HTML</dt>
+  <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>
+</dl>
 # ANNOUNCEMENTS #
 
-## A work meeting will take place this weekend: *Sunday, December 3rd, 2017, 11:00am.* The location will be: *Kai's House.* Vincent will show up at 11:30 and Kalyan will arrive on time at 11:00. Please show up and please read this! Thank you! ##
+## This meeting has been cancelled. ##
 
 ☼
 
